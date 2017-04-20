@@ -369,13 +369,13 @@ int main(int argc, char *argv[])
         new_SC = (unsigned char)(uint_val>>8)&0xFF;
         new_VAL = (unsigned char)uint_val&0xFF;
 
-        if(prev_VAL > 200 && new_VAL < 50){
+        if(prev_VAL > 200 && new_VAL < 50 && prev_VAL != new_VAL){
             curr_VAL += 256-prev_VAL/4 + new_VAL/4;
             if(curr_VAL > 256)
                 curr_VAL = 256;
             prev_VAL = new_VAL;
         }
-        else if(prev_VAL < 50 && new_VAL > 200){
+        else if(prev_VAL < 50 && new_VAL > 200 && prev_VAL != new_VAL){
             curr_VAL  -= (prev_VAL/4 + 256 - new_VAL/4);
             if(curr_VAL < 0)
                 curr_VAL = 0;

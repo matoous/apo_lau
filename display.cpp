@@ -366,7 +366,7 @@ int main(int argc, char *argv[])
         new_LAU = (unsigned char)(uint_val>>16)&0xFF;
         new_SC = (unsigned char)(uint_val>>8)&0xFF;
         new_VAL = (unsigned char)uint_val&0xFF;
-        printf("station: %d color part: %d value: %d\n", (int)new_LAU%4, (int)new_SC%4, (int)new_VAL%4 );
+        printf("station: %d color part: %d value: %d\n", (int)new_LAU/4, (int)new_SC/4, (int)new_VAL/4 );
 
         /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = 0;

@@ -26,6 +26,9 @@
 #include <getopt.h>
 #include <inttypes.h>
 #include <time.h>
+#include "par_lcd.h"
+#include "knobs.h"
+
 
 char *memdev="/dev/mem";
 
@@ -101,20 +104,6 @@ void parlcd_delay(int msec)
  *******************************************************************/
 
 #define _POSIX_C_SOURCE 200112L
-
-#include <sys/mman.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <malloc.h>
-#include <string.h>
-#include <byteswap.h>
-#include <getopt.h>
-#include <inttypes.h>
-#include <time.h>
-#include "knobs.h"
 
 typedef unsigned char byte;
 int main(int argc, char *argv[])

@@ -351,8 +351,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    unsigned char curr_LAU, curr_SC, curr_VAL,
-            new_LAU, new_SC, new_VAL;
+    unsigned char curr_LAU, curr_SC, curr_VAL, prev_VAL, new_SC, new_VAL;
+
+    prev_VAL = 100;
 
     while(1){
 
@@ -361,18 +362,38 @@ int main(int argc, char *argv[])
         int num_of_stations = 16;
         unsigned int uint_val;
 
-        struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 200 * 1000 * 1000};
+        struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 100 * 1000 * 1000};
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
         uint_val = rgb_knobs_value;
         curr_LAU = (unsigned char)(uint_val>>16)&0xFF;
         new_SC = (unsigned char)(uint_val>>8)&0xFF;
         new_VAL = (unsigned char)uint_val&0xFF;
-        if(new_VAL > curr_VAL){
-            curr_VAL += (new_VAL-curr_VAL)/4;
+
+        if(prev_VAL > 200 && new_VAL < 50){
+            curr_VAL += 256-prev_VAL/4 + new_VAL/4;
+            if(curr_VAL > 256)
+                curr_VAL = 256;
+            prev_VAL = new_VAL;
         }
-        else if(new_VAL < curr_VAL){
-            curr_VAL -= (curr_VAL-new_VAL)/4;
+        else if(prev_VAL < 50 && new_VAL > 200){
+            curr_VAL  -= (prev_VAL/4 + 256 - new_VAL/4);
+            if(curr_VAL < 0)
+                curr_VAL = 0;
+            prev_VAL = new_VAL;
         }
+        else if(prev_VAL > curr_VAL){
+            curr_VAL  -= (prev_VAL/4 - curr_VAL/4);
+            if(curr_VAL < 0)
+                curr_VAL = 0;
+            prev_VAL = new_VAL;
+        }
+        else if(curr_VAL > prev_VAL){
+            curr_VAL  += (curr_VAL/4 - prev_VAL/4);
+            if(curr_VAL > 256)
+                curr_VAL = 256;
+            prev_VAL = new_VAL;
+        }
+
         printf("station: %d color part: %d value: %d\n", (int)new_LAU/(4*num_of_stations), (int)new_SC%3, (int)curr_VAL );
 
         /* Store the read value to the register controlling individual LEDs */

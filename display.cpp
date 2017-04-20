@@ -367,7 +367,6 @@ int main(int argc, char *argv[])
          * cannot reuse previously read value of the location.
          */
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
-        printf("%d %d %d %d", (int)(rgb_knobs_value>>24)&256,(int)(rgb_knobs_value>>16)&256,(int)(rgb_knobs_value>>8)&256, (int)rgb_knobs_value&256 );
 
         /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
@@ -383,6 +382,7 @@ int main(int argc, char *argv[])
         /* Assign value read from knobs to the basic signed and unsigned types */
         int_val = rgb_knobs_value;
         uint_val = rgb_knobs_value;
+        printf("%d %d %d %d\n", (int)(uint_val>>24)&256,(int)(uint_val>>16)&256,(int)(uint_val>>8)&256, (int)uint_val&256 );
 
         /* Print values */
         printf("int %10d uint 0x%08x\n", int_val, uint_val);

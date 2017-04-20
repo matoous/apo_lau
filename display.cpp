@@ -26,6 +26,8 @@
 #include <getopt.h>
 #include <inttypes.h>
 #include <time.h>
+#include <stddef.h>
+#include <sys/sysinfo.h>
 #include "par_lcd.h"
 #include "knobs.h"
 

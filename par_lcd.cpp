@@ -2,16 +2,6 @@
 // Created by matoous on 20.04.17.
 //
 
-#include "par_lcd.h"
-#include <sys/mman.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <malloc.h>
-#include <byteswap.h>
-#include <getopt.h>
 
 void parlcd_write_cmd(unsigned char *parlcd_mem_base, uint16_t cmd)
 {

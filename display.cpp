@@ -394,7 +394,7 @@ int main(int argc, char *argv[])
             prev_VAL = new_VAL;
         }
 
-        printf("station: %d color part: %d value: %d\n", (int)new_LAU/(4*num_of_stations), (int)new_SC%3, (int)curr_VAL );
+        printf("station: %d color part: %d value: %d\n", (int)curr_LAU/(4*num_of_stations), (int)new_SC%3, (int)curr_VAL );
 
         /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = 0;

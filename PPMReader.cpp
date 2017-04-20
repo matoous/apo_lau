@@ -26,15 +26,13 @@ PPMReader::PPMReader(const char* filename) {
     }
 }
 Pixel PPMReader::nextColor() {
+    cout << "HAHA" << endl;
     if(isValid()) {
-        if(/*file.eof()*/file.peek() == EOF) {
+        if(file.peek() == EOF) {
             file.seekg(startOfData);
             std::cout<<"Overflow in the file.";
         }
         Pixel c(file.get(), file.get(), file.get());
-        //file>>c.r>>c.g>>c.b;
-        if(((int)file.tellg())-10<startOfData)
-            std::cout<<"Reading color: "<<(std::string)c<<'\n';
         return c;
     }
 //std::cout<<"dfdsgdf\n";

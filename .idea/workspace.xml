@@ -53,10 +53,10 @@
       <file leaf-file-name="par_lcd.h" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/par_lcd.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="522">
-              <caret line="29" column="23" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
+            <state relative-caret-position="252">
+              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding>
-                <element signature="e#298#318#0" expanded="true" />
+                <element signature="e#298#317#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -112,8 +112,8 @@
     <findStrings>
       <find>memdev</find>
       <find>mem_base</find>
-      <find>CLOCK_MON</find>
       <find>CLOCK_MONOTONIC</find>
+      <find>CLOCK_MON</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -370,12 +370,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1492670417794</updated>
-      <workItem from="1492670419263" duration="5656000" />
+      <workItem from="1492670419263" duration="5764000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5656000" />
+    <option name="totallyTimeSpent" value="5764000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -518,16 +518,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/par_lcd.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="486">
-          <caret line="27" column="38" lean-forward="true" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
-          <folding>
-            <element signature="e#1048#3351#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="652">
@@ -538,12 +528,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/par_lcd.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" column="38" lean-forward="true" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+          <folding>
+            <element signature="e#1048#3351#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/par_lcd.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="29" column="23" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
+        <state relative-caret-position="252">
+          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding>
-            <element signature="e#298#318#0" expanded="true" />
+            <element signature="e#298#317#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -12,16 +12,9 @@
 
 #endif //APO_LAU_PAR_LCD_H
 
-#include "par_lcd.h"
-#include <sys/mman.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include <malloc.h>
-#include <byteswap.h>
-#include <getopt.h>
 #include <inttypes.h>
 void parlcd_hx8357_init(unsigned char*);
 void parlcd_write_cmd(unsigned char*, uint16_t);

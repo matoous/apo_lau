@@ -311,15 +311,12 @@ int main(int argc, char *argv[])
   int iterations = 200;
 
   PPMReader reader(argc>1?argv[1]:"rick.ppm");
-
-  while(iterations-->0) {
     parlcd_write_cmd(parlcd_mem_base, 0x2c);
     for (uint16_t y = 0; y < 320 ; y++) {
       for (uint16_t x = 0; x < 480 ; x++) {
           parlcd_write_data(parlcd_mem_base, reader.nextColor());
       }
     }
-  }
 
   return 0;
 }

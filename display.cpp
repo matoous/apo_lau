@@ -354,41 +354,19 @@ int main(int argc, char *argv[])
     unsigned char curr_LAU, curr_SC, curr_VAL,
             new_LAU, new_SC, new_VAL;
 
-    int ch1, ch2, ch3;
-
     while(1){
 
         uint32_t rgb_knobs_value;
         int int_val;
         unsigned int uint_val;
 
-        /* Initialize structure to 0 seconds and 200 milliseconds */
         struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 200 * 1000 * 1000};
-        /*
-         * Access register holding 8 bit relative knobs position
-         * The type "(volatile uint32_t*)" casts address obtained
-         * as a sum of base address and register offset to the
-         * pointer type which target in memory type is 32-bit unsigned
-         * integer. The "volatile" keyword ensures that compiler
-         * cannot reuse previously read value of the location.
-         */
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
-
-        /* Assign value read from knobs to the basic signed and unsigned types */
-        int_val = rgb_knobs_value;
         uint_val = rgb_knobs_value;
         new_LAU = (unsigned char)(uint_val>>16)&0xFF;
         new_SC = (unsigned char)(uint_val>>8)&0xFF;
         new_VAL = (unsigned char)uint_val&0xFF;
-        printf("station: %d color part: %d value: %d\n", (int)curr_LAU, (int)curr_SC, (int)curr_VAL );
-
-        ch1 = new_LAU - curr_LAU;
-        ch2 = new_SC - curr_SC;
-        ch3 = new_VAL - curr_VAL;
-        printf("changes %d %d %d\n", ch1, ch2, ch3);
-
-        /* Print values */
-        printf("int %10d uint 0x%08x\n", int_val, uint_val);
+        printf("station: %d color part: %d value: %d\n", (int)new_LAU%4, (int)new_SC%4, (int)new_VAL%4 );
 
         /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = 0;

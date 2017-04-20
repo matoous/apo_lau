@@ -39,8 +39,8 @@
       <file leaf-file-name="display.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/display.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="760">
-              <caret line="384" column="106" lean-forward="true" selection-start-line="384" selection-start-column="106" selection-end-line="384" selection-end-column="106" />
+            <state relative-caret-position="814">
+              <caret line="388" column="42" lean-forward="false" selection-start-line="388" selection-start-column="42" selection-end-line="388" selection-end-column="42" />
               <folding>
                 <element signature="e#10353#10374#0" expanded="true" />
               </folding>
@@ -394,12 +394,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1492670417794</updated>
-      <workItem from="1492670419263" duration="2320000" />
+      <workItem from="1492670419263" duration="2508000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2320000" />
+    <option name="totallyTimeSpent" value="2508000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -544,8 +544,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="384" column="106" lean-forward="true" selection-start-line="384" selection-start-column="106" selection-end-line="384" selection-end-column="106" />
+        <state relative-caret-position="814">
+          <caret line="388" column="42" lean-forward="false" selection-start-line="388" selection-start-column="42" selection-end-line="388" selection-end-column="42" />
           <folding>
             <element signature="e#10353#10374#0" expanded="true" />
           </folding>

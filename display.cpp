@@ -343,14 +343,15 @@ int main(int argc, char *argv[])
     }
     parlcd_hx8357_init(parlcd_mem_base);
 
-    while(1){
-        PPMReader reader(argc>1?argv[1]:"rick.ppm");
-        parlcd_write_cmd(parlcd_mem_base, 0x2c);
-        for (uint16_t y = 0; y < 320 ; y++) {
-            for (uint16_t x = 0; x < 480 ; x++) {
-                parlcd_write_data(parlcd_mem_base, reader.nextColor());
-            }
+    PPMReader reader(argc>1?argv[1]:"rick.ppm");
+    parlcd_write_cmd(parlcd_mem_base, 0x2c);
+    for (uint16_t y = 0; y < 320 ; y++) {
+        for (uint16_t x = 0; x < 480 ; x++) {
+            parlcd_write_data(parlcd_mem_base, reader.nextColor());
         }
+    }
+
+    while(1){
 
         uint32_t rgb_knobs_value;
         int int_val;
@@ -382,7 +383,12 @@ int main(int argc, char *argv[])
         /* Assign value read from knobs to the basic signed and unsigned types */
         int_val = rgb_knobs_value;
         uint_val = rgb_knobs_value;
-        printf("%d %d %d %d\n", (int)(uint_val>>24)&256,(int)(uint_val>>16)&256,(int)(uint_val>>8)&256, (int)uint_val&256 );
+        unsigned char c1 = (unsigned char)(uint_val>>24)&0xFF;
+        unsigned char c2 = (unsigned char)(uint_val>>16)&0xFF;
+        unsigned char c3 = (unsigned char)(uint_val>>8)&0xFF;
+        unsigned char c4 = (unsigned char)uint_val&0xFF;
+
+        printf("%d %d %d %d\n", (int)c1, (int)c2, (int)c3, (int)c4 );
 
         /* Print values */
         printf("int %10d uint 0x%08x\n", int_val, uint_val);

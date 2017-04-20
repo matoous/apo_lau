@@ -62,28 +62,6 @@ void *map_phys_address(off_t region_base, size_t region_size, int opt_cached)
   return mem;
 }
 
-void parlcd_write_cmd(unsigned char *parlcd_mem_base, uint16_t cmd)
-{
-  *(volatile uint16_t*)(parlcd_mem_base + PARLCD_REG_CMD_o) = cmd;
-}
-
-void parlcd_write_data(unsigned char *parlcd_mem_base, uint16_t data)
-{
-  *(volatile uint16_t*)(parlcd_mem_base + PARLCD_REG_DATA_o) = data;
-}
-
-void parlcd_write_data2x(unsigned char *parlcd_mem_base, uint32_t data)
-{
-  *(volatile uint32_t*)(parlcd_mem_base + PARLCD_REG_DATA_o) = data;
-}
-
-void parlcd_delay(int msec)
-{
-  struct timespec wait_delay = {.tv_sec = msec / 1000,
-                                .tv_nsec = (msec % 1000) * 1000 * 1000};
-  clock_nanosleep(CLOCK_MONOTONIC, 0, &wait_delay, NULL);
-}
-
 #include <cmath>
 #include "pixel.h"
 #include "PPMReader.h"

@@ -358,7 +358,6 @@ int main(int argc, char *argv[])
 
         /* Initialize structure to 0 seconds and 200 milliseconds */
         struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 200 * 1000 * 1000};
-
         /*
          * Access register holding 8 bit relative knobs position
          * The type "(volatile uint32_t*)" casts address obtained
@@ -368,6 +367,7 @@ int main(int argc, char *argv[])
          * cannot reuse previously read value of the location.
          */
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
+        printf("%d %d %d %d", (int)(rgb_knobs_value>>24)&256,(int)(rgb_knobs_value>>16)&256,(int)(rgb_knobs_value>>8)&256, (int)rgb_knobs_value&256 );
 
         /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;

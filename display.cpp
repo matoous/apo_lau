@@ -358,15 +358,22 @@ int main(int argc, char *argv[])
 
         uint32_t rgb_knobs_value;
         int int_val;
+        int num_of_stations = 16;
         unsigned int uint_val;
 
         struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 200 * 1000 * 1000};
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
         uint_val = rgb_knobs_value;
-        new_LAU = (unsigned char)(uint_val>>16)&0xFF;
+        curr_LAU = (unsigned char)(uint_val>>16)&0xFF;
         new_SC = (unsigned char)(uint_val>>8)&0xFF;
         new_VAL = (unsigned char)uint_val&0xFF;
-        printf("station: %d color part: %d value: %d\n", (int)new_LAU/4, (int)new_SC%3, (int)new_VAL );
+        if(new_VAL > curr_VAL){
+            curr_VAL += (new_VAL-curr_VAL)/4;
+        }
+        else if(new_VAL < curr_VAL){
+            curr_VAL -= (curr_VAL-new_VAL)/4;
+        }
+        printf("station: %d color part: %d value: %d\n", (int)new_LAU/(4*num_of_stations), (int)new_SC%3, (int)curr_VAL );
 
         /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = 0;

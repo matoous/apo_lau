@@ -374,24 +374,13 @@ int main(int argc, char *argv[])
          */
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
 
-        /* Store the read value to the register controlling individual LEDs */
-        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
-
-        /*
-         * Store RGB knobs values to the corersponding components controlling
-         * a color/brightness of the RGB LEDs
-         */
-        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB1_o) = rgb_knobs_value;
-
-        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB2_o) = rgb_knobs_value;
-
         /* Assign value read from knobs to the basic signed and unsigned types */
         int_val = rgb_knobs_value;
         uint_val = rgb_knobs_value;
-        unsigned char new_LAU = (unsigned char)(uint_val>>16)&0xFF;
-        unsigned char new_SC = (unsigned char)(uint_val>>8)&0xFF;
-        unsigned char new_VAL = (unsigned char)uint_val&0xFF;
-        printf("%d %d %d %d\n", (int)c1, (int)c2, (int)c3, (int)c4 );
+        new_LAU = (unsigned char)(uint_val>>16)&0xFF;
+        new_SC = (unsigned char)(uint_val>>8)&0xFF;
+        new_VAL = (unsigned char)uint_val&0xFF;
+        printf("station: %d color part: %d value: %d\n", (int)curr_LAU, (int)curr_SC, (int)curr_VAL );
 
         ch1 = new_LAU - curr_LAU;
         ch2 = new_SC - curr_SC;
@@ -400,6 +389,18 @@ int main(int argc, char *argv[])
 
         /* Print values */
         printf("int %10d uint 0x%08x\n", int_val, uint_val);
+
+        /* Store the read value to the register controlling individual LEDs */
+        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = 0;
+
+        /*
+         * Store RGB knobs values to the corersponding components controlling
+         * a color/brightness of the RGB LEDs
+         */
+        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB1_o) = 0;
+
+        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB2_o) = 0;
+
 
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
     }

@@ -26,8 +26,6 @@
 #include <getopt.h>
 #include <inttypes.h>
 #include <time.h>
-#include <stddef.h>
-#include <sys/sysinfo.h>
 #include "par_lcd.h"
 #include "knobs.h"
 
@@ -63,6 +61,7 @@ void *map_phys_address(off_t region_base, size_t region_size, int opt_cached)
 
   return mem;
 }
+
 
 #include <cmath>
 #include "pixel.h"

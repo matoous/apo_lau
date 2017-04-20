@@ -26,7 +26,7 @@ PPMReader::PPMReader(const char* filename) {
     }
 }
 Pixel PPMReader::nextColor() {
-    cout << "HAHA" << endl;
+    std::cout<<"HAHA.\n";
     if(isValid()) {
         if(file.peek() == EOF) {
             file.seekg(startOfData);

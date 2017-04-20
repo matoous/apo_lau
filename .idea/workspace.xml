@@ -39,11 +39,21 @@
       <file leaf-file-name="display.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/display.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="505">
-              <caret line="332" column="29" lean-forward="false" selection-start-line="332" selection-start-column="29" selection-end-line="332" selection-end-column="29" />
+            <state relative-caret-position="18">
+              <caret line="338" column="8" lean-forward="true" selection-start-line="338" selection-start-column="8" selection-end-line="338" selection-end-column="8" />
               <folding>
                 <element signature="e#10353#10374#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="knobs.h" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/knobs.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -124,21 +134,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="makefile" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/makefile">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
       <find>memdev</find>
+      <find>mem_base</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -151,6 +152,7 @@
         <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/PPMReader.cpp" />
         <option value="$PROJECT_DIR$/PPMReader.h" />
+        <option value="$PROJECT_DIR$/knobs.h" />
         <option value="$PROJECT_DIR$/display.cpp" />
       </list>
     </option>
@@ -392,12 +394,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1492670417794</updated>
-      <workItem from="1492670419263" duration="1668000" />
+      <workItem from="1492670419263" duration="1923000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1668000" />
+    <option name="totallyTimeSpent" value="1923000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -532,10 +534,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/knobs.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="505">
-          <caret line="332" column="29" lean-forward="false" selection-start-line="332" selection-start-column="29" selection-end-line="332" selection-end-column="29" />
+        <state relative-caret-position="18">
+          <caret line="338" column="8" lean-forward="true" selection-start-line="338" selection-start-column="8" selection-end-line="338" selection-end-column="8" />
           <folding>
             <element signature="e#10353#10374#0" expanded="true" />
           </folding>

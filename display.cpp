@@ -318,65 +318,40 @@ void parlcd_hx8357_init(unsigned char *parlcd_mem_base)
 #include <getopt.h>
 #include <inttypes.h>
 #include <time.h>
-
-/*
- * Next macros provides location of knobs and LEDs peripherals
- * implemented in MZ_APO FPGA design.
- *
- * The complete list of peripheral implemented in the design
- * can be found on the page
- *   https://cw.fel.cvut.cz/wiki/courses/b35apo/documentation/mz_apo/start
- */
-#define SPILED_REG_BASE_PHYS 0x43c40000
-#define SPILED_REG_SIZE      0x00004000
-#define SPILED_REG_LED_LINE_o           0x004
-#define SPILED_REG_LED_RGB1_o           0x010
-#define SPILED_REG_LED_RGB2_o           0x014
-#define SPILED_REG_LED_KBDWR_DIRECT_o   0x018
-#define SPILED_REG_KBDRD_KNOBS_DIRECT_o 0x020
-#define SPILED_REG_KNOBS_8BIT_o         0x024
+#include "knobs.h"
 
 typedef unsigned char byte;
 int main(int argc, char *argv[])
 {
-
-  unsigned char *parlcd_mem_base;
-    unsigned char *mem_base;
+    unsigned char *parlcd_mem_base;
+    unsigned char *knobs_mem_base;
 
     /*
      * Setup memory mapping which provides access to the peripheral
      * registers region of RGB LEDs, knobs and line of yellow LEDs.
      */
-    mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
-
-    /* If mapping fails exit with error code */
-    if (mem_base == NULL)
+    knobs_mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
+    if (knobs_mem_base == NULL){
+        printf("Knobs allocation failes.\n");
         exit(1);
-
-  parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
-
-  if (parlcd_mem_base == NULL)
-    exit(1);
-
-  parlcd_hx8357_init(parlcd_mem_base);
-
-  
-
-  int circle_mid_x = 30;
-  int circle_mid_y = 30;
-  const int circle_r = 30;
-  
-  int iterations = 200;
-
-  PPMReader reader(argc>1?argv[1]:"rick.ppm");
-    parlcd_write_cmd(parlcd_mem_base, 0x2c);
-    for (uint16_t y = 0; y < 320 ; y++) {
-      for (uint16_t x = 0; x < 480 ; x++) {
-          parlcd_write_data(parlcd_mem_base, reader.nextColor());
-      }
     }
 
+    parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
+    if (parlcd_mem_base == NULL){
+        printf("Display allocation failes.\n");
+        exit(1);
+    }
+    parlcd_hx8357_init(parlcd_mem_base);
+
     while(1){
+        PPMReader reader(argc>1?argv[1]:"rick.ppm");
+        parlcd_write_cmd(parlcd_mem_base, 0x2c);
+        for (uint16_t y = 0; y < 320 ; y++) {
+            for (uint16_t x = 0; x < 480 ; x++) {
+                parlcd_write_data(parlcd_mem_base, reader.nextColor());
+            }
+        }
+
         uint32_t rgb_knobs_value;
         int int_val;
         unsigned int uint_val;
@@ -392,18 +367,18 @@ int main(int argc, char *argv[])
          * integer. The "volatile" keyword ensures that compiler
          * cannot reuse previously read value of the location.
          */
-        rgb_knobs_value = *(volatile uint32_t*)(mem_base + SPILED_REG_KNOBS_8BIT_o);
+        rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
 
         /* Store the read value to the register controlling individual LEDs */
-        *(volatile uint32_t*)(mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
+        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
 
         /*
          * Store RGB knobs values to the corersponding components controlling
          * a color/brightness of the RGB LEDs
          */
-        *(volatile uint32_t*)(mem_base + SPILED_REG_LED_RGB1_o) = rgb_knobs_value;
+        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB1_o) = rgb_knobs_value;
 
-        *(volatile uint32_t*)(mem_base + SPILED_REG_LED_RGB2_o) = rgb_knobs_value;
+        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB2_o) = rgb_knobs_value;
 
         /* Assign value read from knobs to the basic signed and unsigned types */
         int_val = rgb_knobs_value;
@@ -412,12 +387,6 @@ int main(int argc, char *argv[])
         /* Print values */
         printf("int %10d uint 0x%08x\n", int_val, uint_val);
 
-        /*
-         * Wait for time specified by "loop_delay" variable.
-         * Use monotonic clocks as time reference to ensure
-         * that wait interval is not prolonged or shortened
-         * due to real time adjustment.
-         */
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
     }
 

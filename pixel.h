@@ -1,11 +1,12 @@
 #pragma once
 #include <stdint.h>
 #include <string>
+#define GREEN 0x7E0
+#define BLUE 0x1F
+#define RED 0xF800
+
 class Pixel {
     public:
-        const uint16_t green = 0x7E0;
-        const uint16_t blue =  0x1F;
-        const uint16_t red =   0xF800;
         Pixel() : r(0), g(0), b(0) {}
         Pixel(const uint16_t rgb565);
         Pixel(const uint8_t r, const uint8_t g, const uint8_t b);

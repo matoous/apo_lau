@@ -307,10 +307,6 @@ int main(int argc, char *argv[])
   int circle_mid_x = 30;
   int circle_mid_y = 30;
   const int circle_r = 30;
-
-  const uint16_t green = 0x7E0;
-  const uint16_t blue =  0x1F;
-  const uint16_t red =   0xF800;
   
   int iterations = 200;
 

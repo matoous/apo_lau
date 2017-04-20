@@ -2,9 +2,9 @@
 #include <sstream>
 
 Pixel::Pixel(const uint16_t rgb565)
-    : r((rgb565&RED)>>11)
-    , g((rgb565&GREEN)>>6)
-    , b(rgb565&BLUE) {}
+    : r((rgb565 & RED)>>11)
+    , g((rgb565 & GREEN)>>6)
+    , b(rgb565 & BLUE) {}
 Pixel::Pixel(const uint8_t r, const uint8_t g, const uint8_t b)
     : r(r)
     , g(g)

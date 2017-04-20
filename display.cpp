@@ -319,8 +319,6 @@ void parlcd_hx8357_init(unsigned char *parlcd_mem_base)
 #include <inttypes.h>
 #include <time.h>
 
-char *memdev="/dev/mem";
-
 /*
  * Next macros provides location of knobs and LEDs peripherals
  * implemented in MZ_APO FPGA design.
@@ -328,11 +326,6 @@ char *memdev="/dev/mem";
  * The complete list of peripheral implemented in the design
  * can be found on the page
  *   https://cw.fel.cvut.cz/wiki/courses/b35apo/documentation/mz_apo/start
- */
-
-/*
- * Base address of the region used for mapping of the knobs and LEDs
- * peripherals in the ARM Cortex-A9 physical memory address space.
  */
 #define SPILED_REG_BASE_PHYS 0x43c40000
 #define SPILED_REG_SIZE      0x00004000

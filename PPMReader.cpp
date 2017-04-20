@@ -25,7 +25,7 @@ PPMReader::PPMReader(const char* filename) {
         std::cout<<"Data starts at byte offset "<<startOfData<<std::endl;
     }
 }
-Color PPMReader::nextColor() {
+Pixel PPMReader::nextColor() {
     if(isValid()) {
         if(/*file.eof()*/file.peek() == EOF) {
             file.seekg(startOfData);
@@ -38,7 +38,7 @@ Color PPMReader::nextColor() {
         return c;
     }
 //std::cout<<"dfdsgdf\n";
-    return Color(0,0,0);
+    return Pixel(0,0,0);
 }
 void PPMReader::reset() {
     file.seekg(startOfData);

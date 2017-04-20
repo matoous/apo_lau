@@ -36,14 +36,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="display.cpp" pinned="false" current-in-tab="true">
+      <file leaf-file-name="display.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/display.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="377" column="47" lean-forward="false" selection-start-line="377" selection-start-column="47" selection-end-line="377" selection-end-column="47" />
+            <state relative-caret-position="107">
+              <caret line="29" column="24" lean-forward="false" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
               <folding>
-                <element signature="e#10353#10374#0" expanded="true" />
+                <element signature="e#561#582#0" expanded="true" />
+                <element signature="e#2838#2859#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="par_lcd.cpp" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/par_lcd.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="8" column="19" lean-forward="true" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+              <folding>
+                <element signature="e#611#2914#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="par_lcd.h" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/par_lcd.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -61,8 +84,8 @@
       <file leaf-file-name="LAU.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/LAU.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="90">
+              <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -112,28 +135,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PPMReader.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PPMReader.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-              <folding>
-                <element signature="e#13#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PPMReader.cpp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/PPMReader.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="684">
-              <caret line="38" column="0" lean-forward="true" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
@@ -153,7 +154,9 @@
         <option value="$PROJECT_DIR$/PPMReader.cpp" />
         <option value="$PROJECT_DIR$/PPMReader.h" />
         <option value="$PROJECT_DIR$/knobs.h" />
+        <option value="$PROJECT_DIR$/par_lcd.cpp" />
         <option value="$PROJECT_DIR$/display.cpp" />
+        <option value="$PROJECT_DIR$/par_lcd.h" />
       </list>
     </option>
   </component>
@@ -394,12 +397,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1492670417794</updated>
-      <workItem from="1492670419263" duration="4628000" />
+      <workItem from="1492670419263" duration="5128000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4628000" />
+    <option name="totallyTimeSpent" value="5128000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -510,14 +513,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LAU.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LAU.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -534,6 +529,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/LAU.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/knobs.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -544,11 +547,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="377" column="47" lean-forward="false" selection-start-line="377" selection-start-column="47" selection-end-line="377" selection-end-column="47" />
+        <state relative-caret-position="107">
+          <caret line="29" column="24" lean-forward="false" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
           <folding>
-            <element signature="e#10353#10374#0" expanded="true" />
+            <element signature="e#561#582#0" expanded="true" />
+            <element signature="e#2838#2859#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/par_lcd.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="19" lean-forward="true" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+          <folding>
+            <element signature="e#611#2914#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/par_lcd.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

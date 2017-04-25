@@ -48,10 +48,10 @@ RM = /opt/clion-2016.3.5/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/matoous/CLionProjects/APO-LAU
+CMAKE_SOURCE_DIR = /home/matoous/CLionProjects/apo_lau
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/matoous/CLionProjects/APO-LAU/cmake-build-debug
+CMAKE_BINARY_DIR = /home/matoous/CLionProjects/apo_lau/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/APO-LAU/cmake-build-debug/CMakeFiles /home/matoous/CLionProjects/APO-LAU/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/APO-LAU/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,33 +123,6 @@ APO_LAU/fast:
 	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/build
 .PHONY : APO_LAU/fast
 
-main.o: main.cpp.o
-
-.PHONY : main.o
-
-# target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/main.cpp.o
-.PHONY : main.cpp.o
-
-main.i: main.cpp.i
-
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/main.cpp.s
-.PHONY : main.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -159,9 +132,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... APO_LAU"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
 .PHONY : help
 
 

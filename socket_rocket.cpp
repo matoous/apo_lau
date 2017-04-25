@@ -255,8 +255,7 @@ void sr_updater(const lau_t* lu, const int* const sockfd, char* run)
  */
 void sr_init(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* run, int* sockfd) {
     struct sockaddr_in my_addr, cli_addr;
-    char buf[1024], uname[17];
-    lau_t curr_lu;
+    char buf[1024];
     uint16_t icon[256];
 
     // init socket
@@ -280,7 +279,7 @@ void sr_init(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* run, 
 
     // socket length
     socklen_t clilen;
-    clilen = (socklen_t) sizeof(cli_addr);
+    clilen = (socklen_t)sizeof(cli_addr);
 
     // main loop
     printf("listening on port 55555.\n");
@@ -296,15 +295,17 @@ void sr_init(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* run, 
 
         if(control_number == ALC_CONTROL_NUM && version == ALC_PROTOCOL_VER){
             if(type == 0){
+                lau_t curr_lu;
+                char uname[17];
                 Pixel ceiling_color = _bt_color(buf, 12);
                 curr_lu.ceiling_color = ceiling_color;
                 Pixel walls_color = _bt_color(buf, 16);
                 curr_lu.walls_color = walls_color;
-                _bt_name(buf, 20, uname);
-                curr_lu.name = uname;
+                curr_lu.name = new char[17];
+                _bt_name(buf, 20, curr_lu.name);
                 _bt_icon(buf, 36, icon);
                 curr_lu.icon = icon;
-                printf("%s update\n", uname);
+                printf("%s (%lu) update %s\n", curr_lu.name, cli_addr.sin_addr.s_addr, uname);
                 (*devices_map)[cli_addr.sin_addr.s_addr] = curr_lu;
             }
             else if(type == 1){

@@ -5,11 +5,11 @@
 #ifndef APO_LAU_DISPLAY_H
 #define APO_LAU_DISPLAY_H
 
+#include <map>
 #include "mzapo_phys.h"
 #include "mzapo_parlcd.h"
 #include "light_admin_unit.h"
 #include "socket_rocket.h"
-#include <map>
 
 void init(&lau_t, &std::map<unsigned int, lau_t>);
 

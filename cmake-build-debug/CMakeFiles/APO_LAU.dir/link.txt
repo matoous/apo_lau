@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/APO_LAU.dir/main.cpp.o  -o APO_LAU 

@@ -1,4 +1,4 @@
-# Install script for directory: /home/matoous/CLionProjects/APO-LAU
+# Install script for directory: /home/matoous/CLionProjects/apo_lau
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/matoous/CLionProjects/APO-LAU/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/matoous/CLionProjects/apo_lau/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

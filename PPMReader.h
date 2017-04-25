@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <fstream>
-#include "../pixel.h"
+#include "pixel.h"
 class PPMReader {
     public:
         PPMReader(const char* filename);

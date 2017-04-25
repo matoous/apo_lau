@@ -1,14 +1,14 @@
-CC = arm-linux-gnueabihf-gcc
-CXX = arm-linux-gnueabihf-g++
+CC = gcc
+CXX = g++
 
 CPPFLAGS = -I .
-CFLAGS =-g -std=gnu99 -O1 -Wall
-CXXFLAGS = -g -std=gnu++11 -O1 -Wall
+CFLAGS = -pthread -g -std=gnu99 -O1 -Wall
+CXXFLAGS = -pthread -g -std=gnu++11 -O1 -Wall
 LDFLAGS = -lrt -lpthread
 
-SOURCES = app.cpp socket_rocket.cpp light_admin_unit.c PPMReader.cpp console_info.cpp pixel.cpp mzapo_phys.c mzapo_parlcd.c
+SOURCES = app.cpp socket_rocket.cpp light_admin_unit.cpp PPMReader.cpp console_info.cpp pixel.cpp mzapo_phys.c mzapo_parlcd.c
 SOURCES += font_prop14x16.c font_rom8x16.c
-TARGET_EXE = change_me
+TARGET_EXE = app
 TARGET_IP ?= 192.168.1.37
 TARGET_DIR ?= /tmp/$(shell whoami)
 TARGET_USER ?= root

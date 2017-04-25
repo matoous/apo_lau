@@ -1,122 +1,128 @@
 #define _POSIX_C_SOURCE 200112L
+
+#include <fstream>
+#include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <malloc.h>
-#include <string.h>
-#include <byteswap.h>
-#include <getopt.h>
+#include <unistd.h>
 #include <inttypes.h>
 #include <time.h>
-#include <cmath>
-#include "utils/pixel.h"
-#include "utils/PPMReader.h"
-#include "perif/knobs.h"
-#include "perif/lcd_display.h"
-#include "perif/map_phys.h"
+#include <iostream>
+#include <map>
+#include <thread>
+#include "socket_rocket.h"
+#include "light_admin_unit.h"
+#include "PPMReader.h"
+#include "console_info.h"
 
 /*******************************************************************
-  Simple program to demostrate binary reprezentation on MicroZed
-  based MZ_APO board designed by Petr Porazil at PiKRON
+  APO semestral project by Matous Dzivjak
 
-  mzapo_binrep.c       - main and only file
-
-  (C) Copyright 2004 - 2017 by Pavel Pisa
-      e-mail:   pisa@cmp.felk.cvut.cz
-      homepage: http://cmp.felk.cvut.cz/~pisa
-      work:     http://www.pikron.com/
-      license:  any combination GPL, LGPL, MPL or BSD licenses
+  (C) Copyright 2017 - 2017 by Matous Dzivjak
+      e-mail:   dzivjmat@fel.cvut.cz3
+      license:  MIT
 
  *******************************************************************/
-typedef unsigned char byte;
+
 int main(int argc, char *argv[])
 {
-    unsigned char *parlcd_mem_base;
-    unsigned char *knobs_mem_base;
-
-    /*
-     * Setup memory mapping which provides access to the peripheral
-     * registers region of RGB LEDs, knobs and line of yellow LEDs.
+    /***
+     * Load configuration
      */
-    knobs_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
-    if (knobs_mem_base == NULL){
-        printf("Knobs allocation failes.\n");
+    lau_t lu;
+
+    if(argc < 2){
+        printf("No configuration file provided. Exiting...\n");
         exit(1);
     }
 
-    parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
-    if (parlcd_mem_base == NULL){
-        printf("Display allocation failes.\n");
+    FILE* conf_file = fopen(argv[1], "r+");
+    if(!conf_file){
+        printf("Couldn't read configuration file. Exiting...\n");
         exit(1);
     }
-    parlcd_hx8357_init(parlcd_mem_base);
 
-    PPMReader reader(argc>1?argv[1]:"rick.ppm");
-    //parlcd_write_cmd(parlcd_mem_base, 0x2c);
-    for (uint16_t y = 0; y < 320 ; y++) {
-        for (uint16_t x = 0; x < 480 ; x++) {
-            parlcd_write_data(parlcd_mem_base, reader.nextColor());
-        }
+    // load unit name
+    char name[17];
+    if(!fscanf(conf_file, "%s", name)){
+        printf("No unit name provided. Exiting...\n");
+        exit(1);
+    }
+    lu.name = name;
+
+    // load initial color
+    Pixel px;
+    if(!fscanf(conf_file, "%hhu %hhu %hhu", &px.r, &px.g, &px.b)){
+        printf("No initial ceiling color provided. Setting to default (white).\n");
+        px.r = px.g = px.b = 255;
+    }
+    lu.ceiling_color = px;
+
+    // load initial color
+    if(!fscanf(conf_file, "%hhu %hhu %hhu", &px.r, &px.g, &px.b)){
+        printf("No initial walls color provided. Setting to default (white).\n");
+        px.r = px.g = px.b = 255;
+    }
+    lu.walls_color = px;
+
+    // load unit icon
+    char image_file[128];
+    if(!fscanf(conf_file, "%s", image_file)){
+        printf("No unit icon provided. Exiting...\n");
+        exit(1);
     }
 
-    unsigned char curr_LAU, curr_SC, curr_VAL, prev_VAL, new_SC, new_VAL;
+    fclose(conf_file);
 
-    prev_VAL = 100;
-    while(1){
+    // print config
+    printf("Unit name: %s\n", lu.name);
+    printf("Ceiling color: %hu %hu %hu\n",
+           (unsigned short)lu.ceiling_color.r,
+           (unsigned short)lu.ceiling_color.g,
+           (unsigned short)lu.ceiling_color.b);
+    printf("Walls color: %hu %hu %hu\n",
+           (unsigned short)lu.walls_color.r,
+           (unsigned short)lu.walls_color.g,
+           (unsigned short)lu.walls_color.b);
+    printf("Icon: %s\n", image_file);
 
-        uint32_t rgb_knobs_value;
-        int int_val;
-        int num_of_stations = 16;
-        unsigned int uint_val;
+    PPMReader reader(image_file);
+    uint16_t ic[256];
+    for(int i = 0; i < 256; i++)
+        ic[i] = reader.nextColor();
+    lu.icon = ic;
+    /***
+     * END
+     * Configuration loaded
+     */
 
-        struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 100 * 1000 * 1000};
-        rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
-        uint_val = rgb_knobs_value;
-        curr_LAU = (unsigned char)(uint_val>>16)&0xFF;
-        new_SC = (unsigned char)(uint_val>>8)&0xFF;
-        new_VAL = (unsigned char)uint_val&0xFF;
+    /***
+     * Start running
+     */
+    std::map<unsigned long, lau_t> devices_map;
 
-        if(prev_VAL > 200 && new_VAL < 50 && prev_VAL != new_VAL){
-            curr_VAL += 256-prev_VAL/4 + new_VAL/4;
-            if(curr_VAL > 256)
-                curr_VAL = 256;
-            prev_VAL = new_VAL;
-        }
-        else if(prev_VAL < 50 && new_VAL > 200 && prev_VAL != new_VAL){
-            curr_VAL  -= (prev_VAL/4 + 256 - new_VAL/4);
-            if(curr_VAL < 0)
-                curr_VAL = 0;
-            prev_VAL = new_VAL;
-        }
-        else if(prev_VAL > curr_VAL){
-            curr_VAL  -= (prev_VAL/4 - curr_VAL/4);
-            if(curr_VAL < 0)
-                curr_VAL = 0;
-            prev_VAL = new_VAL;
-        }
-        else if(curr_VAL > prev_VAL){
-            curr_VAL  += (curr_VAL/4 - prev_VAL/4);
-            if(curr_VAL > 256)
-                curr_VAL = 256;
-            prev_VAL = new_VAL;
-        }
+    printf("Starting application...\n");
 
-        printf("station: %d color part: %d value: %d\n", (int)curr_LAU/4%num_of_stations, (int)new_SC%3, (int)curr_VAL);
-
-        /* Store the read value to the register controlling individual LEDs */
-        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = 0;
-
-        /*
-         * Store RGB knobs values to the corersponding components controlling
-         * a color/brightness of the RGB LEDs
-         */
-        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB1_o) = 0;
-
-        *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB2_o) = 0;
-
-
-        clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
+    sleep(2);
+    if(!system("@cls||clear")){
+        printf("Console clearing error, you will see ugly console output.\n");
     }
 
-  return 0;
+    char run = 1;
+    int sockfd;
+    std::thread listener(sr_init, &lu, &devices_map, &run, &sockfd);
+    std::thread updater(sr_updater, &lu, &sockfd, &run);
+    std::thread console_display(console_info, &lu, &devices_map);
+
+
+    // wait for input
+    getchar();
+
+    // end application
+    run = 0;
+    updater.join();
+    close(sockfd);
+    printf("Ending application...\n");
+    sleep(1);
+    exit(0);
 }

@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string.h>
 
-void console_info(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* run){
+void console_info(lau_t* lu, std::vector<std::pair<unsigned long, lau_t>>* devices, char* run){
     while(*run){
         if(system("@cls||clear") < 0)
             printf("ugly output\n");
@@ -23,7 +23,7 @@ void console_info(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* 
                (unsigned short)lu->walls_color.g,
                (unsigned short)lu->walls_color.b);
         printf("Connected devices: \n");
-        for(auto &x : *devices_map){
+        for(auto &x : *devices){
             printf("%lu : ", x.first);
             printf("%s", x.second.name);
             if(strcmp(x.second.name, lu->name) == 0)

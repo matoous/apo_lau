@@ -253,7 +253,7 @@ void sr_updater(const lau_t* lu, const int* const sockfd, char* run)
  * Handles incoming messages, updates, etc.
  * @param lu - pointer to lau_t representing local unit
  */
-void sr_init(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* run, int* sockfd) {
+void sr_init(lau_t* lu, std::vector<pair<unsigned long, lau_t>>* devices_map, char* run, int* sockfd) {
     struct sockaddr_in my_addr, cli_addr;
     char buf[1024];
     uint16_t icon[256];
@@ -303,10 +303,22 @@ void sr_init(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* run, 
                 curr_lu.walls_color = walls_color;
                 curr_lu.name = new char[17];
                 _bt_name(buf, 20, curr_lu.name);
+                curr_lu.icon = new uint16_t[256];
                 _bt_icon(buf, 36, icon);
                 curr_lu.icon = icon;
                 printf("%s (%lu) update %s\n", curr_lu.name, cli_addr.sin_addr.s_addr, uname);
-                (*devices_map)[cli_addr.sin_addr.s_addr] = curr_lu;
+
+                char added = 0;
+                for(int i = 0; i < (*devices_map).size(); i++){
+                    if((*devices_map)[i].first == cli_addr.sin_addr.s_addr){
+                        (*devices_map)[i].second = curr_lu;
+                        added = 1;
+                        break;
+                    }
+                }
+                if(!added){
+                    (*devices_map).push_back(std::pair<unsigned int, lau_t>(cli_addr.sin_addr.s_addr, curr_lu));
+                }
             }
             else if(type == 1){
                 printf("received modify packet\n");

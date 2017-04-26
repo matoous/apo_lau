@@ -5,7 +5,8 @@
 #ifndef APO_LAU_DISPLAY_H
 #define APO_LAU_DISPLAY_H
 
-#include <map>
+#include <vector>
+#include <utility>
 #include <stdint.h>
 #include "mzapo_phys.h"
 #include "mzapo_parlcd.h"
@@ -18,7 +19,7 @@ typedef struct display_t{
     uint16_t columns;
 };
 
-void init(lau_t*, std::map<unsigned int, lau_t>*, char*);
+void init(lau_t*, std::vector<std::pair<unsigned int, lau_t>>*, char*);
 
 void next_device();
 

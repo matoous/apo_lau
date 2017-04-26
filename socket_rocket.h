@@ -8,7 +8,8 @@
 #define APO_LAU_SOCKET_ROCKET_H
 
 #include <netinet/in.h>
-#include <map>
+#include <vector>
+#include <utility>
 #include "light_admin_unit.h"
 
 #define SOCK_PORT 55555
@@ -20,7 +21,7 @@
 #define RUN 1
 
 void sr_updater(const lau_t*, const int* const, char*);
-void sr_init(light_unit_t*, std::map<unsigned long, lau_t>*, char*, int*);
+void sr_init(light_unit_t*, std::vector<std::pair<unsigned long, lau_t>>*, char*, int*);
 void send_modify(
         const int, // socket
         sockaddr_in*, // address

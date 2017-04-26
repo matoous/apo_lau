@@ -8,7 +8,8 @@
 #include <inttypes.h>
 #include <time.h>
 #include <iostream>
-#include <map>
+#include <utility>
+#include <vector>
 #include <thread>
 #include "socket_rocket.h"
 #include "light_admin_unit.h"
@@ -99,7 +100,7 @@ int main(int argc, char *argv[])
     /***
      * Start running
      */
-    std::map<unsigned long, lau_t> devices_map;
+    std::vector<std::pair<unsigned long, lau_t>> devices;
 
     printf("Starting application...\n");
 
@@ -110,9 +111,9 @@ int main(int argc, char *argv[])
 
     char run = 1;
     int sockfd;
-    std::thread listener(sr_init, &lu, &devices_map, &run, &sockfd);
+    std::thread listener(sr_init, &lu, &devices, &run, &sockfd);
     std::thread updater(sr_updater, &lu, &sockfd, &run);
-    std::thread console_display(console_info, &lu, &devices_map, &run);
+    std::thread console_display(console_info, &lu, &devices, &run);
 
 
     // wait for input

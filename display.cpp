@@ -19,7 +19,7 @@
 #include "mzapo_regs.h"
 #include "mzapo_parlcd.h"
 
-void init(lau_t* lu, std::map<unsigned int, lau_t>* devices_map, char* run){
+void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices_map, char* run){
 
     display_t disp;
     disp.columns = 60;
@@ -27,6 +27,7 @@ void init(lau_t* lu, std::map<unsigned int, lau_t>* devices_map, char* run){
     disp.data = (uint8_t*)malloc(480*320/8);
 
     uint8_t knob1, knob2, knob3, prev1, prev2, prev3;
+    int curr_device_num;
     char *curr_device_name;
     lau_t *curr_device;
     uint32_t rgb_knobs_value;
@@ -77,26 +78,6 @@ void init(lau_t* lu, std::map<unsigned int, lau_t>* devices_map, char* run){
         if(knob2 != prev2){
             prev2 = knob2;
             knob2 = (knob2 >> 2) % 6;
-            /*switch (knob2){
-                case 0:
-                    // ceiling r
-                    break;
-                case 1:
-                    // ceiling g
-                    break;
-                case 2:
-                    // ceiling b
-                    break;
-                case 3:
-                    // walls r
-                    break;
-                case 4:
-                    // walls g
-                    break;
-                case 5:
-                    // walls b
-                    break;
-            }*/
             changed = 1;
         }
 

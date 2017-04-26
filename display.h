@@ -13,12 +13,6 @@
 #include "light_admin_unit.h"
 #include "socket_rocket.h"
 
-typedef struct display_t{
-    uint8_t* data;
-    uint16_t rows;
-    uint16_t columns;
-};
-
 void init(lau_t*, std::vector<std::pair<unsigned int, lau_t>>*, char*);
 
 void next_device();

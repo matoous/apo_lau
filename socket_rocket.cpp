@@ -306,10 +306,10 @@ void sr_init(lau_t* lu, std::vector<pair<unsigned long, lau_t>>* devices_map, ch
                 curr_lu.icon = new uint16_t[256];
                 _bt_icon(buf, 36, icon);
                 curr_lu.icon = icon;
-                printf("%s (%lu) update %s\n", curr_lu.name, cli_addr.sin_addr.s_addr, uname);
+                printf("%s (%ud) update %s\n", curr_lu.name, cli_addr.sin_addr.s_addr, uname);
 
                 char added = 0;
-                for(int i = 0; i < (*devices_map).size(); i++){
+                for(uint32_t i = 0; i < (*devices_map).size(); i++){
                     if((*devices_map)[i].first == cli_addr.sin_addr.s_addr){
                         (*devices_map)[i].second = curr_lu;
                         added = 1;

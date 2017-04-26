@@ -6,7 +6,7 @@ CFLAGS = -pthread -g -std=gnu99 -O1 -Wall
 CXXFLAGS = -pthread -g -std=gnu++11 -O1 -Wall
 LDFLAGS = -lrt -lpthread
 
-SOURCES = app.cpp socket_rocket.cpp light_admin_unit.cpp PPMReader.cpp console_info.cpp pixel.cpp mzapo_phys.c mzapo_parlcd.c
+SOURCES = app.cpp display.cpp socket_rocket.cpp light_admin_unit.cpp PPMReader.cpp console_info.cpp pixel.cpp mzapo_phys.c mzapo_parlcd.c
 SOURCES += font_prop14x16.c font_rom8x16.c
 TARGET_EXE = app
 TARGET_IP ?= 192.168.1.37

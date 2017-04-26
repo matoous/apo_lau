@@ -19,10 +19,10 @@
 #include "mzapo_regs.h"
 #include "mzapo_parlcd.h"
 
-void draw_string_on_line(char* s, std::vector<uint*_t>* arr, int line){
+void draw_string_on_line(char* s, std::vector<uint8_t>* arr, int line){
     for(int i = 0; i < 16; i++){
         for(int u = 0; u < 60; u++){
-            (*arr)[(i+line*16)*60 + u] = font_rom8x16.bits[s[u*16+i]];
+            (*arr)[(i+line*16)*60 + u] = font_rom8x16.bits[(int)s[u]*16+i];
         }
     }
 }
@@ -42,13 +42,13 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     /***
      * HEADER UNDERLINE
      */
-    buffer = " ___________________________________________________________ ";
+    sprintf(buffer, " ________________________________________ ");
     draw_string_on_line(buffer, &final_array, 1);
 
     /***
      * CEILING COLOR
      */
-     buffer = "  Ceiling color:                                            ";
+     sprintf(buffer, "  Ceiling color:          ");
     draw_string_on_line(buffer, &final_array, 3);
 
     /***
@@ -72,7 +72,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     /***
     * WALLS COLOR
     */
-    buffer = "  Walls color:                                               ";
+    sprintf(buffer, "  Walls color:          ");
     draw_string_on_line(buffer, &final_array, 8);
 
     /***
@@ -124,25 +124,36 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
 
 void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices, char* run){
 
-    uint8_t knob1, knob2, knob3, prev1, prev2, prev3;
-    int curr_device_num = 0;
     uint32_t rgb_knobs_value;
     uint32_t uint_val;
-    struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
-    unsigned char* knobs_mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
+    unsigned char* knobs_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
     if(knobs_mem_base == NULL){
         printf("Error mapping knobs and LED.\n");
         exit(1);
     }
 
-    unsigned char* parlcd_mem_base = map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
+    unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     if(parlcd_mem_base == NULL){
         printf("Error mapping LCD display.\n");
         exit(1);
     }
 
     parlcd_hx8357_init(parlcd_mem_base);
+
+    uint8_t knob1, knob2, knob3, prev1, prev2, prev3;
+
+    rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
+
+    /* Store the read value to the register controlling individual LEDs */
+    *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
+    uint_val = rgb_knobs_value;
+    prev1 = uint_val & 0xFF;
+    prev2 = (uint_val >> 8) & 0xFF;
+    prev3 = (uint_val >> 16) & 0xFF;
+
+    int curr_device_num = 0;
+    struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
     draw(lu, curr_device_num, parlcd_mem_base);
 
@@ -203,7 +214,7 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices, char*
 
 
         if(changed)
-            draw(&devices[curr_device_num], parlcd_mem_base);
+            draw(&(*devices)[curr_device_num].second, 0, parlcd_mem_base);
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
     }
 

@@ -9,8 +9,8 @@
 #include <iostream>
 #include <string.h>
 
-void console_info(lau_t* lu, std::map<unsigned long, lau_t>* devices_map){
-    while(1){
+void console_info(lau_t* lu, std::map<unsigned long, lau_t>* devices_map, char* run){
+    while(*run){
         if(system("@cls||clear") < 0)
             printf("ugly output\n");
         printf("Unit name: %s\n", lu->name);
@@ -34,4 +34,5 @@ void console_info(lau_t* lu, std::map<unsigned long, lau_t>* devices_map){
         printf("\n");
         sleep(5);
     }
+    printf("Ending console info display.\n");
 }

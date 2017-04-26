@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     int sockfd;
     std::thread listener(sr_init, &lu, &devices_map, &run, &sockfd);
     std::thread updater(sr_updater, &lu, &sockfd, &run);
-    std::thread console_display(console_info, &lu, &devices_map);
+    std::thread console_display(console_info, &lu, &devices_map, &run);
 
 
     // wait for input
@@ -121,6 +121,7 @@ int main(int argc, char *argv[])
     // end application
     run = 0;
     updater.join();
+    console_display.join();
     close(sockfd);
     printf("Ending application...\n");
     sleep(1);

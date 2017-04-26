@@ -8,6 +8,6 @@
 #include "light_admin_unit.h"
 #include <map>
 
-void console_info(lau_t*, std::map<unsigned long, lau_t>*);
+void console_info(lau_t*, std::map<unsigned long, lau_t>*, char*);
 
 #endif //APO_LAU_CONSOLE_INFO_H

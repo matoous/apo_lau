@@ -19,19 +19,115 @@
 #include "mzapo_regs.h"
 #include "mzapo_parlcd.h"
 
-void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices_map, char* run){
+void draw_string_on_line(char* s, std::vector<uint*_t>* arr, int line){
+    for(int i = 0; i < 16; i++){
+        for(int u = 0; u < 60; u++){
+            (*arr)[(i+line*16)*60 + u] = font_rom8x16.bits[s[u*16+i]];
+        }
+    }
+}
 
-    display_t disp;
-    disp.columns = 60;
-    disp.rows = 40;
-    disp.data = (uint8_t*)malloc(480*320/8);
+void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
+
+    std::vector<uint8_t> final_array(19200, 0);
+    char buffer[60];
+
+
+    /***
+     * HEADER - device name and arrows
+     */
+    sprintf(buffer, "  <    %s    >  ", (*lu).name);
+    draw_string_on_line(buffer, &final_array, 0);
+
+    /***
+     * HEADER UNDERLINE
+     */
+    buffer = " ___________________________________________________________ ";
+    draw_string_on_line(buffer, &final_array, 1);
+
+    /***
+     * CEILING COLOR
+     */
+     buffer = "  Ceiling color:                                            ";
+    draw_string_on_line(buffer, &final_array, 3);
+
+    /***
+    * CEILING COLOR R
+    */
+    sprintf(buffer, "  Red: %d  ", (*lu).ceiling_color.r);
+    draw_string_on_line(buffer, &final_array, 4);
+
+    /***
+    * CEILING COLOR G
+    */
+    sprintf(buffer, "  Green: %d  ", (*lu).ceiling_color.g);
+    draw_string_on_line(buffer, &final_array, 5);
+
+    /***
+    * CEILING COLOR B
+    */
+    sprintf(buffer, "  Blue: %d  ", (*lu).ceiling_color.b);
+    draw_string_on_line(buffer, &final_array, 6);
+
+    /***
+    * WALLS COLOR
+    */
+    buffer = "  Walls color:                                               ";
+    draw_string_on_line(buffer, &final_array, 8);
+
+    /***
+    * WALLS COLOR R
+    */
+    sprintf(buffer, "  Red: %d  ", (*lu).walls_color.r);
+    draw_string_on_line(buffer, &final_array, 9);
+
+    /***
+    * WALLS COLOR G
+    */
+    sprintf(buffer, "  Green: %d  ", (*lu).walls_color.g);
+    draw_string_on_line(buffer, &final_array, 10);
+
+    /***
+    * WALLS COLOR B
+    */
+    sprintf(buffer, "  Blue: %d  ", (*lu).walls_color.b);
+    draw_string_on_line(buffer, &final_array, 11);
+
+
+    int selected_line = knob2 + 4;
+    if(selected_line == 7 || selected_line == 8){
+        selected_line += 2;
+    }
+    for(int i = 0; i < 19200; i++){
+        if(i > selected_line*60*16 && i < (selected_line+1)*60*16){
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>5) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>4) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>3) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>2) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>1) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, final_array[i] & 1 ? 0xC80A : 0x528A);
+        }
+        else{
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>5) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>4) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>3) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>2) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base, (final_array[i]>>1) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base, final_array[i] & 1 ? 0xFFFF : 0x0000);
+        }
+    }
+}
+
+void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices, char* run){
 
     uint8_t knob1, knob2, knob3, prev1, prev2, prev3;
-    int curr_device_num;
-    char *curr_device_name;
-    lau_t *curr_device;
+    int curr_device_num = 0;
     uint32_t rgb_knobs_value;
-    unsigned int uint_val;
+    uint32_t uint_val;
     struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
     unsigned char* knobs_mem_base = map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
@@ -48,6 +144,8 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices_map, c
 
     parlcd_hx8357_init(parlcd_mem_base);
 
+    draw(lu, curr_device_num, parlcd_mem_base);
+
     /***
      * !!MAIN!! loop
      */
@@ -62,16 +160,16 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices_map, c
         knob1 = uint_val & 0xFF;
         knob2 = (uint_val >> 8) & 0xFF;
         knob3 = (uint_val >> 16) & 0xFF;
-        printf("Knobs %huu(%huu) %huu(%huu) %huu(%huu)\n",
+        printf("Knobs %hhu(%hhu) %hhu(%hhu) %hhu(%hhu)\n",
                knob1, prev1,
                knob2, prev2,
                knob3, prev3);
 
         // Device change
         if(knob1 != prev1){
-
+            prev1 = knob1;
             changed = 1;
-            prev2 = knob2;
+            curr_device_num = (knob1 << 2) % (*devices).size();
         }
 
         // Color component change
@@ -83,35 +181,15 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices_map, c
 
         // Color change
         if(knob3 != prev3){
-            // subtract through 0 down
-            if(prev3 < 13 && knob3 > 245){
-                if(knob2 < 3){
-                    if(knob2 == 0){
-                        (*curr_device).ceiling_color.r -= (256 - knob3 + prev3)/4;
-                    }
-                    if(knob2 == 1){
-                        (*curr_device).ceiling_color.g -= (256 - knob3 + prev3)/4;
-                    }
-                    if(knob2 == 2){
-                        (*curr_device).ceiling_color.b -= (256 - knob3 + prev3)/4;
-                    }
-                }
-                else{
-                    if(knob2 == 3){
-                        (*curr_device).walls_color.r -= (256 - knob3 + prev3)/4;
-                    }
-                    if(knob2 == 4){
-                        (*curr_device).walls_color.g -= (256 - knob3 + prev3)/4;
-                    }
-                    if(knob2 == 5){
-                        (*curr_device).walls_color.b -= (256 - knob3 + prev3)/4;
-                    }
-                }
-            }
-            // add through 0
-
-            // add
-            // subtract
+            int change;
+            if(prev3 < 13 && knob3 > 245)
+                change = -((int)256 - knob3 + prev3)/4;
+            else if(prev3 > 245 && knob3 < 15)
+                change = ((int)256-prev3+knob3)/4;
+            else if(prev3 < knob3)
+                change = ((int)knob3-prev3)/4;
+            else if(prev3 > knob3)
+                change = -((int)prev3-knob3)/4;
             changed = 1;
             prev1 = knob1;
         }
@@ -123,13 +201,9 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices_map, c
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB1_o) = rgb_knobs_value;
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB2_o) = rgb_knobs_value;
 
-        /* Print values */
-        printf("uint 0x%08x\n", uint_val);
 
-
-        if(changed){
-            // draw display
-        }
+        if(changed)
+            draw(&devices[curr_device_num], parlcd_mem_base);
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
     }
 

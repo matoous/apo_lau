@@ -58,6 +58,8 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     /***
     * CEILING COLOR R
     */
+    for(int i = 0; i < 60; i++)
+        buffer[i] = ' ';
     sprintf(buffer, "  Red: %d  ", (*lu).ceiling_color.r);
     draw_string_on_line(buffer, &final_array, 5);
 
@@ -76,6 +78,8 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     /***
     * WALLS COLOR
     */
+    for(int i = 0; i < 60; i++)
+        buffer[i] = ' ';
     sprintf(buffer, "  Walls color:          ");
     draw_string_on_line(buffer, &final_array, 9);
 
@@ -96,7 +100,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     */
     sprintf(buffer, "  Blue: %d  ", (*lu).walls_color.b);
     draw_string_on_line(buffer, &final_array, 12);
-    
+
     for(int i = 16260; i < 18000; i++)
         final_array[i] = (uint8_t)0xF;
 

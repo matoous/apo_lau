@@ -23,7 +23,7 @@ void draw_string_on_line(char* s, std::vector<uint8_t>* arr, int line){
     printf("%s\n", s);
     for(int i = 0; i < 16; i++){
         for(int u = 0; u < 60; u++){
-            (*arr)[(i+line*16)*60 + u] = font_rom8x16.bits[(int)s[u]*16+i];
+            (*arr)[(i+line*16)*60 + u] = (uint8_t)font_rom8x16.bits[(int)s[u]*16+i];
         }
     }
 }
@@ -95,23 +95,22 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     draw_string_on_line(buffer, &final_array, 11);
 
 
-    final_array[15360] = 0x0000;
-    final_array[15420] = 0x0000;
-
-    final_array[15480] =  (uint16_t)0x7e00;
-    final_array[15540] =  (uint16_t)0x8100;
-    final_array[15600] =  (uint16_t)0xa500;
-    final_array[15660] =  (uint16_t)0x8100;
-    final_array[15720] =  (uint16_t)0x8100;
-    final_array[15780] =  (uint16_t)0xbd00;
-    final_array[15840] =  (uint16_t)0x9900;
-    final_array[15900] =  (uint16_t)0x8100;
-    final_array[15960] =  (uint16_t)0x8100;
-    final_array[16020] =  (uint16_t)0x7e00;
-    final_array[16080] =  (uint16_t)0x0000;
-    final_array[16140] =  (uint16_t)0x0000;
-    final_array[16200] =  (uint16_t)0x0000;
-    final_array[16260] =  (uint16_t)0x0000;
+    final_array[15360] = (uint8_t)0x0000;
+    final_array[15420] = (uint8_t)0x0000;
+    final_array[15480] =  (uint8_t)0x7e00;
+    final_array[15540] =  (uint8_t)0x8100;
+    final_array[15600] =  (uint8_t)0xa500;
+    final_array[15660] =  (uint8_t)0x8100;
+    final_array[15720] =  (uint8_t)0x8100;
+    final_array[15780] =  (uint8_t)0xbd00;
+    final_array[15840] =  (uint8_t)0x9900;
+    final_array[15900] =  (uint8_t)0x8100;
+    final_array[15960] =  (uint8_t)0x8100;
+    final_array[16020] =  (uint8_t)0x7e00;
+    final_array[16080] =  (uint8_t)0x0000;
+    final_array[16140] =  (uint8_t)0x0000;
+    final_array[16200] =  (uint8_t)0x0000;
+    final_array[16260] =  (uint8_t)0x0000;
     for(int i = 16260; i < 18000; i++)
         final_array[i] = (uint8_t)0xF;
 

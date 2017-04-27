@@ -39,11 +39,6 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
      */
     sprintf(buffer, "  <    %s    >  ", (*lu).name);
     draw_string_on_line(buffer, &final_array, 0);
-    for(int i = 0; i < 16; i++){
-        for(int u = 0; u < 60; u++){
-            final_array[(i)*60 + u] = font_rom8x16.bits[(int)buffer[u]*16+i];
-        }
-    }
 
     /***
      * HEADER UNDERLINE
@@ -117,9 +112,8 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     final_array[16140] =  (uint16_t)0x0000;
     final_array[16200] =  (uint16_t)0x0000;
     final_array[16260] =  (uint16_t)0x0000;
-    for(int i = 16260; i < 18000; i++){
-        final_array[i] = (uint16_t)0x7e00;
-    }
+    for(int i = 16260; i < 18000; i++)
+        final_array[i] = (uint8_t)0xF;
 
 
     int selected_line = knob2 + 4;
@@ -127,7 +121,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
         selected_line += 2;
     }
     parlcd_write_cmd(parlcd_mem_base, 0x2c);
-    for(int i = 0; i < 5000; i++){
+    for(int i = 0; i < 19200; i++){
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>7) % 2 ? 0xC80A : 0x528A);
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>6) % 2 ? 0xC80A : 0x528A);
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>5) % 2 ? 0xC80A : 0x528A);

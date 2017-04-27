@@ -121,7 +121,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
                 }
             }
         }
-        if(i > selected_line*60*16 && i < (selected_line+1)*60*16){
+        if(i >= selected_line*60*16 && i < (selected_line+1)*60*16){
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>7) % 2 ? 0x401F : 0xF800);
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>6) % 2 ? 0x401F : 0xF800);
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>5) % 2 ? 0x401F : 0xF800);

@@ -28,12 +28,16 @@
 
  *******************************************************************/
 
+using namespace std;
+
 int main(int argc, char *argv[])
 {
     /***
      * Load configuration
      */
     lau_t lu;
+    std::mutex devices_mutex;
+    std::mutex local_lau_mutex;
 
     if(argc < 2){
         printf("No configuration file provided. Exiting...\n");
@@ -100,23 +104,25 @@ int main(int argc, char *argv[])
      * Configuration loaded
      */
 
+
     /***
      * Start running
      */
-    std::vector<std::pair<unsigned long, lau_t>> devices;
+    vector<pair<uint32_t, lau_t>> devices;
+    devices.push_back(pair<uint32_t, lau_t>(0,lu));
 
     printf("Starting application...\n");
 
     sleep(2);
-    if(!system("@cls||clear")){
+    if(!system("@cls||clear"))
         printf("Console clearing error, you will see ugly console output.\n");
-    }
 
     char run = 1;
     int sockfd;
-    std::thread listener(sr_init, &lu, &devices, &run, &sockfd);
-    std::thread updater(sr_updater, &lu, &sockfd, &run);
-    std::thread console_display(console_info, &lu, &devices, &run);
+
+    std::thread listener(sr_init, &lu, &devices, &sockfd, &run, &local_lau_mutex, &devices_mutex);
+    std::thread updater(sr_updater, &lu, &sockfd, &run, &local_lau_mutex);
+    std::thread console_disp(console_info, &lu, &devices, &run, &devices_mutex);
 
     unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     if(parlcd_mem_base == NULL){
@@ -133,7 +139,7 @@ int main(int argc, char *argv[])
     // end application
     run = 0;
     updater.join();
-    console_display.join();
+    console_disp.join();
     close(sockfd);
     printf("Ending application...\n");
     sleep(1);

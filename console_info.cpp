@@ -3,13 +3,17 @@
 //
 
 #include <stdio.h>
-#include "console_info.h"
-#include "light_admin_unit.h"
 #include <unistd.h>
 #include <iostream>
 #include <string.h>
+#include "console_info.h"
+#include "light_admin_unit.h"
 
-void console_info(lau_t* lu, std::vector<std::pair<unsigned long, lau_t>>* devices, char* run){
+using namespace std;
+
+void console_info(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, char* run, std::mutex* devices_mutex){
+    unique_lock<mutex> devices_lock(*devices_mutex);
+    devices_lock.unlock();
     while(*run){
         if(system("@cls||clear") < 0)
             printf("ugly output\n");
@@ -23,14 +27,16 @@ void console_info(lau_t* lu, std::vector<std::pair<unsigned long, lau_t>>* devic
                (unsigned short)lu->walls_color.g,
                (unsigned short)lu->walls_color.b);
         printf("Connected devices: \n");
-        for(auto &x : *devices){
-            printf("%lu : ", x.first);
+        devices_lock.lock();
+        for(auto const&x : *devices){
+            printf("%d : ", x.first);
             printf("%s", x.second.name);
             if(strcmp(x.second.name, lu->name) == 0)
                 printf(" (me)\n");
             else
                 printf("\n");
         }
+        devices_lock.unlock();
         printf("\n");
         sleep(5);
     }

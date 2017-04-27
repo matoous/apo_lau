@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
     printf("Starting application...\n");
 
     sleep(2);
-    if(!system("@cls||clear"))
+    if(system("@cls||clear") < 0)
         printf("Console clearing error, you will see ugly console output.\n");
 
     char run = 1;
@@ -123,8 +123,10 @@ int main(int argc, char *argv[])
     std::thread listener(sr_init, &lu, &devices, &sockfd, &run, &local_lau_mutex, &devices_mutex);
     std::thread updater(sr_updater, &lu, &sockfd, &run, &local_lau_mutex);
     std::thread console_disp(console_info, &lu, &devices, &run, &devices_mutex);
+
     // wait for input
     getchar();
+    /*
     unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     if(parlcd_mem_base == NULL){
         printf("Error mapping LCD display.\n");
@@ -133,7 +135,7 @@ int main(int argc, char *argv[])
     parlcd_hx8357_init(parlcd_mem_base);
 
     draw(&lu, 0, parlcd_mem_base);
-
+    */
     // wait for input
     getchar();
 

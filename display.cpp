@@ -118,7 +118,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     final_array[16200] =  (uint16_t)0x0000;
     final_array[16260] =  (uint16_t)0x0000;
     for(int i = 16260; i < 18000; i++){
-        final_array[i] = (uint16_t)0xFFFF;
+        final_array[i] = (uint16_t)0x7e00;
     }
 
 

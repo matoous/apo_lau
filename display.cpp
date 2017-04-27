@@ -120,24 +120,24 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     for(int i = 0; i < 19200; i++){
         parlcd_write_cmd(parlcd_mem_base, 0x2c);
         if(i > selected_line*60*16 && i < (selected_line+1)*60*16){
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) & 1 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) & 1 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>5) & 1 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>4) & 1 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>3) & 1 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>2) & 1 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>1) & 1 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, final_array[i] & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t) (final_array[i]>>7) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>6) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>5) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>4) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>3) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>2) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>1) & 1 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  final_array[i] & 1 ? 0xC80A : 0x528A);
         }
         else{
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) & 1 ? 0xFFFF : 0x0000);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) & 1 ? 0xFFFF : 0x0000);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>5) & 1 ? 0xFFFF : 0x0000);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>4) & 1 ? 0xFFFF : 0x0000);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>3) & 1 ? 0xFFFF : 0x0000);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>2) & 1 ? 0xFFFF : 0x0000);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>1) & 1 ? 0xFFFF : 0x0000);
-            parlcd_write_data(parlcd_mem_base, final_array[i] & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>7) & 1 ? 0xFFFF : 0xFFFF);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>6) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>5) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>4) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>3) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>2) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  (final_array[i]>>1) & 1 ? 0xFFFF : 0x0000);
+            parlcd_write_data(parlcd_mem_base,(uint16_t)  final_array[i] & 1 ? 0xFFFF : 0x0000);
         }
     }
 }

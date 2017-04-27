@@ -94,6 +94,24 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "  Blue: %d  ", (*lu).walls_color.b);
     draw_string_on_line(buffer, &final_array, 11);
 
+    final_array[15360] = 0x0000;
+    final_array[15420] = 0x0000;
+
+    final_array[15480] = 0x7e00;
+    final_array[15540] = 0x8100;
+    final_array[15600] = 0xa500;
+    final_array[15660] = 0x8100;
+    final_array[15720] = 0x8100;
+    final_array[15780] = 0xbd00;
+    final_array[15840] = 0x9900;
+    final_array[15900] = 0x8100;
+    final_array[15960] = 0x8100;
+    final_array[16020] = 0x7e00;
+    final_array[16080] = 0x0000;
+    final_array[16140] = 0x0000;
+    final_array[16200] = 0x0000;
+    final_array[16260] = 0x0000;
+
 
     int selected_line = knob2 + 4;
     if(selected_line == 7 || selected_line == 8){

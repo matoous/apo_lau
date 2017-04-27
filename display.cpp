@@ -114,7 +114,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
         if(i > 13440 && i < 14400){
             for(int u = 0; u < 16; u++, i++){
                 for(int v = 0; v < 16; v++, i++){
-                    parlcd_write_data(parlcd_mem_base, (*lu).icon[v*u]);
+                    parlcd_write_data(parlcd_mem_base, (*lu).icon[v+(u*16)]);
                 }
                 for(int v = 16; v < 480; v++, i++){
                     parlcd_write_data(parlcd_mem_base, (uint16_t)0xF800);

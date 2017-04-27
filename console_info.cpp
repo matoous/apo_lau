@@ -40,5 +40,5 @@ void console_info(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, c
         printf("\n");
         sleep(5);
     }
-    printf("Ending console info display.\n");
+    printf("Ending console info display...\n");
 }

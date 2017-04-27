@@ -25,13 +25,13 @@ void sr_updater(const lau_t*, const int* const, char*, std::mutex*);
 void sr_init(light_unit_t*, std::vector<std::pair<uint32_t, lau_t>>*, int*, char*, std::mutex*, std::mutex*);
 
 void send_modify(
-        const int, // socket
+        int, // socket
         sockaddr_in*, // address
         int16_t, int16_t, int16_t, // ceiling
         int16_t, int16_t, int16_t); // walls
 
 void send_set(
-        const int, // socket
+        int, // socket
         sockaddr_in*, // address
         int16_t, int16_t, int16_t, // ceiling
         int16_t, int16_t, int16_t); // walls

@@ -183,7 +183,7 @@ void _bt_icon(char* buf, int offset, uint16_t icon[256]){
  */
 void _sr_modify_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
     lock_guard<mutex> lu_lock(*local_lau_mutex);
-    lu->ceiling_color.r += _bt_uint16_t(buf, 12);
+    lu->ceiling_color.r = _bt_uint16_t(buf, 12);
     lu->ceiling_color.g += _bt_uint16_t(buf, 14);
     lu->ceiling_color.b += _bt_uint16_t(buf, 16);
     lu->walls_color.r += _bt_uint16_t(buf, 18);
@@ -252,7 +252,7 @@ void sr_updater(const lau_t* lu, const int* const sockfd, char* run, mutex* loca
         }
         sleep(1);
     }
-    printf("ending update sender\n");
+    printf("Ending update sender...\n");
 }
 
 /***
@@ -315,7 +315,7 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
                 _bt_name(buf, 20, curr_lu.name);
                 _bt_icon(buf, 36, curr_lu.icon);
 
-                printf("%s (%ud) update\n", curr_lu.name, cli_addr.sin_addr.s_addr);
+                printf("%s (%u) update\n", curr_lu.name, cli_addr.sin_addr.s_addr);
 
                 char added = 0;
                 unique_lock<mutex> devices_lock(*devices_mutex);
@@ -343,7 +343,7 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
         }
     }
 
-    printf("Ending update listener\n");
+    printf("Ending update listener...\n");
 }
 
 /***
@@ -384,7 +384,6 @@ void send_modify(
     _int16_t_tbetb(wg, buffer, 20);
     _int16_t_tbetb(wb, buffer, 22);
 
-    // send update every one second
     printf("Sending modify.\n");
     n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
@@ -429,7 +428,6 @@ void send_set(
     _int16_t_tbetb(wg, buffer, 20);
     _int16_t_tbetb(wb, buffer, 22);
 
-    // send update every one second
     printf("Sending set.\n");
     n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)

@@ -23,7 +23,7 @@ void draw_string_on_line(char* s, std::vector<uint8_t>* arr, int line){
     printf("%s\n", s);
     for(int i = 0; i < 16; i++){
         for(int u = 0; u < 60; u++){
-            (*arr)[(i+line*16)*60 + u] = (uint8_t)font_rom8x16.bits[(int)s[u]*16+i];
+            (*arr)[(i+line*16)*60 + u] = (uint8_t)(font_rom8x16.bits[(int)s[u]*16+i]>>8);
         }
     }
 }

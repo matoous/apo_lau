@@ -78,10 +78,10 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     /***
     * WALLS COLOR
     */
-    for(int i = 0; i < 60; i++)
-        buffer[i] = ' ';
     sprintf(buffer, "  Walls color:          ");
     draw_string_on_line(buffer, &final_array, 9);
+    for(int i = 0; i < 60; i++)
+        buffer[i] = ' ';
 
     /***
     * WALLS COLOR R
@@ -111,6 +111,17 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     }
     parlcd_write_cmd(parlcd_mem_base, 0x2c);
     for(int i = 0; i < 19200; i++){
+        if(i > selected_line*60*16 && i < (selected_line+1)*60*16){
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>7) % 2 ? 0x401F : 0xF800);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>6) % 2 ? 0x401F : 0xF800);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>5) % 2 ? 0x401F : 0xF800);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>4) % 2 ? 0x401F : 0xF800);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>3) % 2 ? 0x401F : 0xF800);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>2) % 2 ? 0x401F : 0xF800);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>1) % 2 ? 0x401F : 0xF800);
+            parlcd_write_data(parlcd_mem_base, (uint16_t)final_array[i] % 2 ? 0x401F : 0xF800);
+        }
+        else{
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>7) % 2 ? 0xC80A : 0x528A);
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>6) % 2 ? 0xC80A : 0x528A);
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>5) % 2 ? 0xC80A : 0x528A);
@@ -119,6 +130,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>2) % 2 ? 0xC80A : 0x528A);
             parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>1) % 2 ? 0xC80A : 0x528A);
             parlcd_write_data(parlcd_mem_base, (uint16_t)final_array[i] % 2 ? 0xC80A : 0x528A);
+        }
     }
 }
 

@@ -17,12 +17,4 @@ void init(lau_t*, std::vector<std::pair<unsigned int, lau_t>>*, char*);
 
 void draw(lau_t*, int, unsigned char*);
 
-void next_device();
-
-void prev_device();
-
-void next_color();
-
-void prev_color();
-
 #endif //APO_LAU_DISPLAY_H

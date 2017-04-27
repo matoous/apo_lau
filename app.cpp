@@ -123,7 +123,8 @@ int main(int argc, char *argv[])
     std::thread listener(sr_init, &lu, &devices, &sockfd, &run, &local_lau_mutex, &devices_mutex);
     std::thread updater(sr_updater, &lu, &sockfd, &run, &local_lau_mutex);
     std::thread console_disp(console_info, &lu, &devices, &run, &devices_mutex);
-
+    // wait for input
+    getchar();
     unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     if(parlcd_mem_base == NULL){
         printf("Error mapping LCD display.\n");

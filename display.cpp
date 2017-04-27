@@ -117,7 +117,7 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
                     parlcd_write_data(parlcd_mem_base, (*lu).icon[v+(u*16)]);
                 }
                 for(int v = 16; v < 480; v++, i++){
-                    parlcd_write_data(parlcd_mem_base, (uint16_t)0xF800);
+                    parlcd_write_data(parlcd_mem_base, (uint16_t)0x630C);
                 }
             }
         }

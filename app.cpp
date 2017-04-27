@@ -125,7 +125,8 @@ int main(int argc, char *argv[])
 
     parlcd_hx8357_init(parlcd_mem_base);
 
-    draw(&lu, 0, parlcd_mem_base);
+    while(1)
+        draw(&lu, 0, parlcd_mem_base);
 
     // wait for input
     getchar();

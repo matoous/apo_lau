@@ -319,7 +319,7 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
 
                 char added = 0;
                 unique_lock<mutex> devices_lock(*devices_mutex);
-                if((*devices)[0].second.name == curr_lu.name && (*devices)[0].first != cli_addr.sin_addr.s_addr)
+                if(strcmp((*devices)[0].second.name, curr_lu.name) == 0)
                     (*devices)[0].first = cli_addr.sin_addr.s_addr;
                 for(uint32_t i = 0; i < (*devices).size(); i++){
                     if((*devices)[i].first == cli_addr.sin_addr.s_addr){

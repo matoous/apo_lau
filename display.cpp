@@ -94,6 +94,12 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "  Blue: %d  ", (*lu).walls_color.b);
     draw_string_on_line(buffer, &final_array, 11);
 
+    for(int i = 0; i < 16; i++){
+        for(int u = 0; u < 60; u++){
+            final_array[(i+12*16)*60 + u] = font_rom8x16.bits[(int)buffer[u]*16+i];
+        }
+    }
+
     final_array[15360] = 0x0000;
     final_array[15420] = 0x0000;
 

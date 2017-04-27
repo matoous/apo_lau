@@ -15,6 +15,8 @@
 
 void init(lau_t*, std::vector<std::pair<unsigned int, lau_t>>*, char*);
 
+void draw(lau_t*, int, unsigned char*);
+
 void next_device();
 
 void prev_device();

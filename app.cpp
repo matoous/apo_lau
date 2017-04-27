@@ -15,6 +15,9 @@
 #include "light_admin_unit.h"
 #include "PPMReader.h"
 #include "console_info.h"
+#include "display.h"
+#include "mzapo_parlcd.h"
+#include "mzapo_regs.h"
 
 /*******************************************************************
   APO semestral project by Matous Dzivjak
@@ -115,6 +118,14 @@ int main(int argc, char *argv[])
     std::thread updater(sr_updater, &lu, &sockfd, &run);
     std::thread console_display(console_info, &lu, &devices, &run);
 
+    unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
+    if(parlcd_mem_base == NULL){
+        printf("Error mapping LCD display.\n");
+    }
+
+    parlcd_hx8357_init(parlcd_mem_base);
+
+    draw(&lu, 0, parlcd_mem_base);
 
     // wait for input
     getchar();

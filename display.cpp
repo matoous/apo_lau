@@ -130,13 +130,11 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices, char*
     unsigned char* knobs_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
     if(knobs_mem_base == NULL){
         printf("Error mapping knobs and LED.\n");
-        exit(1);
     }
 
     unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     if(parlcd_mem_base == NULL){
         printf("Error mapping LCD display.\n");
-        exit(1);
     }
 
     parlcd_hx8357_init(parlcd_mem_base);
@@ -160,12 +158,12 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices, char*
     /***
      * !!MAIN!! loop
      */
+     /*
     while(*run){
         char changed = 0;
 
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
 
-        /* Store the read value to the register controlling individual LEDs */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
         uint_val = rgb_knobs_value;
         knob1 = uint_val & 0xFF;
@@ -205,10 +203,6 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices, char*
             prev1 = knob1;
         }
 
-        /*
-         * Store RGB knobs values to the corersponding components controlling
-         * a color/brightness of the RGB LEDs
-         */
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB1_o) = rgb_knobs_value;
         *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_RGB2_o) = rgb_knobs_value;
 
@@ -217,6 +211,6 @@ void init(lau_t* lu, std::vector<std::pair<unsigned int, lau_t>>* devices, char*
             draw(&(*devices)[curr_device_num].second, 0, parlcd_mem_base);
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
     }
-
+    */
     printf("Ending display.\n");
 }

@@ -253,7 +253,7 @@ void sr_updater(const lau_t* lu, const int* const sockfd, char* run)
  * Handles incoming messages, updates, etc.
  * @param lu - pointer to lau_t representing local unit
  */
-void sr_init(lau_t* lu, std::vector<pair<unsigned long, lau_t>>* devices_map, char* run, int* sockfd) {
+void sr_init(lau_t* lu, std::vector<std::pair<unsigned long, lau_t>>* devices_map, char* run, int* sockfd) {
     struct sockaddr_in my_addr, cli_addr;
     char buf[1024];
     uint16_t icon[256];
@@ -279,7 +279,7 @@ void sr_init(lau_t* lu, std::vector<pair<unsigned long, lau_t>>* devices_map, ch
 
     // socket length
     socklen_t clilen;
-    clilen = (socklen_t)sizeof(cli_addr);
+    clilen = sizeof(cli_addr);
 
     // main loop
     printf("listening on port 55555.\n");

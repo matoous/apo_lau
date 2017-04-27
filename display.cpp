@@ -117,6 +117,9 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     final_array[16140] = 0x0000;
     final_array[16200] = 0x0000;
     final_array[16260] = 0x0000;
+    for(int i = 16260; i < 18000; i++){
+        final_array[i] = (uint16_t)0xFFFF;
+    }
 
 
     int selected_line = knob2 + 4;
@@ -125,14 +128,14 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     }
     parlcd_write_cmd(parlcd_mem_base, 0x2c);
     for(int i = 0; i < 19200; i++){
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>5) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>4) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>3) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>2) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>1) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, final_array[i] % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>7) % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>6) % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>5) % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>4) % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>3) % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>2) % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t) (final_array[i]>>1) % 2 ? 0xC80A : 0x528A);
+            parlcd_write_data(parlcd_mem_base, (uint16_t)final_array[i] % 2 ? 0xC80A : 0x528A);
     }
 }
 

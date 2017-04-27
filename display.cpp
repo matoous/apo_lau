@@ -117,8 +117,8 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     if(selected_line == 7 || selected_line == 8){
         selected_line += 2;
     }
+    parlcd_write_cmd(parlcd_mem_base, 0x2c);
     for(int i = 0; i < 19200; i++){
-        parlcd_write_cmd(parlcd_mem_base, 0x2c);
         if(i > selected_line*60*16 && i < (selected_line+1)*60*16){
             parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) % 2 ? 0xC80A : 0x528A);
             parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) % 2 ? 0xC80A : 0x528A);

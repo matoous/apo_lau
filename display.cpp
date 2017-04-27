@@ -39,6 +39,11 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
      */
     sprintf(buffer, "  <    %s    >  ", (*lu).name);
     draw_string_on_line(buffer, &final_array, 0);
+    for(int i = 0; i < 16; i++){
+        for(int u = 0; u < 60; u++){
+            final_array[(i)*60 + u] = font_rom8x16.bits[(int)buffer[u]*16+i];
+        }
+    }
 
     /***
      * HEADER UNDERLINE
@@ -94,11 +99,6 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "  Blue: %d  ", (*lu).walls_color.b);
     draw_string_on_line(buffer, &final_array, 11);
 
-    for(int i = 0; i < 16; i++){
-        for(int u = 0; u < 60; u++){
-            final_array[(i+12*16)*60 + u] = font_rom8x16.bits[(int)buffer[u]*16+i];
-        }
-    }
 
     final_array[15360] = 0x0000;
     final_array[15420] = 0x0000;
@@ -125,17 +125,6 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
     }
     parlcd_write_cmd(parlcd_mem_base, 0x2c);
     for(int i = 0; i < 19200; i++){
-        if(i > selected_line*60*16 && i < (selected_line+1)*60*16){
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>5) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>4) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>3) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>2) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, (final_array[i]>>1) % 2 ? 0xC80A : 0x528A);
-            parlcd_write_data(parlcd_mem_base, final_array[i] % 2 ? 0xC80A : 0x528A);
-        }
-        else{
             parlcd_write_data(parlcd_mem_base, (final_array[i]>>7) & 1 ? 0xFFFF : 0x0000);
             parlcd_write_data(parlcd_mem_base, (final_array[i]>>6) & 1 ? 0xFFFF : 0x0000);
             parlcd_write_data(parlcd_mem_base, (final_array[i]>>5) & 1 ? 0xFFFF : 0x0000);
@@ -144,7 +133,6 @@ void draw(lau_t* lu, int knob2, unsigned char* parlcd_mem_base){
             parlcd_write_data(parlcd_mem_base, (final_array[i]>>2) & 1 ? 0xFFFF : 0x0000);
             parlcd_write_data(parlcd_mem_base, (final_array[i]>>1) & 1 ? 0xFFFF : 0x0000);
             parlcd_write_data(parlcd_mem_base, final_array[i] & 1 ? 0xFFFF : 0x0000);
-        }
     }
 }
 

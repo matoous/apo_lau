@@ -261,7 +261,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
             else if(prev3 > knob3)
                 change = -((int)prev3-knob3)/4;
             changed = 1;
-            prev1 = knob1;
+            prev3 = knob3;
         }
 
         // redraw

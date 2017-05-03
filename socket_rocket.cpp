@@ -358,8 +358,8 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
  * @param wb
  */
 void send_modify(
-        const int sockfd, // socket
-        sockaddr_in out_addr, // address
+        int sockfd, // socket
+        sockaddr_in* out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
@@ -402,7 +402,7 @@ void send_modify(
  * @param wb
  */
 void send_set(
-        const int sockfd, // socket
+        int sockfd, // socket
         sockaddr_in* out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb

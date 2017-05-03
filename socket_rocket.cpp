@@ -359,11 +359,16 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
  */
 void send_modify(
         int sockfd, // socket
-        sockaddr_in* out_addr, // address
+        uint16_t out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
     int n;
+
+    sockaddr_in send_to;
+    send_to.sin_family = AF_INET;
+    send_to.sin_port = out_addr;
+    send_to.sin_addr.s_addr = INADDR_BROADCAST;
 
     // buffer
     char* buffer = (char*)malloc(1024);
@@ -385,7 +390,7 @@ void send_modify(
     _int16_t_tbetb(wb, buffer, 22);
 
     printf("Sending modify.\n");
-    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
+    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&send_to, len);
     if(n < 0)
         printf("Error sending modify.\n");
 }
@@ -403,11 +408,16 @@ void send_modify(
  */
 void send_set(
         int sockfd, // socket
-        sockaddr_in* out_addr, // address
+        uint16_t out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
     int n;
+
+    sockaddr_in send_to;
+    send_to.sin_family = AF_INET;
+    send_to.sin_port = out_addr;
+    send_to.sin_addr.s_addr = INADDR_BROADCAST;
 
     // buffer
     char* buffer = (char*)malloc(1024);
@@ -429,7 +439,7 @@ void send_set(
     _int16_t_tbetb(wb, buffer, 22);
 
     printf("Sending set.\n");
-    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
+    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&send_to, len);
     if(n < 0)
         printf("Error sending set.\n");
 }

@@ -316,11 +316,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
                 }
             }
             else{
-                sockaddr_in send_to;
-                send_to.sin_family = AF_INET;
-                send_to.sin_port = htons((*devices)[curr_device_num].first);
-                send_to.sin_addr.s_addr = INADDR_BROADCAST;
-                send_modify(sockfd, &send_to,
+                send_modify(sockfd, htons((*devices)[curr_device_num].first),
                             (int16_t)(selected_row == 0 ? change : 0),
                             (int16_t)(selected_row == 1 ? change : 0),
                             (int16_t)(selected_row == 2 ? change : 0),

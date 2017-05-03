@@ -92,7 +92,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
 
     char buffer[32];
     knob2 += 5;
-    int selected_line = (knob2 == 9 || knob2 == 10) ? knob2 + 2 : knob2;
+    int selected_line = (knob2 == 8 || knob2 == 9) ? knob2 + 2 : knob2;
 
     // device name
     int idx = 4;

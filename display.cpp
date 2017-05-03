@@ -18,6 +18,7 @@
 #include "mzapo_phys.h"
 #include "mzapo_regs.h"
 #include "mzapo_parlcd.h"
+#include "socket_rocket.h"
 
 
 using namespace std;
@@ -252,6 +253,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
         int change = 0;
         // Color change
         if(knob3 != prev3){
+            changed = 1;
             if(prev3 < 13 && knob3 > 245)
                 change = -((int)256 - knob3 + prev3)/4;
             else if(prev3 > 245 && knob3 < 15)
@@ -260,7 +262,6 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
                 change = ((int)knob3-prev3)/4;
             else if(prev3 > knob3)
                 change = -((int)prev3-knob3)/4;
-            changed = 1;
             prev3 = knob3;
         }
 
@@ -319,13 +320,13 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
                 send_to.sin_family = AF_INET;
                 send_to.sin_port = htons((*devices)[curr_device_num].first);
                 send_to.sin_addr.s_addr = INADDR_BROADCAST;
-                /*send_modify(sockfd, &send_to,
+                send_modify(sockfd, &send_to,
                             (int16_t)selected_row == 0 ? change : 0,
                             (int16_t)selected_row == 1 ? change : 0,
                             (int16_t)selected_row == 2 ? change : 0,
                             (int16_t)selected_row == 3 ? change : 0,
                             (int16_t)selected_row == 4 ? change : 0,
-                            (int16_t)selected_row == 5 ? change : 0);*/
+                            (int16_t)selected_row == 5 ? change : 0);
             }
             draw((*devices)[curr_device_num].second, selected_row, parlcd_mem_base);
         }

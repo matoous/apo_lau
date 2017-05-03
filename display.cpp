@@ -246,7 +246,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
         // Color component change
         if(knob2 != prev2){
             prev2 = knob2;
-            knob2 = (knob2 >> 2) % 6;
+            selected_row = (knob2 >> 2) % 6;
             changed = 1;
         }
 
@@ -331,7 +331,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
             }
 
             // redraw display
-            draw((*devices)[curr_device_num].second, knob2, parlcd_mem_base);
+            draw((*devices)[curr_device_num].second, selected_row, parlcd_mem_base);
         }
 
         // sleep

@@ -68,20 +68,26 @@ void draw_init(){
 
     // ceiling
     int idx = 3;
-    for(char c : "Ceiling color:")
+    for(char &c : string("Ceiling color:"))
         put_char_there(c, 4, idx++, WHITE, BLACK);
 
     // walls
     idx = 3;
-    for(char c : "Walls color:")
+    for(char &c : string("Walls color:"))
         put_char_there(c, 9, idx++, WHITE, BLACK);
 
     // name
     idx = 36;
-    for(char c : "♥ dzivjmat@fel.cvut.cz")
+    for(char &c : string("♥ dzivjmat@fel.cvut.cz"))
         put_char_there(c, 19, idx++, 0xFCE0, BLACK);
 }
 
+/***
+ * Draw given light admin unit info to display
+ * @param lu
+ * @param knob2
+ * @param parlcd_mem_base
+ */
 void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
 
     char buffer[32];
@@ -157,6 +163,15 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     }
 }
 
+/***
+ * Handles display and hardware inputs
+ * @param lu
+ * @param devices
+ * @param run
+ * @param sockfd
+ * @param local_lau_mutex
+ * @param devices_mutes
+ */
 void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run, int sockfd, mutex* local_lau_mutex, mutex* devices_mutes){
 
     uint32_t rgb_knobs_value;
@@ -176,6 +191,8 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
 
     // init display
     parlcd_hx8357_init(parlcd_mem_base);
+    // init display data
+    draw_init();
 
     uint8_t knob1, knob2, knob3, prev1, prev2, prev3;
 
@@ -190,7 +207,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
     prev3 = (uint_val >> 16) & 0xFF;
 
     // initial values
-    int curr_device_num = (prev1 << 2) % (*devices).size();
+    int curr_device_num = (prev1 >> 2) % (*devices).size();
     int selected_row = (prev2 >> 2) % 6;
     struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 100 * 1000 * 1000};
 
@@ -223,7 +240,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
         if(knob1 != prev1){
             prev1 = knob1;
             changed = 1;
-            curr_device_num = (knob1 << 2) % (*devices).size();
+            curr_device_num = (knob1 >> 2) % (*devices).size();
         }
 
         // Color component change

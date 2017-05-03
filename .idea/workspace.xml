@@ -12,7 +12,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daacf4e0-610b-4447-8fc2-93a8941ab454" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.cpp" afterPath="$PROJECT_DIR$/display.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -42,8 +41,8 @@
       <file leaf-file-name="display.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/display.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="333" column="65" lean-forward="false" selection-start-line="333" selection-start-column="65" selection-end-line="333" selection-end-column="65" />
+            <state relative-caret-position="358">
+              <caret line="330" column="13" lean-forward="false" selection-start-line="330" selection-start-column="13" selection-end-line="330" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -461,12 +460,12 @@
       <workItem from="1493160577980" duration="2567000" />
       <workItem from="1493209236337" duration="34160000" />
       <workItem from="1493756771263" duration="2901000" />
-      <workItem from="1493820969549" duration="213000" />
+      <workItem from="1493820969549" duration="629000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110497000" />
+    <option name="totallyTimeSpent" value="110913000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -769,8 +768,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="333" column="65" lean-forward="false" selection-start-line="333" selection-start-column="65" selection-end-line="333" selection-end-column="65" />
+        <state relative-caret-position="358">
+          <caret line="330" column="13" lean-forward="false" selection-start-line="330" selection-start-column="13" selection-end-line="330" selection-end-column="13" />
           <folding />
         </state>
       </provider>

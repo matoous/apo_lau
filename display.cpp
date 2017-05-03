@@ -56,7 +56,7 @@ void put_char_there(char c, int row, int column, uint16_t color, uint16_t backgr
  * inits static elements on display
  */
 void draw_init(){
-    data.resize(320, vector<uint16_t>(480, 0xFFFF));
+    data.resize(320, vector<uint16_t>(480, 0));
 
     // arrow
     put_char_there('<', 1, 2, WHITE, BLACK);
@@ -78,7 +78,7 @@ void draw_init(){
 
     // name
     idx = 36;
-    for(char &c : string("♥ dzivjmat@fel.cvut.cz"))
+    for(char &c : string("dzivjmat@fel.cvut.cz"))
         put_char_there(c, 19, idx++, 0xFCE0, BLACK);
 }
 
@@ -92,7 +92,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
 
     char buffer[32];
     knob2 += 5;
-    int selected_line = (knob2 == 8 || knob2 == 9) ? knob2 + 2 : knob2;
+    int selected_line = (knob2 == 9 || knob2 == 10) ? knob2 + 2 : knob2;
 
     // device name
     int idx = 4;
@@ -321,16 +321,14 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
                 send_to.sin_family = AF_INET;
                 send_to.sin_port = htons((*devices)[curr_device_num].first);
                 send_to.sin_addr.s_addr = INADDR_BROADCAST;
-                /*send_modify(sockfd, &send_to,
+                send_modify(sockfd, &send_to,
                             (int16_t)selected_row == 0 ? change : 0,
                             (int16_t)selected_row == 1 ? change : 0,
                             (int16_t)selected_row == 2 ? change : 0,
                             (int16_t)selected_row == 3 ? change : 0,
                             (int16_t)selected_row == 4 ? change : 0,
-                            (int16_t)selected_row == 5 ? change : 0);*/
+                            (int16_t)selected_row == 5 ? change : 0);
             }
-
-            // redraw display
             draw((*devices)[curr_device_num].second, selected_row, parlcd_mem_base);
         }
 

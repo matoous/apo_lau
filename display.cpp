@@ -91,8 +91,6 @@ void draw_init(){
 void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
 
     char buffer[32];
-    knob2 += 5;
-    int selected_line = (knob2 == 8 || knob2 == 9) ? knob2 + 2 : knob2;
 
     // device name
     int idx = 4;
@@ -107,7 +105,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "Red: %.3d", lu.ceiling_color.r);
     idx = 5;
     for(char c : buffer)
-        put_char_there(c, 5, idx++, 5 == selected_line ? BLACK : WHITE, 5 == selected_line ? 0x2FF3 : BLACK);
+        put_char_there(c, 5, idx++, 0 == knob2 ? BLACK : WHITE, 0 == knob2 ? 0x2FF3 : BLACK);
 
     // Ceiling color green
     for(int i = 0; i < 32; i++)
@@ -115,7 +113,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "Green: %.3d", lu.ceiling_color.g);
     idx = 5;
     for(char c : buffer)
-        put_char_there(c, 6, idx++, 6 == selected_line ? BLACK : WHITE, 6 == selected_line ? 0x2FF3 : BLACK);
+        put_char_there(c, 6, idx++, 1 == knob2 ? BLACK : WHITE, 1 == knob2 ? 0x2FF3 : BLACK);
 
     // Ceiling color blue
     for(int i = 0; i < 32; i++)
@@ -123,7 +121,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "Blue: %.3d", lu.ceiling_color.b);
     idx = 5;
     for(char c : buffer)
-        put_char_there(c, 7, idx++, 7 == selected_line ? BLACK : WHITE, 7 == selected_line ? 0x2FF3 : BLACK);
+        put_char_there(c, 7, idx++, 2 == knob2 ? BLACK : WHITE, 2 == knob2 ? 0x2FF3 : BLACK);
 
     // Walls color red
     for(int i = 0; i < 32; i++)
@@ -131,7 +129,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "Red: %.3d", lu.walls_color.r);
     idx = 5;
     for(char c : buffer)
-        put_char_there(c, 10, idx++, 10 == selected_line ? BLACK : WHITE, 10 == selected_line ? 0x2FF3 : BLACK);
+        put_char_there(c, 10, idx++, 3 == knob2 ? BLACK : WHITE, 3 == knob2 ? 0x2FF3 : BLACK);
 
     // Walls color green
     for(int i = 0; i < 32; i++)
@@ -139,7 +137,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "Green: %.3d", lu.walls_color.g);
     idx = 5;
     for(char c : buffer)
-        put_char_there(c, 11, idx++, 11 == selected_line ? BLACK : WHITE, 11 == selected_line ? 0x2FF3 : BLACK);
+        put_char_there(c, 11, idx++, 4 == knob2 ? BLACK : WHITE, 4 == knob2 ? 0x2FF3 : BLACK);
 
     // Walls color blue
     for(int i = 0; i < 32; i++)
@@ -147,7 +145,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     sprintf(buffer, "Blue: %.3d", lu.walls_color.b);
     idx = 5;
     for(char c : buffer)
-        put_char_there(c, 12, idx++, 12 == selected_line ? BLACK : WHITE, 12 == selected_line ? 0x2FF3 : BLACK);
+        put_char_there(c, 12, idx++, 5 == knob2 ? BLACK : WHITE, 5 == knob2 ? 0x2FF3 : BLACK);
 
     // Logo
     for(int i = 0; i < 16; i++)

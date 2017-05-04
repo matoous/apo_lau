@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void console_info(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, char* run, std::mutex* devices_mutex){
+void console_info(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, char* run, std::mutex* devices_mutex){
     unique_lock<mutex> devices_lock(*devices_mutex);
     devices_lock.unlock();
     while(*run){
@@ -29,7 +29,7 @@ void console_info(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, c
         printf("Connected devices: \n");
         devices_lock.lock();
         for(auto const&x : *devices){
-            printf("%d : ", x.first);
+            printf("%u : ", x.first.sin_addr.s_addr);
             printf("%s", x.second.name);
             if(strcmp(x.second.name, lu->name) == 0)
                 printf(" (me)\n");

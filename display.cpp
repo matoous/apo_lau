@@ -171,7 +171,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
  * @param local_lau_mutex
  * @param devices_mutes
  */
-void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run, int sockfd, mutex* local_lau_mutex, mutex* devices_mutes){
+void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, int sockfd, mutex* local_lau_mutex, mutex* devices_mutes){
 
     uint32_t rgb_knobs_value;
     uint32_t uint_val;
@@ -316,7 +316,7 @@ void par_lcder(lau_t* lu, vector<pair<unsigned int, lau_t>>* devices, char* run,
                 }
             }
             else{
-                send_modify(sockfd, htons((*devices)[curr_device_num].first),
+                send_modify(sockfd, (*devices)[curr_device_num].first,
                             (int16_t)(selected_row == 0 ? change : 0),
                             (int16_t)(selected_row == 1 ? change : 0),
                             (int16_t)(selected_row == 2 ? change : 0),

@@ -273,7 +273,7 @@ void sr_updater(const lau_t* lu, const int* const sockfd, char* run, mutex* loca
  * Handles incoming messages, updates, etc.
  * @param lu - pointer to lau_t representing local unit
  */
-void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* sockfd, char* run, mutex* local_lau_mutex, mutex* devices_mutex) {
+void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int* sockfd, char* run, mutex* local_lau_mutex, mutex* devices_mutex) {
     struct sockaddr_in my_addr, cli_addr;
     char buf[1024];
 
@@ -334,16 +334,19 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
                 char added = 0;
                 unique_lock<mutex> devices_lock(*devices_mutex);
                 if(strcmp((*devices)[0].second.name, curr_lu.name) == 0)
-                    (*devices)[0].first = cli_addr.sin_addr.s_addr;
+                    (*devices)[0].first = cli_addr;
                 for(uint32_t i = 0; i < (*devices).size(); i++){
-                    if((*devices)[i].first == cli_addr.sin_addr.s_addr){
+                    if((*devices)[i].first.sin_addr.s_addr == cli_addr.sin_addr.s_addr){
                         (*devices)[i].second = curr_lu;
                         added = 1;
                         break;
                     }
                 }
-                if(!added)
-                    (*devices).push_back(pair<uint32_t, lau_t>(cli_addr.sin_addr.s_addr, curr_lu));
+                if(!added){
+                    sockaddr_in new_in;
+                    new_in = cli_addr;
+                    (*devices).push_back(pair<sockaddr_in, lau_t>(new_in, curr_lu));
+                }
                 devices_lock.unlock();
             }
             else if(type == 1){
@@ -373,16 +376,11 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
  */
 void send_modify(
         int sockfd, // socket
-        int out_addr, // address
+        sockaddr_in out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
     int n;
-
-    sockaddr_in send_to;
-    send_to.sin_family = AF_INET;
-    send_to.sin_port = htons(SOCK_PORT);
-    send_to.sin_addr.s_addr = out_addr;
 
     // buffer
     char* buffer = (char*)malloc(1024);
@@ -404,7 +402,7 @@ void send_modify(
     _int16_t_tbetb(wb, buffer, 22);
 
     printf("Sending modify.\n");
-    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&send_to, len);
+    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
         printf("Error sending modify.\n");
 }
@@ -422,16 +420,11 @@ void send_modify(
  */
 void send_set(
         int sockfd, // socket
-        int out_addr, // address
+        sockaddr_in out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
     int n;
-
-    sockaddr_in send_to;
-    send_to.sin_family = AF_INET;
-    send_to.sin_port = htons(SOCK_PORT);
-    send_to.sin_addr.s_addr = out_addr;
 
     // buffer
     char* buffer = (char*)malloc(1024);
@@ -453,7 +446,7 @@ void send_set(
     _int16_t_tbetb(wb, buffer, 22);
 
     printf("Sending set.\n");
-    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&send_to, len);
+    n = sendto(sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
         printf("Error sending set.\n");
 }

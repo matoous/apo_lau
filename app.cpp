@@ -8,6 +8,7 @@
 #include <inttypes.h>
 #include <time.h>
 #include <iostream>
+#include <netinet/in.h>
 #include <utility>
 #include <vector>
 #include <thread>
@@ -104,8 +105,9 @@ int main(int argc, char *argv[])
      * Start running
      */
     // devices list
-    vector<pair<uint32_t, lau_t>> devices;
-    devices.push_back(pair<uint32_t, lau_t>(0,lu));
+    sockaddr_in ahoj;
+    vector<pair<sockaddr_in, lau_t>> devices;
+    devices.push_back(pair<sockaddr_in, lau_t>(ahoj,lu));
 
     printf("Starting application...\n");
 

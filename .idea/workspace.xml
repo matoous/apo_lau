@@ -12,7 +12,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daacf4e0-610b-4447-8fc2-93a8941ab454" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.cpp" afterPath="$PROJECT_DIR$/display.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/socket_rocket.cpp" afterPath="$PROJECT_DIR$/socket_rocket.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/socket_rocket.h" afterPath="$PROJECT_DIR$/socket_rocket.h" />
     </list>
@@ -43,8 +42,8 @@
       <file leaf-file-name="display.cpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/display.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="537">
-              <caret line="317" column="17" lean-forward="false" selection-start-line="317" selection-start-column="17" selection-end-line="317" selection-end-column="17" />
+            <state relative-caret-position="33">
+              <caret line="256" column="41" lean-forward="true" selection-start-line="256" selection-start-column="41" selection-end-line="256" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -73,8 +72,8 @@
       <file leaf-file-name="socket_rocket.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/socket_rocket.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="418" column="32" lean-forward="true" selection-start-line="418" selection-start-column="32" selection-end-line="418" selection-end-column="32" />
+            <state relative-caret-position="162">
+              <caret line="375" column="29" lean-forward="true" selection-start-line="375" selection-start-column="29" selection-end-line="375" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -83,8 +82,8 @@
       <file leaf-file-name="socket_rocket.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/socket_rocket.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="28" column="16" lean-forward="false" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+            <state relative-caret-position="612">
+              <caret line="34" column="11" lean-forward="false" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -452,12 +451,12 @@
       <workItem from="1493160577980" duration="2567000" />
       <workItem from="1493209236337" duration="34160000" />
       <workItem from="1493756771263" duration="2901000" />
-      <workItem from="1493820969549" duration="2577000" />
+      <workItem from="1493820969549" duration="6262000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112861000" />
+    <option name="totallyTimeSpent" value="116546000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -743,26 +742,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/display.cpp">
+    <entry file="file://$PROJECT_DIR$/socket_rocket.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="537">
-          <caret line="317" column="17" lean-forward="false" selection-start-line="317" selection-start-column="17" selection-end-line="317" selection-end-column="17" />
+        <state relative-caret-position="612">
+          <caret line="34" column="11" lean-forward="false" selection-start-line="34" selection-start-column="11" selection-end-line="34" selection-end-column="11" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/socket_rocket.h">
+    <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="28" column="16" lean-forward="false" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
+        <state relative-caret-position="33">
+          <caret line="256" column="41" lean-forward="true" selection-start-line="256" selection-start-column="41" selection-end-line="256" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/socket_rocket.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="418" column="32" lean-forward="true" selection-start-line="418" selection-start-column="32" selection-end-line="418" selection-end-column="32" />
+        <state relative-caret-position="162">
+          <caret line="375" column="29" lean-forward="true" selection-start-line="375" selection-start-column="29" selection-end-line="375" selection-end-column="29" />
           <folding />
         </state>
       </provider>

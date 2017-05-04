@@ -161,6 +161,20 @@ uint16_t _bt_uint16_t(char* buf, int offset){
 }
 
 /***
+ * Gets uint16_t from buffer
+ * @param buf - buffer
+ * @param offset - offset in buffer
+ * @return uint16_t
+ */
+int16_t _bt_int16_t(char* buf, int offset){
+    int16_t curr_val;
+    curr_val = (int8_t )buf[offset] << 8;
+    curr_val += (int8_t )buf[offset+1];
+    curr_val = ntohs(curr_val);
+    return curr_val;
+}
+
+/***
  * Gets light admin unit icon from buffer
  * @param buf - buffer
  * @param offset - icon offset in buffer
@@ -183,12 +197,12 @@ void _bt_icon(char* buf, int offset, uint16_t icon[256]){
  */
 void _sr_modify_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
     lock_guard<mutex> lu_lock(*local_lau_mutex);
-    lu->ceiling_color.r += _bt_uint16_t(buf, 12);
-    lu->ceiling_color.g += _bt_uint16_t(buf, 14);
-    lu->ceiling_color.b += _bt_uint16_t(buf, 16);
-    lu->walls_color.r += _bt_uint16_t(buf, 18);
-    lu->walls_color.g += _bt_uint16_t(buf, 20);
-    lu->walls_color.b += _bt_uint16_t(buf, 22);
+    lu->ceiling_color.r += _bt_int16_t(buf, 12);
+    lu->ceiling_color.g += _bt_int16_t(buf, 14);
+    lu->ceiling_color.b += _bt_int16_t(buf, 16);
+    lu->walls_color.r   += _bt_int16_t(buf, 18);
+    lu->walls_color.g   += _bt_int16_t(buf, 20);
+    lu->walls_color.b   += _bt_int16_t(buf, 22);
 }
 
 /***
@@ -359,7 +373,7 @@ void sr_init(lau_t* lu, std::vector<std::pair<uint32_t, lau_t>>* devices, int* s
  */
 void send_modify(
         int sockfd, // socket
-        uint16_t out_addr, // address
+        int out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
@@ -367,8 +381,8 @@ void send_modify(
 
     sockaddr_in send_to;
     send_to.sin_family = AF_INET;
-    send_to.sin_port = out_addr;
-    send_to.sin_addr.s_addr = INADDR_BROADCAST;
+    send_to.sin_port = htons(SOCK_PORT);
+    send_to.sin_addr.s_addr = out_addr;
 
     // buffer
     char* buffer = (char*)malloc(1024);
@@ -408,7 +422,7 @@ void send_modify(
  */
 void send_set(
         int sockfd, // socket
-        uint16_t out_addr, // address
+        int out_addr, // address
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
@@ -416,8 +430,8 @@ void send_set(
 
     sockaddr_in send_to;
     send_to.sin_family = AF_INET;
-    send_to.sin_port = out_addr;
-    send_to.sin_addr.s_addr = INADDR_BROADCAST;
+    send_to.sin_port = htons(SOCK_PORT);
+    send_to.sin_addr.s_addr = out_addr;
 
     // buffer
     char* buffer = (char*)malloc(1024);

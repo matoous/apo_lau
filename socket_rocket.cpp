@@ -168,8 +168,7 @@ uint16_t _bt_uint16_t(char* buf, int offset){
  */
 int16_t _bt_int16_t(char* buf, int offset){
     int16_t curr_val;
-    curr_val = (int8_t )buf[offset] << 8;
-    curr_val += (int8_t )buf[offset+1];
+    curr_val = (int16_t)(buf[offset] << 8 | buf[offset+1]);
     curr_val = ntohs(curr_val);
     return curr_val;
 }

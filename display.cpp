@@ -316,7 +316,8 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 }
             }
             else{
-                send_modify(sockfd, (*devices)[curr_device_num].first,
+                if(change != 0)
+                    send_modify(sockfd, (*devices)[curr_device_num].first,
                             (int16_t)(selected_row == 0 ? change : 0),
                             (int16_t)(selected_row == 1 ? change : 0),
                             (int16_t)(selected_row == 2 ? change : 0),

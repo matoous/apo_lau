@@ -312,6 +312,8 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
         uint32_t version = _bt_uint32_t(buf, 4);
         uint32_t type = _bt_uint32_t(buf, 8);
 
+        printf("%u %u %u\n", control_number, version, type);
+
         if(control_number == ALC_CONTROL_NUM && version == ALC_PROTOCOL_VER){
             // update datagram
             if(type == 0){
@@ -434,7 +436,6 @@ void send_set(
 
     _uint32_t_tbetb(ALC_CONTROL_NUM, buffer, 0);
     _uint32_t_tbetb(ALC_PROTOCOL_VER, buffer, 4);
-
     _uint32_t_tbetb(ALC_MESSAGE_SET, buffer, 8);
 
     _int16_t_tbetb(cr, buffer, 12);

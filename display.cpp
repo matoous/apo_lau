@@ -230,10 +230,10 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
         knob3 = (uint_val >> 16) & 0xFF;
 
         // print knobs value
-        printf("Knobs %hhu(%hhu) %hhu(%hhu) %hhu(%hhu)\n",
+        /*printf("Knobs %hhu(%hhu) %hhu(%hhu) %hhu(%hhu)\n",
                knob1, prev1,
                knob2, prev2,
-               knob3, prev3);
+               knob3, prev3);*/
 
         // Device change
         if(knob1 != prev1){

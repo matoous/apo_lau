@@ -395,6 +395,8 @@ void send_modify(
     _uint32_t_tbetb(htonl(ALC_PROTOCOL_VER), buffer, 4);
     _uint32_t_tbetb(htonl(ALC_MESSAGE_MODIFY), buffer, 8);
 
+    cout << "sending: " << cr <<" "<< cg<<" " << cb<<" " << wr<<" " << wg<<" " << wb << endl;
+
     _int16_t_tbetb(cr, buffer, 12);
     _int16_t_tbetb(cg, buffer, 14);
     _int16_t_tbetb(cb, buffer, 16);
@@ -437,6 +439,8 @@ void send_set(
     _uint32_t_tbetb(htonl(ALC_CONTROL_NUM), buffer, 0);
     _uint32_t_tbetb(htonl(ALC_PROTOCOL_VER), buffer, 4);
     _uint32_t_tbetb(htonl(ALC_MESSAGE_SET), buffer, 8);
+
+    cout << "sending: " << cr <<" "<< cg<<" " << cb<<" " << wr<<" " << wg<<" " << wb << endl;
 
     _int16_t_tbetb(cr, buffer, 12);
     _int16_t_tbetb(cg, buffer, 14);

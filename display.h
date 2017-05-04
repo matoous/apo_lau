@@ -17,7 +17,7 @@
 #include "light_admin_unit.h"
 #include "socket_rocket.h"
 
-void par_lcder(lau_t*, std::vector<std::pair<sockaddr_in, lau_t>>*, char*, int, std::mutex*, std::mutex*);
+void par_lcder(lau_t*, std::vector<std::pair<sockaddr_in, lau_t>>*, char*, int*, std::mutex*, std::mutex*);
 
 void draw(lau_t, int, unsigned char*);
 

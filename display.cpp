@@ -171,7 +171,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
  * @param local_lau_mutex
  * @param devices_mutes
  */
-void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, int sockfd, mutex* local_lau_mutex, mutex* devices_mutes){
+void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, int* sockfd, mutex* local_lau_mutex, mutex* devices_mutes){
 
     uint32_t rgb_knobs_value;
     uint32_t uint_val;

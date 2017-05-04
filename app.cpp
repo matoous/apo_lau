@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     // start individual threads
     std::thread udp_listener(sr_init, &lu, &devices, &sockfd, &run, &local_lau_mutex, &devices_mutex);
     std::thread udp_updater(sr_updater, &lu, &sockfd, &run, &local_lau_mutex);
-    std::thread parlcd_disp(par_lcder, &lu, &devices, &run, sockfd, &local_lau_mutex, &devices_mutex);
+    std::thread parlcd_disp(par_lcder, &lu, &devices, &run, &sockfd, &local_lau_mutex, &devices_mutex);
     std::thread console_disp(console_info, &lu, &devices, &run, &devices_mutex);
 
     // wait for input

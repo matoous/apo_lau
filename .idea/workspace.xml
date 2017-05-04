@@ -12,7 +12,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daacf4e0-610b-4447-8fc2-93a8941ab454" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.cpp" afterPath="$PROJECT_DIR$/display.cpp" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/socket_rocket.cpp" afterPath="$PROJECT_DIR$/socket_rocket.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -82,8 +81,8 @@
       <file leaf-file-name="socket_rocket.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/socket_rocket.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="314" column="60" lean-forward="false" selection-start-line="314" selection-start-column="60" selection-end-line="314" selection-end-column="60" />
+            <state relative-caret-position="486">
+              <caret line="393" column="56" lean-forward="false" selection-start-line="393" selection-start-column="56" selection-end-line="393" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -464,12 +463,12 @@
       <workItem from="1493160577980" duration="2567000" />
       <workItem from="1493209236337" duration="34160000" />
       <workItem from="1493756771263" duration="2901000" />
-      <workItem from="1493820969549" duration="8917000" />
+      <workItem from="1493820969549" duration="9124000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="119201000" />
+    <option name="totallyTimeSpent" value="119408000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -776,8 +775,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/socket_rocket.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="314" column="60" lean-forward="false" selection-start-line="314" selection-start-column="60" selection-end-line="314" selection-end-column="60" />
+        <state relative-caret-position="486">
+          <caret line="393" column="56" lean-forward="false" selection-start-line="393" selection-start-column="56" selection-end-line="393" selection-end-column="56" />
           <folding />
         </state>
       </provider>

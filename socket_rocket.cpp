@@ -41,10 +41,10 @@ void _int_tbetb(int x, char* buffer, int offset){
  */
 void _uint32_t_tbetb(uint32_t x, char* buffer, int offset){
     x = htonl(x);
-    *(buffer + offset  ) = (x >> 24) & 0xFF;
+    *(buffer + offset) = (x >> 24) & 0xFF;
     *(buffer + offset+1) = (x >> 16) & 0xFF;
-    *(buffer + offset+2) = (x >> 8)  & 0xFF;
-    *(buffer + offset+3) =  x        & 0xFF;
+    *(buffer + offset+2) = (x >> 8) & 0xFF;
+    *(buffer + offset+3) = x & 0xFF;
 }
 
 /***
@@ -54,9 +54,9 @@ void _uint32_t_tbetb(uint32_t x, char* buffer, int offset){
  * @param offset - offset
  */
 void _int16_t_tbetb(int16_t x, char* buffer, int offset){
-    x = htonl((uint16_t)x);
-    *(buffer + offset  ) = (x >> 8) & 0xFF;
-    *(buffer + offset+1) =  x       & 0xFF;
+    x = htonl(x);
+    *(buffer + offset) = (x >> 8) & 0xFF;
+    *(buffer + offset+1) = x & 0xFF;
 }
 
 /***
@@ -66,7 +66,7 @@ void _int16_t_tbetb(int16_t x, char* buffer, int offset){
  * @param offset - offset in buffer
  */
 void _color_tbetb(Pixel c, char* buffer, int offset){
-    *(buffer + offset)   = 0;
+    *(buffer + offset) = 0;
     *(buffer + offset+1) = c.r;
     *(buffer + offset+2) = c.g;
     *(buffer + offset+3) = c.b;
@@ -168,7 +168,8 @@ uint16_t _bt_uint16_t(char* buf, int offset){
  */
 int16_t _bt_int16_t(char* buf, int offset){
     int16_t curr_val;
-    curr_val = (int16_t)ntohs((int16_t)(buf[offset] << 8 | buf[offset+1]));
+    curr_val = ((int16_t)buf[offset] << 8 | (int16_t)buf[offset+1]);
+    curr_val = ntohs(curr_val);
     return curr_val;
 }
 

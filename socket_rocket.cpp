@@ -197,6 +197,7 @@ void _bt_icon(char* buf, int offset, uint16_t icon[256]){
  */
 void _sr_modify_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
     lock_guard<mutex> lu_lock(*local_lau_mutex);
+    cout << _bt_int16_t(buf, 12) << endl;
     lu->ceiling_color.r += _bt_int16_t(buf, 12);
     lu->ceiling_color.g += _bt_int16_t(buf, 14);
     lu->ceiling_color.b += _bt_int16_t(buf, 16);
@@ -212,6 +213,7 @@ void _sr_modify_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
  */
 void _sr_set_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
     lock_guard<mutex> lu_lock(*local_lau_mutex);
+    cout << _bt_int16_t(buf, 12) << endl;
     lu->ceiling_color.r = _bt_uint16_t(buf, 12);
     lu->ceiling_color.g = _bt_uint16_t(buf, 14);
     lu->ceiling_color.b = _bt_uint16_t(buf, 16);

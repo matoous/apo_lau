@@ -1,4 +1,0 @@
-kitchen
-222 162 123
-0 0 0
-icons/unit2.ppm

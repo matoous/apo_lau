@@ -1,3 +1,12 @@
+/*******************************************************************
+  APO semestral project by Matous Dzivjak
+
+  (C) Copyright 2017 - 2017 by Matous Dzivjak
+      e-mail:   dzivjmat@fel.cvut.cz
+      license:  MIT
+
+ *******************************************************************/
+
 #define _POSIX_C_SOURCE 200112L
 
 #include <fstream>

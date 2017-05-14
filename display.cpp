@@ -1,6 +1,11 @@
-//
-// Created by matoous on 26.04.17.
-//
+/*******************************************************************
+  APO semestral project by Matous Dzivjak
+
+  (C) Copyright 2017 - 2017 by Matous Dzivjak
+      e-mail:   dzivjmat@fel.cvut.cz
+      license:  MIT
+
+ *******************************************************************/
 
 #include <sys/mman.h>
 #include <stdlib.h>

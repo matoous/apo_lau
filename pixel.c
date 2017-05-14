@@ -1,3 +1,12 @@
+/*******************************************************************
+  APO semestral project by Matous Dzivjak
+
+  (C) Copyright 2017 - 2017 by Matous Dzivjak
+      e-mail:   dzivjmat@fel.cvut.cz
+      license:  MIT
+
+ *******************************************************************/
+
 #include "pixel.h"
 
 pixel_t pixel(const uint16_t color){
@@ -6,8 +15,4 @@ pixel_t pixel(const uint16_t color){
     pix.g = (color & GREEN_PART) >>6;
     pix.b = (color & BLUE_PART);
     return pix;
-}
-
-uint16_t pix_to_uint16_t(const pixel_t pix){
-    return ((((uint16_t)pix.r)<<8)&RED_PART) | ((((uint16_t)pix.g)<<3)&GREEN_PART) | ((((uint16_t)pix.b>>3))&BLUE_PART);
 }

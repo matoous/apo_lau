@@ -23,15 +23,7 @@
 
 using namespace std;
 
-vector<vector<uint16_t>> data;
-
-void draw_string_on_line(char* s, std::vector<uint8_t>* arr, int line){
-    for(int i = 0; i < 16; i++){
-        for(int u = 0; u < 60; u++){
-            (*arr)[(i+line*16)*60 + u] = (uint8_t)(font_rom8x16.bits[(int)s[u]*16+i]>>8);
-        }
-    }
-}
+int data[320][480];
 
 /***
  * @param c | char
@@ -41,23 +33,29 @@ void draw_string_on_line(char* s, std::vector<uint8_t>* arr, int line){
  * @param background
  */
 void put_char_there(char c, int row, int column, uint16_t color, uint16_t background){
-    for(int i = 0; i < 16; i++){
-        data[i+row*16][column*8]     = font_rom8x16.bits[(int)c*16+i]>> 15 & 1 ? color : background;
-        data[i+row*16][column*8 + 1] = font_rom8x16.bits[(int)c*16+i]>> 14 & 1 ? color : background;
-        data[i+row*16][column*8 + 2] = font_rom8x16.bits[(int)c*16+i]>> 13 & 1 ? color : background;
-        data[i+row*16][column*8 + 3] = font_rom8x16.bits[(int)c*16+i]>> 12 & 1 ? color : background;
-        data[i+row*16][column*8 + 4] = font_rom8x16.bits[(int)c*16+i]>> 11 & 1 ? color : background;
-        data[i+row*16][column*8 + 5] = font_rom8x16.bits[(int)c*16+i]>> 10 & 1 ? color : background;
-        data[i+row*16][column*8 + 6] = font_rom8x16.bits[(int)c*16+i]>>  9 & 1 ? color : background;
-        data[i+row*16][column*8 + 7] = font_rom8x16.bits[(int)c*16+i]>>  8 & 1 ? color : background;
-    }
+    for(int i = 0; i < 16; i++)
+        for(int u = 0; u < 8; u++)
+            data[i+row*16][column*8 + u] = (font_rom8x16.bits[(int)c*16+i]>>(15-u)) & 1 ? color : background;
+}
+
+/***
+ * redraw the display
+ * @param parlcd_mem_base
+ */
+void redraw(unsigned char* parlcd_mem_base){
+    parlcd_write_cmd(parlcd_mem_base, 0x2c);
+    for(int i = 0; i < 320; i++)
+        for(int u = 0; u < 480; u++)
+            parlcd_write_data(parlcd_mem_base, data[i][u]);
 }
 
 /***
  * inits static elements on display
  */
 void draw_init(){
-    data.resize(320, vector<uint16_t>(480, 0));
+    for(int i = 0; i < 320; i++)
+        for(int u = 0; u < 480; u++)
+            data[i][u] = 0x0000;
 
     // arrow
     put_char_there('<', 1, 2, WHITE, BLACK);
@@ -97,7 +95,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
     int idx = 4;
     for(int i = 0; i < 16; i++)
         put_char_there(' ', 1, i+4, WHITE, BLACK);
-    for(int i = 0; i < strlen(lu.name); i++)
+    for(int i = 0; i < (int)strlen(lu.name); i++)
         put_char_there(lu.name[i], 1, idx++, WHITE, BLACK);
 
     // Ceiling color red
@@ -153,13 +151,7 @@ void draw(lau_t lu, int knob2, unsigned char* parlcd_mem_base){
         for(int u = 0; u < 16; u++)
             data[16+i][u+440] = lu.icon[16*i + u];
 
-
-    parlcd_write_cmd(parlcd_mem_base, 0x2c);
-    for(int i = 0; i < 320; i++){
-        for(int u = 0; u < 480; u++){
-            parlcd_write_data(parlcd_mem_base, data[i][u]);
-        }
-    }
+    redraw(parlcd_mem_base);
 }
 
 /***
@@ -208,7 +200,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
     // initial values
     int curr_device_num = (prev1 >> 2) % (*devices).size();
     int selected_row = (prev2 >> 2) % 6;
-    struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 100 * 1000 * 1000};
+    struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
     draw(*lu, selected_row, parlcd_mem_base);
 
@@ -217,7 +209,6 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
      */
     while(*run){
         char changed = 0;
-
         // get knobs value
         rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
 
@@ -228,12 +219,6 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
         knob1 = uint_val & 0xFF;
         knob2 = (uint_val >> 8) & 0xFF;
         knob3 = (uint_val >> 16) & 0xFF;
-
-        // print knobs value
-        /*printf("Knobs %hhu(%hhu) %hhu(%hhu) %hhu(%hhu)\n",
-               knob1, prev1,
-               knob2, prev2,
-               knob3, prev3);*/
 
         // Device change
         if(knob1 != prev1){

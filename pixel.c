@@ -5,6 +5,7 @@ pixel_t pixel(const uint16_t color){
     pix.r = (color & RED_PART) >> 11;
     pix.g = (color & GREEN_PART) >>6;
     pix.b = (color & BLUE_PART);
+    return pix;
 }
 
 uint16_t pix_to_uint16_t(const pixel_t pix){

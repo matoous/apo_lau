@@ -14,7 +14,6 @@
 #include <thread>
 #include "socket_rocket.h"
 #include "light_admin_unit.h"
-#include "PPMReader.h"
 #include "console_info.h"
 #include "display.h"
 #include "mzapo_parlcd.h"
@@ -60,7 +59,7 @@ int main(int argc, char *argv[])
     lu.name = name;
 
     // load initial color
-    Pixel px;
+    pixel_t px;
     if(!fscanf(conf_file, "%hhu %hhu %hhu", &px.r, &px.g, &px.b)){
         printf("No initial ceiling color provided. Setting to default (white).\n");
         px.r = px.g = px.b = 255;
@@ -74,12 +73,10 @@ int main(int argc, char *argv[])
     }
     lu.walls_color = px;
 
-    // load unit icon
-    char image_file[128];
-    if(!fscanf(conf_file, "%s", image_file)){
-        printf("No unit icon provided. Exiting...\n");
-        exit(1);
-    }
+    lu.icon = new uint16_t[256];
+    for(int i = 0; i < 256; i++)
+        if(!fscanf(conf_file, "%hu", &lu.icon[i]))
+            printf("Error reading icon!\n");
 
     fclose(conf_file);
 
@@ -93,13 +90,8 @@ int main(int argc, char *argv[])
            (unsigned short)lu.walls_color.r,
            (unsigned short)lu.walls_color.g,
            (unsigned short)lu.walls_color.b);
-    printf("Icon: %s\n", image_file);
-
-    PPMReader reader(image_file);
-    uint16_t ic[256];
     for(int i = 0; i < 256; i++)
-        ic[i] = reader.nextColor();
-    lu.icon = ic;
+        cout << lu.icon[i] << " ";
 
     /***
      * Start running

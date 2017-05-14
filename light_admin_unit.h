@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 typedef struct lau_t{
-    Pixel ceiling_color, walls_color;
+    pixel_t ceiling_color, walls_color;
     char* name;
     uint16_t* icon;
 } light_unit_t;

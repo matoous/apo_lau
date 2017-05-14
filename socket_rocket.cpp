@@ -65,7 +65,7 @@ void _int16_t_tbetb(int16_t x, char* buffer, int offset){
  * @param buffer - buffer to populate
  * @param offset - offset in buffer
  */
-void _color_tbetb(Pixel c, char* buffer, int offset){
+void _color_tbetb(pixel_t c, char* buffer, int offset){
     *(buffer + offset) = 0;
     *(buffer + offset+1) = c.r;
     *(buffer + offset+2) = c.g;
@@ -121,10 +121,10 @@ uint32_t _bt_uint32_t(char* buf, int offset){
  * Gets color from buffer (should be saved as uint32_t, first byte empty, then red, green, blue)
  * @param buf - buffer
  * @param offset - color offset in buffer
- * @return Pixel color
+ * @return pixel_t color
  */
-Pixel _bt_color(char* buf, int offset){
-    Pixel c;
+pixel_t _bt_color(char* buf, int offset){
+    pixel_t c;
     c.r = buf[offset+1];
     c.g = buf[offset+2];
     c.b = buf[offset+3];
@@ -167,10 +167,12 @@ uint16_t _bt_uint16_t(char* buf, int offset){
  * @return uint16_t
  */
 int16_t _bt_int16_t(char* buf, int offset){
-    int16_t curr_val;
-    curr_val = ((int16_t)buf[offset] << 8 | (int16_t)buf[offset+1]);
+    uint16_t curr_val;
+    curr_val = (uint8_t )buf[offset] << 8;
+    curr_val += (uint8_t )buf[offset+1];
     curr_val = ntohs(curr_val);
-    return curr_val;
+    int16_t return_val = (int16_t)curr_val;
+    return return_val;
 }
 
 /***
@@ -321,8 +323,8 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
 
                 lau_t curr_lu;
 
-                Pixel ceiling_color = _bt_color(buf, 12);
-                Pixel walls_color = _bt_color(buf, 16);
+                pixel_t ceiling_color = _bt_color(buf, 12);
+                pixel_t walls_color = _bt_color(buf, 16);
 
                 curr_lu.ceiling_color = ceiling_color;
                 curr_lu.walls_color = walls_color;

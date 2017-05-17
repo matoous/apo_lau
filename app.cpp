@@ -53,13 +53,14 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
+    // Read configuration
     FILE* conf_file = fopen(argv[1], "r+");
     if(!conf_file){
         printf("Couldn't read configuration file. Exiting...\n");
         exit(1);
     }
 
-    // load unit name
+    // Load unit name
     char name[17];
     if(!fscanf(conf_file, "%s", name)){
         printf("No unit name provided. Exiting...\n");
@@ -67,7 +68,7 @@ int main(int argc, char *argv[])
     }
     lu.name = name;
 
-    // load initial color
+    // Load initial color
     pixel_t px;
     if(!fscanf(conf_file, "%hhu %hhu %hhu", &px.r, &px.g, &px.b)){
         printf("No initial ceiling color provided. Setting to default (white).\n");
@@ -75,13 +76,14 @@ int main(int argc, char *argv[])
     }
     lu.ceiling_color = px;
 
-    // load initial color
+    // Load initial color
     if(!fscanf(conf_file, "%hhu %hhu %hhu", &px.r, &px.g, &px.b)){
         printf("No initial walls color provided. Setting to default (white).\n");
         px.r = px.g = px.b = 255;
     }
     lu.walls_color = px;
 
+    // Load unit icon
     lu.icon = new uint16_t[256];
     for(int i = 0; i < 256; i++)
         if(!fscanf(conf_file, "%hu", &lu.icon[i]))
@@ -89,26 +91,12 @@ int main(int argc, char *argv[])
 
     fclose(conf_file);
 
-    // print config
-    printf("Unit name: %s\n", lu.name);
-    printf("Ceiling color: %hu %hu %hu\n",
-           (unsigned short)lu.ceiling_color.r,
-           (unsigned short)lu.ceiling_color.g,
-           (unsigned short)lu.ceiling_color.b);
-    printf("Walls color: %hu %hu %hu\n",
-           (unsigned short)lu.walls_color.r,
-           (unsigned short)lu.walls_color.g,
-           (unsigned short)lu.walls_color.b);
-    for(int i = 0; i < 256; i++)
-        cout << lu.icon[i] << " ";
-
     /***
      * Start running
      */
-    // devices list
-    sockaddr_in ahoj;
+    sockaddr_in me;
     vector<pair<sockaddr_in, lau_t>> devices;
-    devices.push_back(pair<sockaddr_in, lau_t>(ahoj,lu));
+    devices.push_back(pair<sockaddr_in, lau_t>(me, lu));
 
     printf("Starting application...\n");
 

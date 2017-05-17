@@ -7,13 +7,13 @@ Goal of semestral project was to create C/CPP program which handles lights in in
 - `./app conf_files/unit1.txt`
 
 ## Info ##
-Project is split up to individual files. Goal was to keep as many files as possible in pure C. Things that I found too hard or I was too lazy to write in C are written in CPP.
+Project is split up into individual files. Goal was to keep as many files as possible in pure C. Things that I found too hard or I was too lazy to write in C are written in CPP.
 You will find following files in the project:
 - light_admin_unit - light admin unit struct and related methods
 - pixel - pixel struct and related methods
 - mzapo_* - files provided by our teacher, methods and constants to access all peripherals
 - font_* - files provided by our teacher, methods and structs with fonts
-- socket_rocket - all stuff necessary for UDP LAN communication with other lau's, handles update sending and update receiving, dynamically created all connected units list
+- socket_rocket - all stuff necessary for UDP LAN communication with other lau's, handles update sending and update receiving, dynamically creates list of all connected units
 - console_info - displays everything that's happening into the console, mainly for debugging or if the unit doesn't have a display
 - display - handles everything related to peripherals, from displaying data to reading input from knobs
 

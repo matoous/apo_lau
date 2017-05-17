@@ -55,7 +55,7 @@ void _uint32_t_tbetb(uint32_t x, char* buffer, int offset){
  * @param offset - offset
  */
 void _int16_t_tbetb(int16_t x, char* buffer, int offset){
-    x = htonl(x);
+    x = htons(x);
     *(buffer + offset) = (x >> 8) & 0xFF;
     *(buffer + offset+1) = x & 0xFF;
 }

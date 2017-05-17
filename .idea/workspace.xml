@@ -12,17 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daacf4e0-610b-4447-8fc2-93a8941ab454" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/conf_files/unit4.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/conf_files/unit5.txt" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/font_prop14x16.c" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Makefile" afterPath="$PROJECT_DIR$/Makefile" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.cpp" afterPath="$PROJECT_DIR$/app.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conf_files/unit3.txt" afterPath="$PROJECT_DIR$/conf_files/unit3.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.cpp" afterPath="$PROJECT_DIR$/display.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.h" afterPath="$PROJECT_DIR$/display.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/font_types.h" afterPath="$PROJECT_DIR$/font_types.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/socket_rocket.cpp" afterPath="$PROJECT_DIR$/socket_rocket.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -51,8 +42,8 @@
       <file leaf-file-name="display.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/display.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="915">
-              <caret line="312" column="30" lean-forward="true" selection-start-line="312" selection-start-column="30" selection-end-line="312" selection-end-column="30" />
+            <state relative-caret-position="18">
+              <caret line="309" column="25" lean-forward="true" selection-start-line="309" selection-start-column="25" selection-end-line="309" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -82,10 +73,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&gt; (</find>
-      <find>&lt;</find>
-      <find>uint*</find>
-      <find>change</find>
       <find>*</find>
       <find>pair</find>
       <find>_</find>
@@ -101,7 +88,6 @@
       <find>int idx</find>
       <find>lu.name</find>
       <find>&lt;&lt;</find>
-      <find>curr_device_num</find>
       <find>+= 5</find>
       <find>er A</find>
       <find>er</find>
@@ -112,6 +98,11 @@
       <find>make</find>
       <find>draw</find>
       <find>BLACK</find>
+      <find>curr_device_num</find>
+      <find>read</find>
+      <find>MIN</find>
+      <find>change</find>
+      <find>changed</find>
     </findStrings>
     <replaceStrings>
       <replace>lau_t</replace>
@@ -159,7 +150,6 @@
         <option value="$PROJECT_DIR$/pixel.cpp" />
         <option value="$PROJECT_DIR$/conf_files/unit2.txt" />
         <option value="$PROJECT_DIR$/socket_rocket.h" />
-        <option value="$PROJECT_DIR$/socket_rocket.cpp" />
         <option value="$PROJECT_DIR$/pixel.h" />
         <option value="$PROJECT_DIR$/pixel.c" />
         <option value="$PROJECT_DIR$/light_admin_unit.h" />
@@ -171,6 +161,7 @@
         <option value="$PROJECT_DIR$/Makefile" />
         <option value="$PROJECT_DIR$/display.h" />
         <option value="$PROJECT_DIR$/display.cpp" />
+        <option value="$PROJECT_DIR$/socket_rocket.cpp" />
       </list>
     </option>
   </component>
@@ -456,12 +447,12 @@
       <workItem from="1493820969549" duration="13826000" />
       <workItem from="1494626985740" duration="1686000" />
       <workItem from="1494796913676" duration="7765000" />
-      <workItem from="1494874711703" duration="7723000" />
+      <workItem from="1494874711703" duration="15448000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141284000" />
+    <option name="totallyTimeSpent" value="149009000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -608,13 +599,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/socket_rocket.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pixel.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -678,8 +662,8 @@
         <state relative-caret-position="250">
           <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
           <folding>
-            <element signature="e#674#686#0" expanded="true" />
-            <element signature="e#1735#1752#0" expanded="true" />
+            <element signature="e#674#686#0" expanded="false" />
+            <element signature="e#1735#1752#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -732,10 +716,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/socket_rocket.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="172" column="19" lean-forward="true" selection-start-line="172" selection-start-column="19" selection-end-line="172" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="312" column="30" lean-forward="true" selection-start-line="312" selection-start-column="30" selection-end-line="312" selection-end-column="30" />
+        <state relative-caret-position="18">
+          <caret line="309" column="25" lean-forward="true" selection-start-line="309" selection-start-column="25" selection-end-line="309" selection-end-column="25" />
           <folding />
         </state>
       </provider>

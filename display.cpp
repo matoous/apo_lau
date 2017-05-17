@@ -25,6 +25,7 @@
 #include "mzapo_parlcd.h"
 #include "socket_rocket.h"
 
+#define MIN(x,y) (x < y) ? (x) : (y)
 
 using namespace std;
 
@@ -198,7 +199,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int knob_change)
 
     char buffer[32];
 
-    for(int i = frame_begin; i < MIN(frame_end + 1, devices.size()); i++){
+    for(int i = frame_begin; i < ((unsigned int)frame_end + 1 < devices.size()) ? frame_end +1 : devices.size(); i++){
         for(int u = 0; u < 32; u++)
             buffer[u] = ' ';
         sprintf(buffer, "%s", devices[i].second.name);
@@ -219,7 +220,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int knob_change)
  * @param b3
  * @param knobs_mem_base
  */
-void read_knobs(int* k1, int* k2, int* k3, int* b1, int* b2, int* b3, unsigned char* knobs_mem_base){
+void read_knobs(uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2, uint8_t* b3, unsigned char* knobs_mem_base){
     uint32_t rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
     *k1 = rgb_knobs_value & 0xFF;
     *k2 = (rgb_knobs_value >> 8) & 0xFF;
@@ -263,32 +264,26 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
 
     all_devices_draw(*devices, 0);
     // init display data
-    //one_device_draw_init();
 
-    uint8_t knob1, knob2, knob3, prev1, prev2, prev3;
+    uint8_t knob1, knob2, knob3, prev1, prev2, prev3, button1, button2, button3;
 
     read_knobs(&prev1, &prev2, &prev3, &button1, &button2, &button3, knobs_mem_base);
 
-    /* initial values
-    int curr_device_num = (prev1 >> 2) % (*devices).size();
-    struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};*/
+    struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
-    //one_device_draw(*lu, selected_row, parlcd_mem_base);
-
-    int selected_row;
+    int selected_row = (knob2 >> 2) % 7;
 
     /***
      * !!MAIN!! loop
      */
     while(*run){
-        char changed = 0;
-
-        read_knobs(knob1, knob2, knob3, button1, button2, button3, knobs_mem_base);
+        // read new values from inputs
+        read_knobs(&knob1, &knob2, &knob3, &button1, &button2, &button3, knobs_mem_base);
 
         // Displaying devices list
         if(current_display_style == 1){
             if(knob1 != prev1){
-                int change;
+                int change = 0;
                 if(prev1 < 13 && knob1 > 245)
                     change = -((int)256 - knob1 + prev1)/4;
                 else if(prev1 > 245 && knob1 < 15)
@@ -301,62 +296,62 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 all_devices_draw(*devices, change);
             }
             if(button1){
-                current_display_style == 2;
+                current_display_style = 2;
                 selected_row = (knob2 >> 2) % 7;
                 one_device_draw_init();
-                one_device_draw(devices[curr_device_in_list].second, knob2, parlcd_mem_base);
+                one_device_draw((*devices)[curr_device_in_list].second, knob2, parlcd_mem_base);
             }
         }
         else if(current_display_style == 2){ // Displaying one device
-
+            bool changed = false;
             if(selected_row == 6 && button1){
                 prev1 = knob1;
-                current_display_style == 1;
+                current_display_style = 1;
                 continue;
             }
             // Device change
             if(knob1 != prev1){
-                int change;
+                int change = 0;
                 if(prev1 < 13 && knob1 > 245)
-                    change = -((int)256 - knob1 + prev1)/4;
+                    change = -((int)256 - (int)knob1 + (int)prev1)/4;
                 else if(prev1 > 245 && knob1 < 15)
-                    change = ((int)256-prev1+knob1)/4;
+                    change = ((int)256-(int)prev1+(int)knob1)/4;
                 else if(prev1 < knob1)
-                    change = ((int)knob1-prev1)/4;
+                    change = ((int)knob1-(int)prev1)/4;
                 else if(prev1 > knob1)
-                    change = -((int)prev1-knob1)/4;
+                    change = -((int)prev1-(int)knob1)/4;
                 curr_device_in_list += change;
                 if(curr_device_in_list < 0)
                     curr_device_in_list = 0;
                 if(curr_device_in_list >= (*devices).size())
                     curr_device_in_list = (*devices).size() -1;
                 prev1 = knob1;
-                changed = 1;
+                changed = true;
             }
             // Color component change
             if(knob2 != prev2){
                 prev2 = knob2;
                 selected_row = (knob2 >> 2) % 7;
-                changed = 1;
+                changed = true;
             }
             int change = 0;
             // Color change
             if(knob3 != prev3){
-                changed = 1;
+                changed = true;
                 if(prev3 < 13 && knob3 > 245)
-                    change = -((int)256 - knob3 + prev3)/4;
+                    change = -((int)256 - (int)knob3 + (int)prev3);
                 else if(prev3 > 245 && knob3 < 15)
-                    change = ((int)256-prev3+knob3)/4;
+                    change = ((int)256-(int)prev3+(int)knob3);
                 else if(prev3 < knob3)
-                    change = ((int)knob3-prev3)/4;
+                    change = ((int)knob3-(int)prev3);
                 else if(prev3 > knob3)
-                    change = -((int)prev3-knob3)/4;
+                    change = -((int)prev3-(int)knob3);
                 prev3 = knob3;
             }
             // redraw
             if(changed){
                 // do changes
-                if(curr_device_num == 0){
+                if(curr_device_in_list == 0){
                     // changes on local device
                     switch (selected_row){
                         case 0:
@@ -381,7 +376,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 }
                 else{
                     if(change != 0)
-                        send_modify(sockfd, (*devices)[curr_device_num].first,
+                        send_modify(sockfd, (*devices)[curr_device_in_list].first,
                                     (int16_t)(selected_row == 0 ? change : 0),
                                     (int16_t)(selected_row == 1 ? change : 0),
                                     (int16_t)(selected_row == 2 ? change : 0),
@@ -389,6 +384,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                                     (int16_t)(selected_row == 4 ? change : 0),
                                     (int16_t)(selected_row == 5 ? change : 0));
                 }
+
                 one_device_draw((*devices)[curr_device_in_list].second, selected_row, parlcd_mem_base);
             }
         }

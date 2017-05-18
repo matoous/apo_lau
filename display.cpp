@@ -199,7 +199,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int knob_change)
 
     char buffer[32];
 
-    for(int i = frame_begin; i < ((unsigned int)frame_end + 1 < devices.size()) ? frame_end +1 : devices.size(); i++){
+    for(int i = frame_begin; i < devices.size(); i++){
         for(int u = 0; u < 32; u++)
             buffer[u] = ' ';
         sprintf(buffer, "%s", devices[i].second.name);
@@ -272,6 +272,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
     struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
     int selected_row = (knob2 >> 2) % 7;
+    redraw(parlcd_mem_base);
 
     /***
      * !!MAIN!! loop

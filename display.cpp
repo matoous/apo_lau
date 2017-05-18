@@ -181,28 +181,21 @@ void all_devices_draw_init(){
  * @param devices | vector of all connected devices
  * @param knob_change | change of knob of currently selected device
  */
-void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int knob_change){
+void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int curr_device_in_list){
     // null display
     for(int i = 0; i < 320; i++)
         for(int u = 0; u < 480; u++)
             display_data[i][u] = DEFAULT_BACKGROUND;
-
-    curr_device_in_list += knob_change;
-    if(curr_device_in_list >= devices.size())
-        curr_device_in_list = devices.size() -1;
-    if(curr_device_in_list < 0)
-        curr_device_in_list = 0;
-
     char buffer[32];
 
     for(int i = 0; i < devices.size(); i++){
         for(int u = 0; u < 32; u++)
             buffer[u] = ' ';
         sprintf(buffer, "%s", devices[i].second.name);
+        put_string_on_line(buffer, i+1, 5, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
         for(int u = 0; u < 16; u++)
             for(int j = 0; j < 16; j++)
                 display_data[u+((i+1)*16)][j+32] = devices[i].second.icon[u*16+j];
-        put_string_on_line(buffer, i+1, 4, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
     }
 }
 
@@ -299,7 +292,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                     curr_device_in_list = (*devices).size() -1;
                 prev1 = knob1;
             }
-            all_devices_draw(*devices, change);
+            all_devices_draw(*devices, curr_device_in_list);
             redraw(parlcd_mem_base);
             if(button1 && !knobs_turned_off){
                 knobs_turned_off = 3;

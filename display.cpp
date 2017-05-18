@@ -267,6 +267,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
 
     struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
+    int knobs_turned_off;
     int selected_row = (knob2 >> 2) % 7;
     redraw(parlcd_mem_base);
 
@@ -276,6 +277,9 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
 
     while(*run){
         read_knobs(&knob1, &knob2, &knob3, &button1, &button2, &button3, knobs_mem_base);
+        knobs_turned_off--;
+        if(knobs_turned_off<0)
+            knobs_turned_off=0;
 
         if(current_display_style == 1){
             int change = 0;
@@ -292,7 +296,8 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
             }
             all_devices_draw(*devices, change);
             redraw(parlcd_mem_base);
-            if(button1){
+            if(button1 && !knobs_turned_off){
+                knobs_turned_off = 3;
                 current_display_style = 2;
                 selected_row = (knob2 >> 2) % 7;
                 one_device_draw_init();
@@ -326,7 +331,8 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 selected_row = (knob2 >> 2) % 7;
                 changed = true;
             }
-            if(button1){
+            if(selected_row == 6 && button1 && !knobs_turned_off){
+                knobs_turned_off = 3;
                 prev1 = knob1;
                 current_display_style = 1;
                 continue;

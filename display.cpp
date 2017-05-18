@@ -205,7 +205,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int knob_change)
         sprintf(buffer, "%s", devices[i].second.name);
         for(int u = 0; u < 16; u++)
             for(int j = 0; j < 16; j++)
-                display_data[u+32][j+(i*16)] = devices[i].second.icon[u*16+j];
+                display_data[u+((i+1)*16)][j+32] = devices[i].second.icon[u*16+j];
         put_string_on_line(buffer, i+1, 4, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
     }
 }

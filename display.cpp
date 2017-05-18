@@ -277,12 +277,10 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
     /***
      * !!MAIN!! loop
      */
-     /*
+     
     while(*run){
-        // read new values from inputs
         read_knobs(&knob1, &knob2, &knob3, &button1, &button2, &button3, knobs_mem_base);
 
-        // Displaying devices list
         if(current_display_style == 1){
             if(knob1 != prev1){
                 int change = 0;
@@ -393,7 +391,6 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
 
         // sleep
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
-    }*/
-
+    }
     printf("Ending display.\n");
 }

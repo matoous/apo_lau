@@ -29,24 +29,10 @@
 
 using namespace std;
 
-#define COLOR_SELECTION 10
 
 int display_data[320][480];
 int curr_device_in_list, frame_begin, frame_end, current_display_style;
 char button1, button2, button3;
-uint16_t color_list[] = {
-        0x0000,
-        0xFFFF,
-        0x17E0,
-        0x07F0,
-        0x079F,
-        0x00FF,
-        0xF01F,
-        0xF80A,
-        0xFA20,
-        0xFFA0,
-};
-
 /***
  * Puts char on specific place on display
  * @param c | char
@@ -171,21 +157,6 @@ void one_device_draw(lau_t lu, int selected_row, unsigned char* parlcd_mem_base)
         buffer[i] = ' ';
     sprintf(buffer, "Back to list");
     put_string_on_line(buffer, 14, 5, 6 == selected_row ? WHITE : BLACK, 6 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
-
-    // Color select 16 and 17
-    for(int i = 0; i < 20; i++){
-        put_char_there(' ', 16, i, WHITE, DEFAULT_BACKGROUND);
-        put_char_there(' ', 17, i, WHITE, DEFAULT_BACKGROUND);
-    }
-    for(int i = 0; i < COLOR_SELECTION; i++){
-        put_char_there(' ', 16, i+1, WHITE, color_list[i]);
-        if(selected_row + 6 == i){
-            display_data[17*16][(i+1)*16] = 0xFFFF;
-            display_data[17*16+1][(i+1)*16] = 0xFFFF;
-            display_data[17*16+2][(i+1)*16] = 0xFFFF;
-        }
-    }
-
 
     // Logo
     for(int i = 0; i < 16; i++)
@@ -326,7 +297,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
             if(button1 && !knobs_turned_off){
                 knobs_turned_off = 3;
                 current_display_style = 2;
-                selected_row = (knob2 >> 2) % (7 + COLOR_SELECTION);
+                selected_row = (knob2 >> 2) % 7;
                 one_device_draw_init();
                 one_device_draw((*devices)[curr_device_in_list].second, knob2, parlcd_mem_base);
             }
@@ -355,7 +326,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
             // Color component change
             if(knob2 != prev2){
                 prev2 = knob2;
-                selected_row = (knob2 >> 2) % (7 + COLOR_SELECTION);
+                selected_row = (knob2 >> 2) % 7;
                 changed = true;
             }
             if(selected_row == 6 && button1 && !knobs_turned_off){

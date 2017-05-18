@@ -120,43 +120,43 @@ void one_device_draw(lau_t lu, int selected_row, unsigned char* parlcd_mem_base)
     for(int i = 0; i < 32; i++)
         buffer[i] = ' ';
     sprintf(buffer, "Red: %.3d", lu.ceiling_color.r);
-    put_string_on_line(buffer, 5, 5, 0 == selected_row ? WHITE : BLACK, 0 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
+    put_string_on_line(buffer, 5, 5, 0 == selected_row ? DEFAULT_SELECTED_FONT_COLOR : BLACK, 0 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
 
     // Ceiling color green
     for(int i = 0; i < 32; i++)
         buffer[i] = ' ';
     sprintf(buffer, "Green: %.3d", lu.ceiling_color.g);
-    put_string_on_line(buffer, 6, 5, 1 == selected_row ? WHITE : BLACK, 1 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
+    put_string_on_line(buffer, 6, 5, 1 == selected_row ? DEFAULT_SELECTED_FONT_COLOR : BLACK, 1 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
 
     // Ceiling color blue
     for(int i = 0; i < 32; i++)
         buffer[i] = ' ';
     sprintf(buffer, "Blue: %.3d", lu.ceiling_color.b);
-    put_string_on_line(buffer, 7, 5, 2 == selected_row ? WHITE : BLACK, 2 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
+    put_string_on_line(buffer, 7, 5, 2 == selected_row ? DEFAULT_SELECTED_FONT_COLOR : BLACK, 2 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
 
     // Walls color red
     for(int i = 0; i < 32; i++)
         buffer[i] = ' ';
     sprintf(buffer, "Red: %.3d", lu.walls_color.r);
-    put_string_on_line(buffer, 10, 5, 3 == selected_row ? WHITE : BLACK, 3 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
+    put_string_on_line(buffer, 10, 5, 3 == selected_row ? DEFAULT_SELECTED_FONT_COLOR : BLACK, 3 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
 
     // Walls color green
     for(int i = 0; i < 32; i++)
         buffer[i] = ' ';
     sprintf(buffer, "Green: %.3d", lu.walls_color.g);
-    put_string_on_line(buffer, 11, 5, 4 == selected_row ? WHITE : BLACK, 4 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
+    put_string_on_line(buffer, 11, 5, 4 == selected_row ? DEFAULT_SELECTED_FONT_COLOR : BLACK, 4 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
 
     // Walls color blue
     for(int i = 0; i < 32; i++)
         buffer[i] = ' ';
     sprintf(buffer, "Blue: %.3d", lu.walls_color.b);
-    put_string_on_line(buffer, 12, 5, 5 == selected_row ? WHITE : BLACK, 5 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
+    put_string_on_line(buffer, 12, 5, 5 == selected_row ? DEFAULT_SELECTED_FONT_COLOR : BLACK, 5 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
 
     // Back option
     for(int i = 0; i < 32; i++)
         buffer[i] = ' ';
     sprintf(buffer, "Back to list");
-    put_string_on_line(buffer, 14, 5, 6 == selected_row ? WHITE : BLACK, 6 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
+    put_string_on_line(buffer, 14, 5, 6 == selected_row ? DEFAULT_SELECTED_FONT_COLOR : BLACK, 6 == selected_row ? DEFAULT_SELECTED_BACKGROUND_COLOR : WHITE);
 
     // Logo
     for(int i = 0; i < 16; i++)
@@ -193,7 +193,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int curr_device_
     put_string_on_line(str, 19, 36, WHITE, DEFAULT_BACKGROUND);
     for(int i = 0; i <50; i++)
         str[i] = ' ';
-    strcpy(str, " All devices list: ");
+    strcpy(str, "  All devices list: ");
     str[0] = 0x03;
     put_string_on_line(str, 1, 4, WHITE, DEFAULT_BACKGROUND);
 

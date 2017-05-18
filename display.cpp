@@ -193,7 +193,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int curr_device_
     put_string_on_line(str, 19, 36, WHITE, DEFAULT_BACKGROUND);
     for(int i = 0; i <50; i++)
         str[i] = ' ';
-    strcpy(str, "All devices list:");
+    strcpy(str, " All devices list: ");
     str[0] = 0x03;
     put_string_on_line(str, 1, 4, WHITE, DEFAULT_BACKGROUND);
 
@@ -204,7 +204,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int curr_device_
         put_string_on_line(buffer, i+3, 6, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
         for(int u = 0; u < 16; u++)
             for(int j = 0; j < 16; j++)
-                display_data[u+((i+1)*16)][j+16] = devices[i].second.icon[u*16+j];
+                display_data[u+((i+3)*16)][j+16] = devices[i].second.icon[u*16+j];
     }
 }
 

@@ -187,12 +187,21 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int curr_device_
         for(int u = 0; u < 480; u++)
             display_data[i][u] = DEFAULT_BACKGROUND;
     char buffer[32];
+    char str[50];
+    strcpy(str, "  dzivjmat@fel.cvut.cz");
+    str[0] = 0x03;
+    put_string_on_line(str, 19, 36, WHITE, DEFAULT_BACKGROUND);
+    for(int i = 0; i <50; i++)
+        str[i] = ' ';
+    strcpy(str, "All devices list:");
+    str[0] = 0x03;
+    put_string_on_line(str, 1, 4, WHITE, DEFAULT_BACKGROUND);
 
     for(int i = 0; i < devices.size(); i++){
         for(int u = 0; u < 32; u++)
             buffer[u] = ' ';
         sprintf(buffer, "%s", devices[i].second.name);
-        put_string_on_line(buffer, i+1, 6, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
+        put_string_on_line(buffer, i+3, 6, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
         for(int u = 0; u < 16; u++)
             for(int j = 0; j < 16; j++)
                 display_data[u+((i+1)*16)][j+16] = devices[i].second.icon[u*16+j];

@@ -295,6 +295,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 prev1 = knob1;
                 all_devices_draw(*devices, change);
             }
+            redraw(parlcd_mem_base);
             if(button1){
                 current_display_style = 2;
                 selected_row = (knob2 >> 2) % 7;
@@ -304,11 +305,6 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
         }
         else if(current_display_style == 2){ // Displaying one device
             bool changed = false;
-            if(selected_row == 6 && button1){
-                prev1 = knob1;
-                current_display_style = 1;
-                continue;
-            }
             // Device change
             if(knob1 != prev1){
                 int change = 0;
@@ -333,6 +329,11 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 prev2 = knob2;
                 selected_row = (knob2 >> 2) % 7;
                 changed = true;
+            }
+            if(selected_row == 6 && button1){
+                prev1 = knob1;
+                current_display_style = 1;
+                continue;
             }
             int change = 0;
             // Color change

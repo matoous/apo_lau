@@ -11,12 +11,19 @@
 #define APO_LAU_LIGHT_UNIT_H
 
 #include "pixel.h"
+#include <chrono>
+#include <ctime>
 #include <stdio.h>
 
+/***
+ * Light admin unit type,
+ * holding name, ceiling and wall color and icon of the unit
+ */
 typedef struct lau_t{
     pixel_t ceiling_color, walls_color;
     char* name;
     uint16_t* icon;
+    std::chrono::time_point<std::chrono::system_clock> last_update;
 } light_unit_t;
 
 #endif //APO_LAU_LIGHT_UNIT_H

@@ -16,6 +16,8 @@
 #include <unistd.h>
 #include <thread>
 #include <iostream>
+#include <chrono>
+#include <ctime>
 #include "socket_rocket.h"
 
 using namespace std;
@@ -331,6 +333,7 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
                 curr_lu.walls_color = walls_color;
                 curr_lu.name = new char[17];
                 curr_lu.icon = new uint16_t[256];
+                curr_lu.last_update = std::chrono::system_clock::now();
 
                 _bt_name(buf, 20, curr_lu.name);
                 _bt_icon(buf, 36, curr_lu.icon);
@@ -338,6 +341,8 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
                 printf("%s (%u) update\n", curr_lu.name, cli_addr.sin_addr.s_addr);
 
                 char added = 0;
+                std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
+
                 unique_lock<mutex> devices_lock(*devices_mutex);
                 if(strcmp((*devices)[0].second.name, curr_lu.name) == 0)
                     (*devices)[0].first = cli_addr;
@@ -345,7 +350,11 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
                     if((*devices)[i].first.sin_addr.s_addr == cli_addr.sin_addr.s_addr){
                         (*devices)[i].second = curr_lu;
                         added = 1;
-                        break;
+                        continue;
+                    }
+                    std::chrono::duration<double> elapsed_seconds = now - (*devices)[i].second.last_update;
+                    if(elapsed_seconds.count() > 20){
+                        (*devices).erase((*devices).begin()+i);
                     }
                 }
                 if(!added){

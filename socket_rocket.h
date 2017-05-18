@@ -16,16 +16,25 @@
 #include <mutex>
 #include "light_admin_unit.h"
 
-#define SOCK_PORT 55555
-#define ALC_CONTROL_NUM 0x414C4331UL
-#define ALC_PROTOCOL_VER 0x00010000UL
+#define SOCK_PORT 55555  // port to run on
+#define ALC_CONTROL_NUM 0x414C4331UL  // AL1 in 32bit number as specified by APO HW
+#define ALC_PROTOCOL_VER 0x00010000UL  // 1 on 3rd bite in 32bit number, as specified by APO HW
 #define ALC_MESSAGE_STATUS 0UL
 #define ALC_MESSAGE_MODIFY 1UL
 #define ALC_MESSAGE_SET 2UL
 
-void sr_updater(const lau_t*, const int* const, char*, std::mutex*);
+void sr_updater(
+        const lau_t*, // pointer to local unit
+        const int* const, //pointer to socket file descriptor
+        char*, // run
+        std::mutex*); // mutex for local unit
 
-void sr_init(light_unit_t*, std::vector<std::pair<sockaddr_in, lau_t>>*, int*, char*, std::mutex*, std::mutex*);
+void sr_init(
+        light_unit_t*, // local ligh unit
+        std::vector<std::pair<sockaddr_in, lau_t>>*, // pointer to vector of devices
+        int*, // socket file descriptor
+        char*, // run
+        std::mutex*, std::mutex*); // mutex for local unit and vector of units
 
 void send_modify(
         int*, // socket

@@ -96,7 +96,7 @@ void one_device_draw_init(){
     // name
     strcpy(str, "  dzivjmat@fel.cvut.cz");
     str[0] = 0x03;
-    put_string_on_line(str, 4, 36, WHITE, DEFAULT_BACKGROUND);
+    put_string_on_line(str, 18, 36, WHITE, DEFAULT_BACKGROUND);
 }
 
 /***
@@ -199,7 +199,7 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int knob_change)
 
     char buffer[32];
 
-    for(int i = frame_begin; i < devices.size(); i++){
+    for(int i = 0; i < devices.size(); i++){
         for(int u = 0; u < 32; u++)
             buffer[u] = ' ';
         sprintf(buffer, "%s", devices[i].second.name);
@@ -277,7 +277,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
     /***
      * !!MAIN!! loop
      */
-     
+
     while(*run){
         read_knobs(&knob1, &knob2, &knob3, &button1, &button2, &button3, knobs_mem_base);
 

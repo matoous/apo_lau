@@ -285,13 +285,18 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
             int change = 0;
             if(knob1 != prev1){
                 if(prev1 < 13 && knob1 > 245)
-                    change = -((int)256 - knob1 + prev1)/4;
+                    change = -((int)256 - (int)knob1 + (int)prev1)/4;
                 else if(prev1 > 245 && knob1 < 15)
-                    change = ((int)256-prev1+knob1)/4;
+                    change = ((int)256-(int)prev1+(int)knob1)/4;
                 else if(prev1 < knob1)
-                    change = ((int)knob1-prev1)/4;
+                    change = ((int)knob1-(int)prev1)/4;
                 else if(prev1 > knob1)
-                    change = -((int)prev1-knob1)/4;
+                    change = -((int)prev1-(int)knob1)/4;
+                curr_device_in_list += change;
+                if(curr_device_in_list < 0)
+                    curr_device_in_list = 0;
+                if(curr_device_in_list >= (*devices).size())
+                    curr_device_in_list = (*devices).size() -1;
                 prev1 = knob1;
             }
             all_devices_draw(*devices, change);

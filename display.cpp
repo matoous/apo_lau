@@ -96,7 +96,7 @@ void one_device_draw_init(){
     // name
     strcpy(str, "  dzivjmat@fel.cvut.cz");
     str[0] = 0x03;
-    put_string_on_line(str, 18, 36, WHITE, DEFAULT_BACKGROUND);
+    put_string_on_line(str, 19, 36, WHITE, DEFAULT_BACKGROUND);
 }
 
 /***
@@ -330,7 +330,7 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 selected_row = (knob2 >> 2) % 7;
                 changed = true;
             }
-            if(selected_row == 6 && button1){
+            if(button1){
                 prev1 = knob1;
                 current_display_style = 1;
                 continue;

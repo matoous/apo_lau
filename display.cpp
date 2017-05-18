@@ -190,12 +190,8 @@ void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int knob_change)
     curr_device_in_list += knob_change;
     if(curr_device_in_list >= devices.size())
         curr_device_in_list = devices.size() -1;
-    if(curr_device_in_list > frame_end)
-        frame_end += 5, frame_begin += 5;
     if(curr_device_in_list < 0)
         curr_device_in_list = 0;
-    if(curr_device_in_list < frame_begin);
-        frame_begin -= 5, frame_end -= 5;
 
     char buffer[32];
 
@@ -282,8 +278,8 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
         read_knobs(&knob1, &knob2, &knob3, &button1, &button2, &button3, knobs_mem_base);
 
         if(current_display_style == 1){
+            int change = 0;
             if(knob1 != prev1){
-                int change = 0;
                 if(prev1 < 13 && knob1 > 245)
                     change = -((int)256 - knob1 + prev1)/4;
                 else if(prev1 > 245 && knob1 < 15)
@@ -293,8 +289,8 @@ void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, 
                 else if(prev1 > knob1)
                     change = -((int)prev1-knob1)/4;
                 prev1 = knob1;
-                all_devices_draw(*devices, change);
             }
+            all_devices_draw(*devices, change);
             redraw(parlcd_mem_base);
             if(button1){
                 current_display_style = 2;

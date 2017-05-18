@@ -17,6 +17,6 @@
 #include <stdint.h>
 #include <mutex>
 
-void console_info(lau_t*, std::vector<std::pair<sockaddr_in, lau_t>>*, char*, std::mutex*);
+void *console_info(void*);
 
 #endif //APO_LAU_CONSOLE_INFO_H

@@ -239,19 +239,28 @@ void read_knobs(uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2,
  * @param local_lau_mutex
  * @param devices_mutes
  */
-void par_lcder(lau_t* lu, vector<pair<sockaddr_in, lau_t>>* devices, char* run, int* sockfd, mutex* local_lau_mutex, mutex* devices_mutes){
+void *par_lcder(void* args){
+    passer_t arguments = *((passer_t*)args);
+
+    lau_t* lu = arguments.local_lau;
+    char* run = arguments.run;
+    std::mutex* local_lau_mutex = arguments.local_lau_mutex;
+    int* sockfd = arguments.sockfd;
+    std::vector<std::pair<sockaddr_in, lau_t>>* devices = arguments.devices;
+    std::mutex* devices_mutex = arguments.devices_mutex;
+
     // Map knobs
     unsigned char* knobs_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
     if(knobs_mem_base == NULL){
         printf("Error mapping knobs and LED.\n");
-        return;
+        return NULL;
     }
 
     // Map display
     unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     if(parlcd_mem_base == NULL){
         printf("Error mapping LCD display.\n");
-        return;
+        return NULL;
     }
 
     // Init variables

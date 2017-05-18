@@ -30,7 +30,7 @@ typedef struct board_t{
     uint16_t display_data[320][480];
 } board_t;
 
-void par_lcder(lau_t*, std::vector<std::pair<sockaddr_in, lau_t>>*, char*, int*, std::mutex*, std::mutex*);
+void* par_lcder(void*);
 
 void draw(lau_t, int, unsigned char*);
 

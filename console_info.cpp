@@ -11,12 +11,20 @@
 #include <unistd.h>
 #include <iostream>
 #include <string.h>
+#include "passer.h"
 #include "console_info.h"
 #include "light_admin_unit.h"
 
 using namespace std;
 
-void console_info(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, char* run, std::mutex* devices_mutex){
+void *console_info(void* args){
+
+    passer_t arguments = *((passer_t*)args);
+    lau_t* lu = arguments.local_lau;
+    std::vector<std::pair<sockaddr_in, lau_t>>* devices = arguments.devices;
+    char* run = arguments.run;
+    std::mutex* devices_mutex = arguments.devices_mutex;
+
     unique_lock<mutex> devices_lock(*devices_mutex);
     devices_lock.unlock();
     while(*run){
@@ -46,4 +54,5 @@ void console_info(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices
         sleep(5);
     }
     printf("Ending console info display...\n");
+    return NULL;
 }

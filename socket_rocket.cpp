@@ -16,8 +16,7 @@
 #include <unistd.h>
 #include <thread>
 #include <iostream>
-#include <chrono>
-#include <ctime>
+#include <time.h>
 #include "socket_rocket.h"
 
 using namespace std;
@@ -232,8 +231,14 @@ void _sr_set_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
  * @param lu - pointer to lau_t representing local unit
  * @param sockfd - memory address of socket
  */
-void sr_updater(const lau_t* lu, const int* const sockfd, char* run, mutex* local_lau_mutex)
-{
+void *sr_updater(void* args){
+    passer_t arguments = *((passer_t*)args);
+
+    lau_t* lu = arguments.local_lau;
+    char* run = arguments.run;
+    std::mutex* local_lau_mutex = arguments.local_lau_mutex;
+    int* sockfd = arguments.sockfd;
+
     int n;
     sockaddr_in broadcast;
 
@@ -273,13 +278,25 @@ void sr_updater(const lau_t* lu, const int* const sockfd, char* run, mutex* loca
         sleep(1);
     }
     printf("Ending update sender...\n");
+    return NULL;
 }
 
 /***
  * Handles incoming messages, updates, etc.
  * @param lu - pointer to lau_t representing local unit
  */
-void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int* sockfd, char* run, mutex* local_lau_mutex, mutex* devices_mutex) {
+void *sr_init(void* args) {
+    passer_t arguments = *((passer_t*)args);
+
+    lau_t* lu = arguments.local_lau;
+    char* run = arguments.run;
+    std::mutex* local_lau_mutex = arguments.local_lau_mutex;
+    int* sockfd = arguments.sockfd;
+    std::vector<std::pair<sockaddr_in, lau_t>>* devices = arguments.devices;
+    std::mutex* devices_mutex = arguments.devices_mutex;
+
+
+
     struct sockaddr_in my_addr, cli_addr;
     char buf[1024];
 
@@ -333,7 +350,7 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
                 curr_lu.walls_color = walls_color;
                 curr_lu.name = new char[17];
                 curr_lu.icon = new uint16_t[256];
-                curr_lu.last_update = std::chrono::system_clock::now();
+                curr_lu.last_update = time(NULL);
 
                 _bt_name(buf, 20, curr_lu.name);
                 _bt_icon(buf, 36, curr_lu.icon);
@@ -341,19 +358,18 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
                 printf("%s (%u) update\n", curr_lu.name, cli_addr.sin_addr.s_addr);
 
                 char added = 0;
-                std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
-
                 unique_lock<mutex> devices_lock(*devices_mutex);
                 if(strcmp((*devices)[0].second.name, curr_lu.name) == 0)
                     (*devices)[0].first = cli_addr;
+
+                time_t now = time(NULL);
                 for(uint32_t i = 0; i < (*devices).size(); i++){
                     if((*devices)[i].first.sin_addr.s_addr == cli_addr.sin_addr.s_addr){
                         (*devices)[i].second = curr_lu;
                         added = 1;
                         continue;
                     }
-                    std::chrono::duration<double> elapsed_seconds = now - (*devices)[i].second.last_update;
-                    if(elapsed_seconds.count() > 20){
+                    if(now - (*devices)[i].second.last_update > 20){
                         (*devices).erase((*devices).begin()+i);
                     }
                 }
@@ -376,6 +392,7 @@ void sr_init(lau_t* lu, std::vector<std::pair<sockaddr_in, lau_t>>* devices, int
     }
 
     printf("Ending update listener...\n");
+    return NULL;
 }
 
 /***

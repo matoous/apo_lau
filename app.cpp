@@ -21,6 +21,7 @@
 #include <utility>
 #include <vector>
 #include <thread>
+#include "passer.h"
 #include "socket_rocket.h"
 #include "light_admin_unit.h"
 #include "console_info.h"
@@ -108,20 +109,26 @@ int main(int argc, char *argv[])
     char run = 1;
     int sockfd;
 
+    passer_t passer;
+    passer.devices = &devices;
+    passer.devices_mutex = &devices_mutex;
+    passer.local_lau = &lu;
+    passer.local_lau_mutex = &local_lau_mutex;
+    passer.run = &run;
+    passer.sockfd = &sockfd;
+
     // start individual threads
-    std::thread udp_listener(sr_init, &lu, &devices, &sockfd, &run, &local_lau_mutex, &devices_mutex);
-    std::thread udp_updater(sr_updater, &lu, &sockfd, &run, &local_lau_mutex);
-    std::thread parlcd_disp(par_lcder, &lu, &devices, &run, &sockfd, &local_lau_mutex, &devices_mutex);
-    std::thread console_disp(console_info, &lu, &devices, &run, &devices_mutex);
+    pthread_t udp_listener, udp_updater, parlcd_disp, console_disp;
+    pthread_create(&udp_listener, NULL, sr_init, &passer);
+    pthread_create(&udp_updater, NULL, sr_updater, &passer);
+    pthread_create(&parlcd_disp, NULL, par_lcder, &passer);
+    pthread_create(&console_disp, NULL, console_info, &passer);
 
     // wait for input
     getchar();
 
     // end application
     run = 0;
-    udp_updater.join();
-    console_disp.join();
-    parlcd_disp.join();
     close(sockfd);
 
     printf("Ending application...\n");

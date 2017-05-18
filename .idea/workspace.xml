@@ -12,8 +12,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="daacf4e0-610b-4447-8fc2-93a8941ab454" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.cpp" afterPath="$PROJECT_DIR$/display.cpp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/socket_rocket.cpp" afterPath="$PROJECT_DIR$/socket_rocket.cpp" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -42,8 +43,8 @@
       <file leaf-file-name="display.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/display.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="309" column="25" lean-forward="true" selection-start-line="309" selection-start-column="25" selection-end-line="309" selection-end-column="25" />
+            <state relative-caret-position="487">
+              <caret line="378" column="35" lean-forward="true" selection-start-line="378" selection-start-column="35" selection-end-line="378" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -160,8 +161,8 @@
         <option value="$PROJECT_DIR$/font_types.h" />
         <option value="$PROJECT_DIR$/Makefile" />
         <option value="$PROJECT_DIR$/display.h" />
-        <option value="$PROJECT_DIR$/display.cpp" />
         <option value="$PROJECT_DIR$/socket_rocket.cpp" />
+        <option value="$PROJECT_DIR$/display.cpp" />
       </list>
     </option>
   </component>
@@ -447,12 +448,12 @@
       <workItem from="1493820969549" duration="13826000" />
       <workItem from="1494626985740" duration="1686000" />
       <workItem from="1494796913676" duration="7765000" />
-      <workItem from="1494874711703" duration="15448000" />
+      <workItem from="1494874711703" duration="16164000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="149009000" />
+    <option name="totallyTimeSpent" value="149725000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -726,8 +727,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/display.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="309" column="25" lean-forward="true" selection-start-line="309" selection-start-column="25" selection-end-line="309" selection-end-column="25" />
+        <state relative-caret-position="487">
+          <caret line="378" column="35" lean-forward="true" selection-start-line="378" selection-start-column="35" selection-end-line="378" selection-end-column="35" />
           <folding />
         </state>
       </provider>

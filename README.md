@@ -7,9 +7,12 @@ Goal of semestral project was to create C/CPP program which handles lights in in
 - `./app conf_files/unit1.txt`
 
 ## Info ##
-Project is split up into individual files. Goal was to keep as many files as possible in pure C. Things that I found too hard or I was too lazy to write in C are written in CPP.
+Project is split up into individual files. All files are written in C. Pogram runs in 4 threads and everything in code is commented.
 You will find following files in the project:
+- app - file with main, loads configuration, runs threads
+- devices list - C alternative to vector of pair of socket address : light admin unit, used for saving all currently broadcasting unit and info about them
 - light_admin_unit - light admin unit struct and related methods
+- passer - contains only one struct, which is used to pass arguments to all 4 threads
 - pixel - pixel struct and related methods
 - mzapo_* - files provided by our teacher, methods and constants to access all peripherals
 - font_* - files provided by our teacher, methods and structs with fonts
@@ -26,7 +29,7 @@ You will find following files in the project:
 
 `make`
 
-Apo-lau uses gcc and g++ for its compilation, feel free to change these but do not forget to add threads flag.
+Apo-lau uses gcc for its compilation, feel free to change makefile as much as you want, since I am not sure about its quality. Do not forget to keep/add threads flag.
 
 #### Run ####
 
@@ -44,3 +47,15 @@ Configuration file is used to load initial data of the unit. Configuration file 
 
 To safely stop the application all you need is to press any button, all the threads one by one will get killed
 and the application will end.
+
+#### What happens when I run the app ####
+- configuration file gets loaded and local light admin unit is set
+- list of devicis is initialized
+- first the udp_listener thread gets started, this thread listens to any incoming traffic and updates devices list accordingly
+- second the udp_updater threads gets started, this thread send update about local light admin unit and then sleeps for 1 sec
+- third the parlcd_displayer thread gets started, this thread handles all peripherals, inputs and ouputs to display. This thread fails silently and if fails, it keeps the device running so you can set its parameters remotly
+- fourth the console_info thread gets started, this thread doesn't have to run, its main purpouse is to serve the developer during debuging
+- application waits for key input
+- all threads join the main and end
+- all things get freed
+- application end

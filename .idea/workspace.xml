@@ -11,20 +11,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="daacf4e0-610b-4447-8fc2-93a8941ab454" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.c" afterPath="$PROJECT_DIR$/app.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/console_info.c" afterPath="$PROJECT_DIR$/console_info.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/console_info.h" afterPath="$PROJECT_DIR$/console_info.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/devices_list.c" afterPath="$PROJECT_DIR$/devices_list.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/devices_list.h" afterPath="$PROJECT_DIR$/devices_list.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.c" afterPath="$PROJECT_DIR$/display.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/display.h" afterPath="$PROJECT_DIR$/display.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/passer.h" afterPath="$PROJECT_DIR$/passer.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pixel.c" afterPath="$PROJECT_DIR$/pixel.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pixel.h" afterPath="$PROJECT_DIR$/pixel.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/socket_rocket.c" afterPath="$PROJECT_DIR$/socket_rocket.c" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/socket_rocket.h" afterPath="$PROJECT_DIR$/socket_rocket.h" />
-    </list>
+    <list default="true" id="daacf4e0-610b-4447-8fc2-93a8941ab454" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -241,10 +228,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="65" />
-    <option name="y" value="24" />
-    <option name="width" value="1855" />
-    <option name="height" value="1056" />
+    <option name="x" value="1364" />
+    <option name="y" value="52" />
+    <option name="width" value="556" />
+    <option name="height" value="998" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -504,18 +491,18 @@
       <workItem from="1494796913676" duration="7765000" />
       <workItem from="1494874711703" duration="22303000" />
       <workItem from="1495118296567" duration="610000" />
-      <workItem from="1495130055296" duration="17479000" />
+      <workItem from="1495130055296" duration="17767000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="173953000" />
+    <option name="totallyTimeSpent" value="174241000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="1364" y="52" width="556" height="998" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20431267" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.6816547" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CMake" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33027524" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />

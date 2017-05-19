@@ -21,16 +21,47 @@
 #define ALC_MESSAGE_MODIFY 1UL
 #define ALC_MESSAGE_SET 2UL
 
+/***
+ * Runs as threads
+ * Sends update about local unit every one second
+ * @param passer struct with all necessary arguments
+ */
 void *sr_updater(void*);
 
+/***
+ * Handles incoming messages, updates, etc.
+ * @param passer struct with all necessary arguments
+ */
 void *sr_init(void*);
 
+/***
+ * Send set packet
+ * @param sockfd | socket file descriptor
+ * @param out_addr | address to send at
+ * @param cr | change in ceiling red
+ * @param cg | change in ceiling green
+ * @param cb | change in ceiling blue
+ * @param wr | change in walls red
+ * @param wg | change in walls green
+ * @param wb | change in walls blue
+ */
 void send_modify(
         int*, // socket
         sockaddr_in, // address
         int16_t, int16_t, int16_t, // ceiling
         int16_t, int16_t, int16_t); // walls
 
+/***
+ * Send set packet
+ * @param sockfd | socket file descriptor
+ * @param out_addr | address to send at
+ * @param cr | ceiling red
+ * @param cg | ceiling green
+ * @param cb | ceiling blue
+ * @param wr | walls red
+ * @param wg | walls green
+ * @param wb | walls blue
+ */
 void send_set(
         int*, // socket
         sockaddr_in, // address

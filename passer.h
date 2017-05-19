@@ -14,6 +14,9 @@
 #include "devices_list.h"
 #include "light_admin_unit.h"
 
+/***
+ * struct used for passing arguments to pthreads
+ */
 typedef struct passer_t{
     lau_t* local_lau;
     devices_list_t* devices;

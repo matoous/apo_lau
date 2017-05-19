@@ -224,10 +224,9 @@ void _sr_set_lau(lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex){
 }
 
 /***
- * This method should be run as thread
+ * Runs as threads
  * Sends update about local unit every one second
- * @param lu - pointer to lau_t representing local unit
- * @param sockfd - memory address of socket
+ * @param passer struct with all necessary arguments
  */
 void *sr_updater(void* args){
     passer_t arguments = *((passer_t*)args);
@@ -281,11 +280,12 @@ void *sr_updater(void* args){
 
 /***
  * Handles incoming messages, updates, etc.
- * @param lu - pointer to lau_t representing local unit
+ * @param passer struct with all necessary arguments
  */
 void *sr_init(void* args) {
     passer_t arguments = *((passer_t*)args);
 
+    // get arguments
     lau_t* lu = arguments.local_lau;
     char* run = arguments.run;
     int* sockfd = arguments.sockfd;
@@ -293,8 +293,7 @@ void *sr_init(void* args) {
     pthread_mutex_t* local_lau_mutex = arguments.local_lau_mutex;
     pthread_mutex_t* devices_mutex = arguments.devices_mutex;
 
-
-
+    // init data
     struct sockaddr_in my_addr, cli_addr;
     char buf[1024];
 
@@ -311,8 +310,10 @@ void *sr_init(void* args) {
     my_addr.sin_addr.s_addr = INADDR_ANY;
 
     // bind socket
-    if (bind(*sockfd, (struct sockaddr *) &my_addr, sizeof(my_addr)) < 0)
-        printf("ERROR on binding");
+    if (bind(*sockfd, (struct sockaddr *) &my_addr, sizeof(my_addr)) < 0){
+        fprintf(stderr, "ERROR binding socket, exiting.\n");
+        return NULL;
+    }
 
     // listen
     listen(*sockfd, 5);
@@ -328,37 +329,38 @@ void *sr_init(void* args) {
         fd_set in_set;
         FD_ZERO(&in_set);
         FD_SET(*sockfd, &in_set);
-        // select the set
         if(select(*sockfd + 1, &in_set, NULL, NULL, &timeout) == -1){
-            fprintf(stderr, "ERROR select error in listener\n");
+            fprintf(stderr, "ERROR select error in listener.\n");
         }
         if (FD_ISSET(*sockfd, &in_set))
         {
             // receive datagram
             if (recvfrom(*sockfd, buf, 1024, 0, (struct sockaddr *)&cli_addr, &clilen) < 0)
-                printf("receive error");
+                fprintf(stderr, "ERROR receiving message error.\n");
 
             // get basic datagram info
             uint32_t control_number = _bt_uint32_t(buf, 0);
             uint32_t version = _bt_uint32_t(buf, 4);
             uint32_t type = _bt_uint32_t(buf, 8);
 
+            // if control number and protocol version is ok
             if(control_number == ALC_CONTROL_NUM && version == ALC_PROTOCOL_VER){
                 // update datagram
                 if(type == 0){
 
+                    // debug
                     printf("%u update\n", cli_addr.sin_addr.s_addr);
 
                     char added = 0;
 
                     pthread_mutex_lock(devices_mutex);
-
                     // if it is me, update my ip addr
                     char name[17];
                     _bt_name(buf, 20, name);
                     if(strcmp(devices_list->devices[0].second.name, name) == 0)
                         devices_list->devices[0].first = cli_addr;
 
+                    // run through all devices and update the one that should be updated
                     time_t now = time(NULL);
                     for(uint32_t i = 0; i < dl_size(devices_list); i++){
                         if(devices_list->devices[i].first.sin_addr.s_addr == cli_addr.sin_addr.s_addr){
@@ -375,6 +377,7 @@ void *sr_init(void* args) {
                         if(now - devices_list->devices[i].second.last_update > 20)
                             dl_delete(devices_list, i);
                     }
+                    // if not updated the device, add a new one
                     if(!added){
                         sockaddr_in new_in = cli_addr;
                         lau_t curr_lu;
@@ -401,26 +404,23 @@ void *sr_init(void* args) {
                 }
             }
         }
-        else {
-            // timeout 3 sec
+        else // timeout of receive
             break;
-        }
     }
-
     printf("Ending update listener...\n");
     return NULL;
 }
 
 /***
  * Send update packet
- * @param sockfd
- * @param out_addr
- * @param cr
- * @param cg
- * @param cb
- * @param wr
- * @param wg
- * @param wb
+ * @param sockfd | socket file descriptor
+ * @param out_addr | address to send at
+ * @param cr | change in ceiling red
+ * @param cg | change in ceiling green
+ * @param cb | change in ceiling blue
+ * @param wr | change in walls red
+ * @param wg | change in walls green
+ * @param wb | change in walls blue
  */
 void send_modify(
         int* sockfd, // socket
@@ -447,24 +447,23 @@ void send_modify(
     _int16_t_tbetb(wg, buffer, 20);
     _int16_t_tbetb(wb, buffer, 22);
 
-    printf("Sending modify.\n");
     n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
-        printf("Error sending modify.\n");
+        fprintf(stderr, "ERROR sending modify.\n");
 
     free(buffer);
 }
 
 /***
- *
- * @param sockfd
- * @param out_addr
- * @param cr
- * @param cg
- * @param cb
- * @param wr
- * @param wg
- * @param wb
+ * Send set packet
+ * @param sockfd | socket file descriptor
+ * @param out_addr | address to send at
+ * @param cr | ceiling red
+ * @param cg | ceiling green
+ * @param cb | ceiling blue
+ * @param wr | walls red
+ * @param wg | walls green
+ * @param wb | walls blue
  */
 void send_set(
         int *sockfd, // socket
@@ -491,10 +490,9 @@ void send_set(
     _int16_t_tbetb(wg, buffer, 20);
     _int16_t_tbetb(wb, buffer, 22);
 
-    printf("Sending set.\n");
     n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
-        printf("Error sending set.\n");
+        fprintf(stderr, "ERROR sending set.\n");
 
     free(buffer);
 }

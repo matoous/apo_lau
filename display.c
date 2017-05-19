@@ -29,7 +29,6 @@
 #define MIN(x,y) (x < y) ? (x) : (y)
 
 uint16_t** display_data;
-int curr_device_in_list, frame_begin, frame_end, current_display_style;
 
 /***
  * Puts char on specific place on display
@@ -99,9 +98,9 @@ void one_device_draw_init(){
 
 /***
  * Draw given light admin unit info to display
- * @param lu
- * @param knob2
- * @param parlcd_mem_base
+ * @param lu | light unit o be displayd
+ * @param selected_row | selected row (go back, colors, etc.)
+ * @param parlcd_mem_base | memory base for parlcd
  */
 void one_device_draw(lau_t lu, int selected_row, unsigned char* parlcd_mem_base){
 
@@ -166,6 +165,7 @@ void one_device_draw(lau_t lu, int selected_row, unsigned char* parlcd_mem_base)
 
 /***
  * Init all devices list
+ * nulls the display
  */
 void all_devices_draw_init(){
     // null display
@@ -179,7 +179,7 @@ void all_devices_draw_init(){
  * @param devices | vector of all connected devices
  * @param knob_change | change of knob of currently selected device
  */
-void all_devices_draw(devices_list_t* devices_list, int curr_device_in_list){
+void all_devices_draw(devices_list_t* devices_list, int curr_device_in_list, unsigned char* parlcd_mem_base){
     // null display
     all_devices_draw_init();
 
@@ -199,25 +199,32 @@ void all_devices_draw(devices_list_t* devices_list, int curr_device_in_list){
 
     // Devices
     for(int i = 0; i < (int)dl_size(devices_list); i++){
+        // clear buffer
         for(int u = 0; u < 32; u++)
             buffer[u] = ' ';
+
+        // put device name in buffer
         sprintf(buffer, "%s", devices_list->devices[i].second.name);
         put_string_on_line(buffer, i+3, 6, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
+
+        // print device icon
         for(int u = 0; u < 16; u++)
             for(int j = 0; j < 16; j++)
                 display_data[u+((i+3)*16)][j+16] = devices_list->devices[i].second.icon[u*16+j];
     }
+
+    redraw(parlcd_mem_base);
 }
 
 /***
  * Reads knobs to provided variables
- * @param k1
- * @param k2
- * @param k3
- * @param b1
- * @param b2
- * @param b3
- * @param knobs_mem_base
+ * @param k1 | knob1
+ * @param k2 | knob2
+ * @param k3 | knob3
+ * @param b1 | button1
+ * @param b2 | button2
+ * @param b3 | button3
+ * @param knobs_mem_base | memory base for knobs and buttons
  */
 void read_knobs(uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2, uint8_t* b3, unsigned char* knobs_mem_base){
     uint32_t rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
@@ -233,31 +240,30 @@ void read_knobs(uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2,
 
 /***
  * Handles display and hardware inputs
- * @param lu
- * @param devices
- * @param run
- * @param sockfd
- * @param local_lau_mutex
- * @param devices_mutes
+ * @param passer with all necessary data
  */
 void *par_lcder(void* args){
     // Map knobs
     unsigned char* knobs_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
     if(knobs_mem_base == NULL){
-        printf("Error mapping knobs and LED.\n");
+        fprintf(stderr, "ERROR mapping knobs, exiting.\n");
         return NULL;
     }
 
     // Map display
     unsigned char* parlcd_mem_base = (unsigned char*)map_phys_address(PARLCD_REG_BASE_PHYS, PARLCD_REG_SIZE, 0);
     if(parlcd_mem_base == NULL){
-        printf("Error mapping LCD display.\n");
+        fprintf(stderr, "ERROR mapping dislay, exiting.\n");
         return NULL;
     }
+
+    // init display
+    parlcd_hx8357_init(parlcd_mem_base);
 
     // arguments passer
     passer_t arguments = *((passer_t*)args);
 
+    // malloc data for display
     display_data = (uint16_t**)malloc(320*sizeof(uint16_t*));
     for(int i = 0; i < 320; i++)
         display_data[i] = (uint16_t*)malloc(480*sizeof(uint16_t));
@@ -269,40 +275,33 @@ void *par_lcder(void* args){
     devices_list_t* devices_list = arguments.devices;
     pthread_mutex_t* devices_mutex = arguments.devices_mutex;
 
-
     // Init variables
-    curr_device_in_list = 0, frame_begin = 0, frame_end = 18, current_display_style = 1;
+    int curr_device_in_list = 0, current_display_style = 1, buttons_locked = 0;
 
-    // init display
-    parlcd_hx8357_init(parlcd_mem_base);
-
+    // Draw all connected devices to begin
     pthread_mutex_lock(devices_mutex);
-    all_devices_draw(devices_list, 0);
+    all_devices_draw(devices_list, 0, parlcd_mem_base);
     pthread_mutex_unlock(devices_mutex);
-    // init display data
 
+    // Knobs and buttons values
     uint8_t knob1, knob2, knob3, prev1, prev2, prev3, button1, button2, button3;
-
     read_knobs(&prev1, &prev2, &prev3, &button1, &button2, &button3, knobs_mem_base);
+    int selected_row = (knob2 >> 2) % 7;
 
+    // Loop delay struct
     struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
-    int buttons_locked = 0;
-    int selected_row = (knob2 >> 2) % 7;
-    redraw(parlcd_mem_base);
-
-    /***
-     * !!MAIN!! loop
-     */
-
+    // Main loop
     while(*run){
+        // Read new knobs and buttons values
         read_knobs(&knob1, &knob2, &knob3, &button1, &button2, &button3, knobs_mem_base);
 
-        // button locker
+        // button locker, if not used, the button would stay pressed for 2 - 3 loops
         buttons_locked--;
         if(buttons_locked<0)
             buttons_locked=0;
 
+        // Displaying all devices currently
         if(current_display_style == 1){
             int change = 0;
             if(knob1 != prev1){
@@ -322,12 +321,12 @@ void *par_lcder(void* args){
                 prev1 = knob1;
             }
 
-            // Draw display
+            // Draw done device
             if(button1 && !buttons_locked){
-                buttons_locked = 3;
-                current_display_style = 2;
-                selected_row = (knob2 >> 2) % 7;
-                one_device_draw_init();
+                buttons_locked = 3; // lock buttons
+                current_display_style = 2; // set display style to one device
+                selected_row = (knob2 >> 2) % 7; // update selected row
+                one_device_draw_init(); // init
 
                 // lock and draw one selected device
                 pthread_mutex_lock(devices_mutex);
@@ -337,11 +336,9 @@ void *par_lcder(void* args){
             else{
                 // lock and draw all devices
                 pthread_mutex_lock(devices_mutex);
-                all_devices_draw(devices_list, curr_device_in_list);
+                all_devices_draw(devices_list, curr_device_in_list, parlcd_mem_base);
                 pthread_mutex_unlock(devices_mutex);
             }
-
-            redraw(parlcd_mem_base);
         }
         else if(current_display_style == 2){ // Displaying one device
             bool changed = false;
@@ -370,8 +367,8 @@ void *par_lcder(void* args){
                 selected_row = (knob2 >> 2) % 7;
                 changed = true;
             }
-            if(selected_row == 6 && button1 && !buttons_locked){
-                buttons_locked = 3;
+            if(selected_row == 6 && button2 && !buttons_locked){
+                buttons_locked = 3; // lock buttons
                 prev1 = knob1;
                 current_display_style = 1;
                 continue;
@@ -416,7 +413,7 @@ void *par_lcder(void* args){
                             break;
                     }
                 }
-                else{
+                else{ // change on different device
                     if(change != 0){
                         pthread_mutex_lock(devices_mutex);
                         send_modify(sockfd, devices_list->devices[curr_device_in_list].first,
@@ -429,9 +426,11 @@ void *par_lcder(void* args){
                         pthread_mutex_unlock(devices_mutex);
                     }
                 }
-
-                one_device_draw(devices_list->devices[curr_device_in_list].second, selected_row, parlcd_mem_base);
             }
+            // redraw display
+            pthread_mutex_lock(devices_mutex);
+            one_device_draw(devices_list->devices[curr_device_in_list].second, selected_row, parlcd_mem_base);
+            pthread_mutex_unlock(devices_mutex);
         }
 
         // sleep

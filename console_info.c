@@ -10,11 +10,15 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+#include "light_admin_unit.h"
 #include "passer.h"
 #include "devices_list.h"
 #include "console_info.h"
-#include "light_admin_unit.h"
 
+/***
+ * Runs in separate thread, show updates about current application state
+ * @return NULL
+ */
 void *console_info(void* args){
 
     // load args struct

@@ -10,6 +10,10 @@
 #ifndef APO_LAU_CONSOLE_INFO_H
 #define APO_LAU_CONSOLE_INFO_H
 
+/***
+ * Runs in separate thread, show updates about current application state
+ * @return NULL
+ */
 void *console_info(void*);
 
 #endif //APO_LAU_CONSOLE_INFO_H

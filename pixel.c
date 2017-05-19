@@ -9,6 +9,11 @@
 
 #include "pixel.h"
 
+/***
+ * constructs pixel from uint16_t color
+ * @param color | uint16_t color
+ * @return pixel
+ */
 pixel_t pixel(const uint16_t color){
     pixel_t pix;
     pix.r = (color & RED_PART) >> 11;

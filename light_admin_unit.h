@@ -23,6 +23,6 @@ typedef struct lau_t{
     char* name;
     uint16_t* icon;
     time_t last_update;
-} light_unit_t;
+} lau_t;
 
 #endif //APO_LAU_LIGHT_UNIT_H

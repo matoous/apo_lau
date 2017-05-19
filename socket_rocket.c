@@ -14,12 +14,10 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <thread>
-#include <iostream>
 #include <time.h>
+#include <pthread.h>
+#include "devices_list.h"
 #include "socket_rocket.h"
-
-using namespace std;
 
 /***
  * Puts int into the buffer (converts it to Big-Endian)
@@ -139,7 +137,7 @@ pixel_t _bt_color(char* buf, int offset){
  * @param offset - name offset in buffer
  * @param uname - array to populate
  */
-void _bt_name(char* buf, int offset, char uname[17]){
+void _bt_name(char* buf, int offset, char* uname){
     int index = 0;
     while(index < 16 && buf[index + offset] != '\0'){
         uname[index] = buf[index + offset];
@@ -198,15 +196,15 @@ void _bt_icon(char* buf, int offset, uint16_t icon[256]){
  * @param lu - light admin unit
  * @param buf - buffer
  */
-void _sr_modify_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
-    lock_guard<mutex> lu_lock(*local_lau_mutex);
-    cout << _bt_int16_t(buf, 12) << endl;
+void _sr_modify_lau(lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex){
+    pthread_mutex_lock(local_lau_mutex);
     lu->ceiling_color.r += _bt_int16_t(buf, 12);
     lu->ceiling_color.g += _bt_int16_t(buf, 14);
     lu->ceiling_color.b += _bt_int16_t(buf, 16);
     lu->walls_color.r   += _bt_int16_t(buf, 18);
     lu->walls_color.g   += _bt_int16_t(buf, 20);
     lu->walls_color.b   += _bt_int16_t(buf, 22);
+    pthread_mutex_unlock(local_lau_mutex);
 }
 
 /***
@@ -214,15 +212,15 @@ void _sr_modify_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
  * @param lu - light unit
  * @param buf - buffer
  */
-void _sr_set_lau(lau_t* lu, char* buf, mutex* local_lau_mutex){
-    lock_guard<mutex> lu_lock(*local_lau_mutex);
-    cout << _bt_int16_t(buf, 12) << endl;
+void _sr_set_lau(lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex){
+    pthread_mutex_lock(local_lau_mutex);
     lu->ceiling_color.r = _bt_uint16_t(buf, 12);
     lu->ceiling_color.g = _bt_uint16_t(buf, 14);
     lu->ceiling_color.b = _bt_uint16_t(buf, 16);
     lu->walls_color.r = _bt_uint16_t(buf, 18);
     lu->walls_color.g = _bt_uint16_t(buf, 20);
     lu->walls_color.b = _bt_uint16_t(buf, 22);
+    pthread_mutex_unlock(local_lau_mutex);
 }
 
 /***
@@ -236,15 +234,14 @@ void *sr_updater(void* args){
 
     lau_t* lu = arguments.local_lau;
     char* run = arguments.run;
-    std::mutex* local_lau_mutex = arguments.local_lau_mutex;
+    pthread_mutex_t* local_lau_mutex = arguments.local_lau_mutex;
     int* sockfd = arguments.sockfd;
 
     int n;
     sockaddr_in broadcast;
 
     // buffer
-    char* buffer = (char*)malloc(1024);
-    bzero(buffer,1024);
+    char* buffer = (char*)calloc(1024, 1);
 
     // setup broadcast
     broadcast.sin_family = AF_INET;
@@ -258,25 +255,26 @@ void *sr_updater(void* args){
     _uint32_t_tbetb(htonl(ALC_MESSAGE_STATUS), buffer, 8);
 
     // things that wont change
-    unique_lock<mutex> lu_locker(*local_lau_mutex);
+    pthread_mutex_lock(local_lau_mutex);
     _name_tbetb(lu->name, buffer, 20);
     _icon_tbetb(lu->icon, buffer, 36);
-    lu_locker.unlock();
+    pthread_mutex_unlock(local_lau_mutex);
 
     // send update every one second
     printf("Broadcasting status.\n");
     while(*run){
-        lu_locker.lock();
+        pthread_mutex_lock(local_lau_mutex);
         _color_tbetb(lu->ceiling_color, buffer, 12);
         _color_tbetb(lu->walls_color, buffer, 16);
-        lu_locker.unlock();
+        pthread_mutex_unlock(local_lau_mutex);
 
         n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&broadcast, len);
-        if(n < 0){
+        if(n < 0)
             printf("Error sending update.\n");
-        }
         sleep(1);
     }
+
+    free(buffer);
     printf("Ending update sender...\n");
     return NULL;
 }
@@ -290,10 +288,10 @@ void *sr_init(void* args) {
 
     lau_t* lu = arguments.local_lau;
     char* run = arguments.run;
-    std::mutex* local_lau_mutex = arguments.local_lau_mutex;
     int* sockfd = arguments.sockfd;
-    std::vector<std::pair<sockaddr_in, lau_t>>* devices = arguments.devices;
-    std::mutex* devices_mutex = arguments.devices_mutex;
+    devices_list_t* devices_list = arguments.devices;
+    pthread_mutex_t* local_lau_mutex = arguments.local_lau_mutex;
+    pthread_mutex_t* devices_mutex = arguments.devices_mutex;
 
 
 
@@ -322,72 +320,90 @@ void *sr_init(void* args) {
     // socket length
     socklen_t clilen;
     clilen = sizeof(cli_addr);
-
     // main loop
     printf("listening on port 55555.\n");
     while (*run) {
-        // receive datagram
-        if (recvfrom(*sockfd, buf, 1024, 0, (struct sockaddr *)&cli_addr, &clilen) < 0)
-            printf("receive error");
+        // select
+        struct timeval timeout = { 3, 0 };
+        fd_set in_set;
+        FD_ZERO(&in_set);
+        FD_SET(*sockfd, &in_set);
+        // select the set
+        if(select(*sockfd + 1, &in_set, NULL, NULL, &timeout) == -1){
+            fprintf(stderr, "ERROR select error in listener\n");
+        }
+        if (FD_ISSET(*sockfd, &in_set))
+        {
+            // receive datagram
+            if (recvfrom(*sockfd, buf, 1024, 0, (struct sockaddr *)&cli_addr, &clilen) < 0)
+                printf("receive error");
 
-        // get basic datagram info
-        uint32_t control_number = _bt_uint32_t(buf, 0);
-        uint32_t version = _bt_uint32_t(buf, 4);
-        uint32_t type = _bt_uint32_t(buf, 8);
+            // get basic datagram info
+            uint32_t control_number = _bt_uint32_t(buf, 0);
+            uint32_t version = _bt_uint32_t(buf, 4);
+            uint32_t type = _bt_uint32_t(buf, 8);
 
-        printf("%u %u %u\n", control_number, version, type);
+            if(control_number == ALC_CONTROL_NUM && version == ALC_PROTOCOL_VER){
+                // update datagram
+                if(type == 0){
 
-        if(control_number == ALC_CONTROL_NUM && version == ALC_PROTOCOL_VER){
-            // update datagram
-            if(type == 0){
+                    printf("%u update\n", cli_addr.sin_addr.s_addr);
 
-                lau_t curr_lu;
+                    char added = 0;
 
-                pixel_t ceiling_color = _bt_color(buf, 12);
-                pixel_t walls_color = _bt_color(buf, 16);
+                    pthread_mutex_lock(devices_mutex);
 
-                curr_lu.ceiling_color = ceiling_color;
-                curr_lu.walls_color = walls_color;
-                curr_lu.name = new char[17];
-                curr_lu.icon = new uint16_t[256];
-                curr_lu.last_update = time(NULL);
+                    // if it is me, update my ip addr
+                    char name[17];
+                    _bt_name(buf, 20, name);
+                    if(strcmp(devices_list->devices[0].second.name, name) == 0)
+                        devices_list->devices[0].first = cli_addr;
 
-                _bt_name(buf, 20, curr_lu.name);
-                _bt_icon(buf, 36, curr_lu.icon);
-
-                printf("%s (%u) update\n", curr_lu.name, cli_addr.sin_addr.s_addr);
-
-                char added = 0;
-                unique_lock<mutex> devices_lock(*devices_mutex);
-                if(strcmp((*devices)[0].second.name, curr_lu.name) == 0)
-                    (*devices)[0].first = cli_addr;
-
-                time_t now = time(NULL);
-                for(uint32_t i = 0; i < (*devices).size(); i++){
-                    if((*devices)[i].first.sin_addr.s_addr == cli_addr.sin_addr.s_addr){
-                        (*devices)[i].second = curr_lu;
-                        added = 1;
-                        continue;
+                    time_t now = time(NULL);
+                    for(uint32_t i = 0; i < dl_size(devices_list); i++){
+                        if(devices_list->devices[i].first.sin_addr.s_addr == cli_addr.sin_addr.s_addr){
+                            pixel_t ceiling_color = _bt_color(buf, 12);
+                            pixel_t walls_color = _bt_color(buf, 16);
+                            devices_list->devices[i].second.ceiling_color = ceiling_color;
+                            devices_list->devices[i].second.walls_color = walls_color;
+                            devices_list->devices[i].second.last_update = time(NULL);
+                            _bt_name(buf, 20, devices_list->devices[i].second.name);
+                            _bt_icon(buf, 36, devices_list->devices[i].second.icon);
+                            added = 1;
+                            continue;
+                        }
+                        if(now - devices_list->devices[i].second.last_update > 20)
+                            dl_delete(devices_list, i);
                     }
-                    if(now - (*devices)[i].second.last_update > 20){
-                        (*devices).erase((*devices).begin()+i);
+                    if(!added){
+                        sockaddr_in new_in = cli_addr;
+                        lau_t curr_lu;
+                        pixel_t ceiling_color = _bt_color(buf, 12);
+                        pixel_t walls_color = _bt_color(buf, 16);
+                        curr_lu.ceiling_color = ceiling_color;
+                        curr_lu.walls_color = walls_color;
+                        curr_lu.last_update = time(NULL);
+                        curr_lu.name = (char*)calloc(17,1);
+                        curr_lu.icon = (uint16_t*)malloc(256*sizeof(uint16_t));
+                        _bt_name(buf, 20, curr_lu.name);
+                        _bt_icon(buf, 36, curr_lu.icon);
+                        dl_push_back(devices_list, new_in, curr_lu);
                     }
+                    pthread_mutex_unlock(devices_mutex);
                 }
-                if(!added){
-                    sockaddr_in new_in;
-                    new_in = cli_addr;
-                    (*devices).push_back(pair<sockaddr_in, lau_t>(new_in, curr_lu));
+                else if(type == 1){
+                    printf("received modify packet\n");
+                    _sr_modify_lau(lu, buf, local_lau_mutex);
                 }
-                devices_lock.unlock();
+                else if(type == 2){
+                    printf("received set packet\n");
+                    _sr_set_lau(lu, buf, local_lau_mutex);
+                }
             }
-            else if(type == 1){
-                printf("received modify packet\n");
-                _sr_modify_lau(lu, buf, local_lau_mutex);
-            }
-            else if(type == 2){
-                printf("received set packet\n");
-                _sr_set_lau(lu, buf, local_lau_mutex);
-            }
+        }
+        else {
+            // timeout 3 sec
+            break;
         }
     }
 
@@ -415,16 +431,13 @@ void send_modify(
     int n;
 
     // buffer
-    char* buffer = (char*)malloc(1024);
-    bzero(buffer,1024);
+    char* buffer = (char*)calloc(1024,1);
 
     unsigned int len = sizeof(out_addr);
 
     _uint32_t_tbetb(htonl(ALC_CONTROL_NUM), buffer, 0);
     _uint32_t_tbetb(htonl(ALC_PROTOCOL_VER), buffer, 4);
     _uint32_t_tbetb(htonl(ALC_MESSAGE_MODIFY), buffer, 8);
-
-    cout << "sending: " << cr <<" "<< cg<<" " << cb<<" " << wr<<" " << wg<<" " << wb << endl;
 
     _int16_t_tbetb(cr, buffer, 12);
     _int16_t_tbetb(cg, buffer, 14);
@@ -438,6 +451,8 @@ void send_modify(
     n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
         printf("Error sending modify.\n");
+
+    free(buffer);
 }
 
 /***
@@ -460,16 +475,13 @@ void send_set(
     int n;
 
     // buffer
-    char* buffer = (char*)malloc(1024);
-    bzero(buffer,1024);
+    char* buffer = (char*)calloc(1024,1);
 
     unsigned int len = sizeof(out_addr);
 
     _uint32_t_tbetb(htonl(ALC_CONTROL_NUM), buffer, 0);
     _uint32_t_tbetb(htonl(ALC_PROTOCOL_VER), buffer, 4);
     _uint32_t_tbetb(htonl(ALC_MESSAGE_SET), buffer, 8);
-
-    cout << "sending: " << cr <<" "<< cg<<" " << cb<<" " << wr<<" " << wg<<" " << wb << endl;
 
     _int16_t_tbetb(cr, buffer, 12);
     _int16_t_tbetb(cg, buffer, 14);
@@ -483,4 +495,6 @@ void send_set(
     n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
         printf("Error sending set.\n");
+
+    free(buffer);
 }

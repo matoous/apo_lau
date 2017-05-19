@@ -10,12 +10,9 @@
 #ifndef APO_LAU_SOCKET_ROCKET_H
 #define APO_LAU_SOCKET_ROCKET_H
 
-#include <netinet/in.h>
-#include <vector>
-#include <utility>
-#include <mutex>
 #include "passer.h"
 #include "light_admin_unit.h"
+#include "devices_list.h"
 
 #define SOCK_PORT 55555  // port to run on
 #define ALC_CONTROL_NUM 0x414C4331UL  // AL1 in 32bit number as specified by APO HW
@@ -24,9 +21,9 @@
 #define ALC_MESSAGE_MODIFY 1UL
 #define ALC_MESSAGE_SET 2UL
 
-void *sr_updater(void*); // mutex for local unit
+void *sr_updater(void*);
 
-void *sr_init(void*); // mutex for local unit and vector of units
+void *sr_init(void*);
 
 void send_modify(
         int*, // socket

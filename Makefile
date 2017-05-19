@@ -1,35 +1,20 @@
 CC = gcc
-CXX = g++
 
-CPPFLAGS = -I .
 CFLAGS = -pthread -g -std=gnu99 -O1 -Wall
-CXXFLAGS = -pthread -g -std=gnu++11 -O1 -Wall
 LDFLAGS = -lrt -lpthread
 
-SOURCES = app.cpp display.cpp socket_rocket.cpp console_info.cpp pixel.cpp mzapo_phys.c mzapo_parlcd.c font_rom8x16.c
+SOURCES = app.c display.c console_info.c socket_rocket.c devices_list.c pixel.c mzapo_phys.c mzapo_parlcd.c font_rom8x16.c
 TARGET_EXE = app
-TARGET_IP ?= 192.168.1.37
-TARGET_DIR ?= /tmp/$(shell whoami)
-TARGET_USER ?= root
 
 OBJECTS += $(filter %.o,$(SOURCES:%.c=%.o))
-OBJECTS += $(filter %.o,$(SOURCES:%.cpp=%.o))
 
 #$(warning OBJECTS=$(OBJECTS))
 
-ifeq ($(filter %.cpp,$(SOURCES)),)
 LINKER = $(CC)
 LDFLAGS += $(CFLAGS) $(CPPFLAGS)
-else
-LINKER = $(CXX)
-LDFLAGS += $(CXXFLAGS) $(CPPFLAGS)
-endif
 
 %.o:%.c
 	$(CC) $(CFLAGS) -c $<
-
-%.o:%.cpp
-	$(CXX) $(CXXFLAGS) -c $<
 
 all: $(TARGET_EXE)
 
@@ -46,17 +31,8 @@ ifneq ($(filter %.c,$(SOURCES)),)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -w -E -M $(filter %.c,$(SOURCES)) \
 	  >> depend
 endif
-ifneq ($(filter %.cpp,$(SOURCES)),)
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -w -E -M $(filter %.cpp,$(SOURCES)) \
-	  >> depend
-endif
 
 clean:
 	rm -f *.o *.a $(OBJECTS) $(TARGET_EXE) depend
-
-run: $(TARGET_EXE)
-	ssh $(TARGET_USER)@$(TARGET_IP) mkdir -p $(TARGET_DIR)
-	scp $(TARGET_EXE) $(TARGET_USER)@$(TARGET_IP):$(TARGET_DIR)/$(TARGET_EXE)
-	ssh -t $(TARGET_USER)@$(TARGET_IP) $(TARGET_DIR)/$(TARGET_EXE)
 
 -include depend

@@ -8,15 +8,12 @@
  *******************************************************************/
 
 #include <sys/mman.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <stdlib.h>
 #include <string.h>
 #include <byteswap.h>
-#include <getopt.h>
 #include <inttypes.h>
+#include <pthread.h>
 #include <time.h>
 #include "display.h"
 #include "font_types.h"
@@ -24,15 +21,16 @@
 #include "mzapo_regs.h"
 #include "mzapo_parlcd.h"
 #include "socket_rocket.h"
+#include "devices_list.h"
 
+#define bool int
+#define false 0
+#define true 1
 #define MIN(x,y) (x < y) ? (x) : (y)
 
-using namespace std;
-
-
-int display_data[320][480];
+uint16_t** display_data;
 int curr_device_in_list, frame_begin, frame_end, current_display_style;
-char button1, button2, button3;
+
 /***
  * Puts char on specific place on display
  * @param c | char
@@ -181,30 +179,33 @@ void all_devices_draw_init(){
  * @param devices | vector of all connected devices
  * @param knob_change | change of knob of currently selected device
  */
-void all_devices_draw(vector<pair<sockaddr_in, lau_t>> devices, int curr_device_in_list){
+void all_devices_draw(devices_list_t* devices_list, int curr_device_in_list){
     // null display
-    for(int i = 0; i < 320; i++)
-        for(int u = 0; u < 480; u++)
-            display_data[i][u] = DEFAULT_BACKGROUND;
+    all_devices_draw_init();
+
+    // My email :3
     char buffer[32];
     char str[50];
     strcpy(str, "  dzivjmat@fel.cvut.cz");
     str[0] = 0x03;
     put_string_on_line(str, 19, 36, WHITE, DEFAULT_BACKGROUND);
+
+    // Header
     for(int i = 0; i <50; i++)
         str[i] = ' ';
     strcpy(str, "  All devices list: ");
     str[0] = 0x03;
     put_string_on_line(str, 1, 4, WHITE, DEFAULT_BACKGROUND);
 
-    for(int i = 0; i < devices.size(); i++){
+    // Devices
+    for(int i = 0; i < (int)dl_size(devices_list); i++){
         for(int u = 0; u < 32; u++)
             buffer[u] = ' ';
-        sprintf(buffer, "%s", devices[i].second.name);
+        sprintf(buffer, "%s", devices_list->devices[i].second.name);
         put_string_on_line(buffer, i+3, 6, i == curr_device_in_list ? DEFAULT_SELECTED_FONT_COLOR : WHITE, i == curr_device_in_list ? DEFAULT_SELECTED_BACKGROUND_COLOR : DEFAULT_BACKGROUND);
         for(int u = 0; u < 16; u++)
             for(int j = 0; j < 16; j++)
-                display_data[u+((i+3)*16)][j+16] = devices[i].second.icon[u*16+j];
+                display_data[u+((i+3)*16)][j+16] = devices_list->devices[i].second.icon[u*16+j];
     }
 }
 
@@ -240,15 +241,6 @@ void read_knobs(uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2,
  * @param devices_mutes
  */
 void *par_lcder(void* args){
-    passer_t arguments = *((passer_t*)args);
-
-    lau_t* lu = arguments.local_lau;
-    char* run = arguments.run;
-    std::mutex* local_lau_mutex = arguments.local_lau_mutex;
-    int* sockfd = arguments.sockfd;
-    std::vector<std::pair<sockaddr_in, lau_t>>* devices = arguments.devices;
-    std::mutex* devices_mutex = arguments.devices_mutex;
-
     // Map knobs
     unsigned char* knobs_mem_base = (unsigned char*)map_phys_address(SPILED_REG_BASE_PHYS, SPILED_REG_SIZE, 0);
     if(knobs_mem_base == NULL){
@@ -263,13 +255,30 @@ void *par_lcder(void* args){
         return NULL;
     }
 
+    // arguments passer
+    passer_t arguments = *((passer_t*)args);
+
+    display_data = (uint16_t**)malloc(320*sizeof(uint16_t*));
+    for(int i = 0; i < 320; i++)
+        display_data[i] = (uint16_t*)malloc(480*sizeof(uint16_t));
+
+    // load arguments
+    lau_t* lu = arguments.local_lau;
+    char* run = arguments.run;
+    int* sockfd = arguments.sockfd;
+    devices_list_t* devices_list = arguments.devices;
+    pthread_mutex_t* devices_mutex = arguments.devices_mutex;
+
+
     // Init variables
     curr_device_in_list = 0, frame_begin = 0, frame_end = 18, current_display_style = 1;
 
     // init display
     parlcd_hx8357_init(parlcd_mem_base);
 
-    all_devices_draw(*devices, 0);
+    pthread_mutex_lock(devices_mutex);
+    all_devices_draw(devices_list, 0);
+    pthread_mutex_unlock(devices_mutex);
     // init display data
 
     uint8_t knob1, knob2, knob3, prev1, prev2, prev3, button1, button2, button3;
@@ -278,7 +287,7 @@ void *par_lcder(void* args){
 
     struct timespec loop_delay = {.tv_sec = 0, .tv_nsec = 50 * 1000 * 1000};
 
-    int knobs_turned_off;
+    int buttons_locked = 0;
     int selected_row = (knob2 >> 2) % 7;
     redraw(parlcd_mem_base);
 
@@ -288,9 +297,11 @@ void *par_lcder(void* args){
 
     while(*run){
         read_knobs(&knob1, &knob2, &knob3, &button1, &button2, &button3, knobs_mem_base);
-        knobs_turned_off--;
-        if(knobs_turned_off<0)
-            knobs_turned_off=0;
+
+        // button locker
+        buttons_locked--;
+        if(buttons_locked<0)
+            buttons_locked=0;
 
         if(current_display_style == 1){
             int change = 0;
@@ -306,19 +317,31 @@ void *par_lcder(void* args){
                 curr_device_in_list += change;
                 if(curr_device_in_list < 0)
                     curr_device_in_list = 0;
-                if(curr_device_in_list >= (*devices).size())
-                    curr_device_in_list = (*devices).size() -1;
+                if(curr_device_in_list >= (int)dl_size(devices_list))
+                    curr_device_in_list = (int)dl_size(devices_list) -1;
                 prev1 = knob1;
             }
-            all_devices_draw(*devices, curr_device_in_list);
-            redraw(parlcd_mem_base);
-            if(button1 && !knobs_turned_off){
-                knobs_turned_off = 3;
+
+            // Draw display
+            if(button1 && !buttons_locked){
+                buttons_locked = 3;
                 current_display_style = 2;
                 selected_row = (knob2 >> 2) % 7;
                 one_device_draw_init();
-                one_device_draw((*devices)[curr_device_in_list].second, knob2, parlcd_mem_base);
+
+                // lock and draw one selected device
+                pthread_mutex_lock(devices_mutex);
+                one_device_draw(devices_list->devices[curr_device_in_list].second, knob2, parlcd_mem_base);
+                pthread_mutex_unlock(devices_mutex);
             }
+            else{
+                // lock and draw all devices
+                pthread_mutex_lock(devices_mutex);
+                all_devices_draw(devices_list, curr_device_in_list);
+                pthread_mutex_unlock(devices_mutex);
+            }
+
+            redraw(parlcd_mem_base);
         }
         else if(current_display_style == 2){ // Displaying one device
             bool changed = false;
@@ -336,8 +359,8 @@ void *par_lcder(void* args){
                 curr_device_in_list += change;
                 if(curr_device_in_list < 0)
                     curr_device_in_list = 0;
-                if(curr_device_in_list >= (*devices).size())
-                    curr_device_in_list = (*devices).size() -1;
+                if(curr_device_in_list >= (int)dl_size(devices_list))
+                    curr_device_in_list = dl_size(devices_list) -1;
                 prev1 = knob1;
                 changed = true;
             }
@@ -347,8 +370,8 @@ void *par_lcder(void* args){
                 selected_row = (knob2 >> 2) % 7;
                 changed = true;
             }
-            if(selected_row == 6 && button1 && !knobs_turned_off){
-                knobs_turned_off = 3;
+            if(selected_row == 6 && button1 && !buttons_locked){
+                buttons_locked = 3;
                 prev1 = knob1;
                 current_display_style = 1;
                 continue;
@@ -394,22 +417,32 @@ void *par_lcder(void* args){
                     }
                 }
                 else{
-                    if(change != 0)
-                        send_modify(sockfd, (*devices)[curr_device_in_list].first,
+                    if(change != 0){
+                        pthread_mutex_lock(devices_mutex);
+                        send_modify(sockfd, devices_list->devices[curr_device_in_list].first,
                                     (int16_t)(selected_row == 0 ? change : 0),
                                     (int16_t)(selected_row == 1 ? change : 0),
                                     (int16_t)(selected_row == 2 ? change : 0),
                                     (int16_t)(selected_row == 3 ? change : 0),
                                     (int16_t)(selected_row == 4 ? change : 0),
                                     (int16_t)(selected_row == 5 ? change : 0));
+                        pthread_mutex_unlock(devices_mutex);
+                    }
                 }
 
-                one_device_draw((*devices)[curr_device_in_list].second, selected_row, parlcd_mem_base);
+                one_device_draw(devices_list->devices[curr_device_in_list].second, selected_row, parlcd_mem_base);
             }
         }
 
         // sleep
         clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
     }
+
+    // free data
+    for(int i = 0; i < 320; i++)
+        free(display_data[i]);
+    free(display_data);
+
     printf("Ending display.\n");
+    return NULL;
 }

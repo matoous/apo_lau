@@ -52,9 +52,9 @@ and the application will end.
 - configuration file gets loaded and local light admin unit is set
 - list of devicis is initialized
 - first the udp_listener thread gets started, this thread listens to any incoming traffic and updates devices list accordingly
-- second the udp_updater threads gets started, this thread send update about local light admin unit and then sleeps for 1 sec
-- third the parlcd_displayer thread gets started, this thread handles all peripherals, inputs and ouputs to display. This thread fails silently and if fails, it keeps the device running so you can set its parameters remotly
-- fourth the console_info thread gets started, this thread doesn't have to run, its main purpouse is to serve the developer during debuging
+- second the udp_updater threads gets started, this thread sends updates about local light admin unit and then sleeps for 1 sec
+- third the parlcd_displayer thread gets started, this thread handles all peripherals, inputs and ouputs to display. This thread fails silently and if it fails, it keeps the device running so you can set its parameters remotely
+- fourth the console_info thread gets started, this thread is not required to run, its main purpouse is to serve the developer during debuging
 - application waits for key input
 - all threads join the main and end
 - all things get freed

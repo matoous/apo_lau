@@ -1,4 +1,4 @@
-# homematoousCLionProjectsapo_lau #
+# /home/matoous/CLionProjects/apo_lau/ #
 
 ### pixel.c ###
 

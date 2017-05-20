@@ -1,6 +1,6 @@
-#homematoousCLionProjectsapo_lau#
+# homematoousCLionProjectsapo_lau #
 
-##pixel.c##
+## pixel.c ##
 **pixel_t pixel(const uint16_t color)**
     constructs pixel from uint16_t color
     @param color | uint16_t color

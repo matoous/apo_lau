@@ -1,12 +1,12 @@
-#homematoousCLionProjectsapo_lau#
-##pixel.c##
+# homematoousCLionProjectsapo_lau #
+### pixel.c ###
 **pixel_t pixel(const uint16_t color)**
     constructs pixel from uint16_t color
     @param color | uint16_t color
     @return pixel
 
-##mzapo_parlcd.c##
-##socket_rocket.c##
+### mzapo_parlcd.c ###
+### socket_rocket.c ###
 **void _int_tbetb(int x, char* buffer, int offset)**
     Puts int into the buffer (converts it to Big-Endian)
     @param x - number
@@ -120,7 +120,7 @@
     @param wg | walls green
     @param wb | walls blue
 
-##devices_list.c##
+### devices_list.c ###
 **void dl_init(devices_list_t* devices_list)**
     init device list in provided pointer to devices_list_t
     @param devices_list
@@ -146,12 +146,12 @@
     @param devices_list | list of devices
     @param index | index of device to be deleted
 
-##console_info.c##
+### console_info.c ###
 **void *console_info(void* args)**
     Runs in separate thread, show updates about current application state
     @return NULL
 
-##display.c##
+### display.c ###
 **void put_char_there(char c, int row, int column, uint16_t color, uint16_t background)**
     Puts char on specific place on display
     @param c | char
@@ -204,6 +204,6 @@
     Handles display and hardware inputs
     @param passer with all necessary data
 
-##font_rom8x16.c##
-##mzapo_phys.c##
-##app.c##
+### font_rom8x16.c ###
+### mzapo_phys.c ###
+### app.c ###

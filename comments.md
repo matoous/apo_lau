@@ -17,7 +17,7 @@ __pixel_t pixel(const uint16_t color)__
 
 __void _int_tbetb(int x, char* buffer, int offset)__
 
-    Puts int into the buffer (converts it to Big-Endian)
+    Puts int into the buffer  (converts it to Big-Endian)
 
     @param x - number
 
@@ -28,7 +28,7 @@ __void _int_tbetb(int x, char* buffer, int offset)__
 
 __void _uint32_t_tbetb(uint32_t x, char* buffer, int offset)__
 
-    Puts uint32_t into the buffer (converts it to Big-Endian)
+    Puts uint32_t into the buffer  (converts it to Big-Endian)
 
     @param x - number
 
@@ -39,7 +39,7 @@ __void _uint32_t_tbetb(uint32_t x, char* buffer, int offset)__
 
 __void _int16_t_tbetb(int16_t x, char* buffer, int offset)__
 
-    Puts int16_t into the buffer (converts it to Big-Endian)
+    Puts int16_t into the buffer  (converts it to Big-Endian)
 
     @param x - number
 
@@ -94,7 +94,7 @@ __uint32_t _bt_uint32_t(char* buf, int offset)__
 
 __pixel_t _bt_color(char* buf, int offset)__
 
-    Gets color from buffer (should be saved as uint32_t, first byte empty, then red, green, blue)
+    Gets color from buffer  (should be saved as uint32_t, first byte empty, then red, green, blue)
 
     @param buf - buffer
 
@@ -329,7 +329,7 @@ __void one_device_draw(lau_t lu, int selected_row, unsigned char* parlcd_mem_bas
 
     @param lu | light unit o be displayd
 
-    @param selected_row | selected row (go back, colors, etc.)
+    @param selected_row | selected row  (go back, colors, etc.)
 
     @param parlcd_mem_base | memory base for parlcd
 

@@ -2,7 +2,7 @@
 
 ### pixel.c ###
 
-__pixel_t pixel (const uint16_t color)__
+<i>pixel_t pixel (const uint16_t color)</i>
 
     constructs pixel from uint16_t color
 
@@ -15,7 +15,7 @@ __pixel_t pixel (const uint16_t color)__
 
 ### socket_rocket.c ###
 
-__void _int_tbetb (int x, char* buffer, int offset)__
+<i>void _int_tbetb (int x, char* buffer, int offset)</i>
 
     Puts int into the buffer (converts it to Big-Endian)
 
@@ -26,7 +26,7 @@ __void _int_tbetb (int x, char* buffer, int offset)__
     @param offset - offset in buffer
 
 
-__void _uint32_t_tbetb (uint32_t x, char* buffer, int offset)__
+<i>void _uint32_t_tbetb (uint32_t x, char* buffer, int offset)</i>
 
     Puts uint32_t into the buffer (converts it to Big-Endian)
 
@@ -37,7 +37,7 @@ __void _uint32_t_tbetb (uint32_t x, char* buffer, int offset)__
     @param offset - offset
 
 
-__void _int16_t_tbetb (int16_t x, char* buffer, int offset)__
+<i>void _int16_t_tbetb (int16_t x, char* buffer, int offset)</i>
 
     Puts int16_t into the buffer (converts it to Big-Endian)
 
@@ -48,7 +48,7 @@ __void _int16_t_tbetb (int16_t x, char* buffer, int offset)__
     @param offset - offset
 
 
-__void _color_tbetb (pixel_t c, char* buffer, int offset)__
+<i>void _color_tbetb (pixel_t c, char* buffer, int offset)</i>
 
     Puts color into the buffer
 
@@ -59,7 +59,7 @@ __void _color_tbetb (pixel_t c, char* buffer, int offset)__
     @param offset - offset in buffer
 
 
-__void _name_tbetb (const char c[], char* buffer, int offset)__
+<i>void _name_tbetb (const char c[], char* buffer, int offset)</i>
 
     Puts light admin unit name into the buffer
 
@@ -70,7 +70,7 @@ __void _name_tbetb (const char c[], char* buffer, int offset)__
     @param offset - offset in buffer
 
 
-__void _icon_tbetb (const uint16_t icon[], char* buffer, int offset)__
+<i>void _icon_tbetb (const uint16_t icon[], char* buffer, int offset)</i>
 
     Puts light admin unit icon into the buffer on given offset, converts to Big-Endian
 
@@ -81,7 +81,7 @@ __void _icon_tbetb (const uint16_t icon[], char* buffer, int offset)__
     @param offset - offset in buffer
 
 
-__uint32_t _bt_uint32_t (char* buf, int offset)__
+<i>uint32_t _bt_uint32_t (char* buf, int offset)</i>
 
     Gets uint32_t from buffer
 
@@ -92,7 +92,7 @@ __uint32_t _bt_uint32_t (char* buf, int offset)__
     @return uint32_t
 
 
-__pixel_t _bt_color (char* buf, int offset)__
+<i>pixel_t _bt_color (char* buf, int offset)</i>
 
     Gets color from buffer (should be saved as uint32_t, first byte empty, then red, green, blue)
 
@@ -103,7 +103,7 @@ __pixel_t _bt_color (char* buf, int offset)__
     @return pixel_t color
 
 
-__void _bt_name (char* buf, int offset, char* uname)__
+<i>void _bt_name (char* buf, int offset, char* uname)</i>
 
     Gets light admin unit name from buffer
 
@@ -114,7 +114,7 @@ __void _bt_name (char* buf, int offset, char* uname)__
     @param uname - array to populate
 
 
-__uint16_t _bt_uint16_t (char* buf, int offset)__
+<i>uint16_t _bt_uint16_t (char* buf, int offset)</i>
 
     Gets uint16_t from buffer
 
@@ -125,7 +125,7 @@ __uint16_t _bt_uint16_t (char* buf, int offset)__
     @return uint16_t
 
 
-__int16_t _bt_int16_t (char* buf, int offset)__
+<i>int16_t _bt_int16_t (char* buf, int offset)</i>
 
     Gets uint16_t from buffer
 
@@ -136,7 +136,7 @@ __int16_t _bt_int16_t (char* buf, int offset)__
     @return uint16_t
 
 
-__void _bt_icon (char* buf, int offset, uint16_t icon[256])__
+<i>void _bt_icon (char* buf, int offset, uint16_t icon[256])</i>
 
     Gets light admin unit icon from buffer
 
@@ -147,7 +147,7 @@ __void _bt_icon (char* buf, int offset, uint16_t icon[256])__
     @param icon - array to populate
 
 
-__void _sr_modify_lau (lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex)__
+<i>void _sr_modify_lau (lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex)</i>
 
     Updates light admin unit
 
@@ -156,7 +156,7 @@ __void _sr_modify_lau (lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex)__
     @param buf - buffer
 
 
-__void _sr_set_lau (lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex)__
+<i>void _sr_set_lau (lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex)</i>
 
     Sets light admin unit to received status
 
@@ -165,7 +165,7 @@ __void _sr_set_lau (lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex)__
     @param buf - buffer
 
 
-__void *sr_updater (void* args)__
+<i>void *sr_updater (void* args)</i>
 
     Runs as threads
 
@@ -174,14 +174,14 @@ __void *sr_updater (void* args)__
     @param passer struct with all necessary arguments
 
 
-__void *sr_init (void* args)__
+<i>void *sr_init (void* args)</i>
 
     Handles incoming messages, updates, etc.
 
     @param passer struct with all necessary arguments
 
 
-__void send_modify (__
+<i>void send_modify (</i>
 
     Send update packet
 
@@ -202,7 +202,7 @@ __void send_modify (__
     @param wb | change in walls blue
 
 
-__void send_set (__
+<i>void send_set (</i>
 
     Send set packet
 
@@ -225,14 +225,14 @@ __void send_set (__
 
 ### devices_list.c ###
 
-__void dl_init (devices_list_t* devices_list)__
+<i>void dl_init (devices_list_t* devices_list)</i>
 
     init device list in provided pointer to devices_list_t
 
     @param devices_list
 
 
-__int dl_push_back (devices_list_t* devices_list, sockaddr_in addr, lau_t lau)__
+<i>int dl_push_back (devices_list_t* devices_list, sockaddr_in addr, lau_t lau)</i>
 
     Push sock address : device pair on end of the devices list
 
@@ -245,7 +245,7 @@ __int dl_push_back (devices_list_t* devices_list, sockaddr_in addr, lau_t lau)__
     @return 0 if failed, 1 if OK
 
 
-__unsigned int dl_size (devices_list_t* devices_list)__
+<i>unsigned int dl_size (devices_list_t* devices_list)</i>
 
     Return count of devices in list as unsigned integer
 
@@ -254,14 +254,14 @@ __unsigned int dl_size (devices_list_t* devices_list)__
     @return count of devices as unsigned int
 
 
-__void dl_destroy (devices_list_t* devices_list)__
+<i>void dl_destroy (devices_list_t* devices_list)</i>
 
     Destroy the devices list struct
 
     @param devices_list | pointer to devices list
 
 
-__void dl_delete (devices_list_t* devices_list, unsigned int index)__
+<i>void dl_delete (devices_list_t* devices_list, unsigned int index)</i>
 
     Delete device from list
 
@@ -272,7 +272,7 @@ __void dl_delete (devices_list_t* devices_list, unsigned int index)__
 
 ### console_info.c ###
 
-__void *console_info (void* args)__
+<i>void *console_info (void* args)</i>
 
     Runs in separate thread, show updates about current application state
 
@@ -281,7 +281,7 @@ __void *console_info (void* args)__
 
 ### display.c ###
 
-__void put_char_there (char c, int row, int column, uint16_t color, uint16_t background)__
+<i>void put_char_there (char c, int row, int column, uint16_t color, uint16_t background)</i>
 
     Puts char on specific place on display
 
@@ -296,7 +296,7 @@ __void put_char_there (char c, int row, int column, uint16_t color, uint16_t bac
     @param background
 
 
-__void put_string_on_line (char* c, int row, int offset, uint16_t color, uint16_t background_color)__
+<i>void put_string_on_line (char* c, int row, int offset, uint16_t color, uint16_t background_color)</i>
 
     Draws string on line
 
@@ -311,19 +311,19 @@ __void put_string_on_line (char* c, int row, int offset, uint16_t color, uint16_
     @param background_color | background color
 
 
-__void redraw (unsigned char* parlcd_mem_base)__
+<i>void redraw (unsigned char* parlcd_mem_base)</i>
 
     Redraw the display
 
     @param parlcd_mem_base
 
 
-__void one_device_draw_init ()__
+<i>void one_device_draw_init ()</i>
 
     Inits static elements on display
 
 
-__void one_device_draw (lau_t lu, int selected_row, unsigned char* parlcd_mem_base)__
+<i>void one_device_draw (lau_t lu, int selected_row, unsigned char* parlcd_mem_base)</i>
 
     Draw given light admin unit info to display
 
@@ -334,14 +334,14 @@ __void one_device_draw (lau_t lu, int selected_row, unsigned char* parlcd_mem_ba
     @param parlcd_mem_base | memory base for parlcd
 
 
-__void all_devices_draw_init ()__
+<i>void all_devices_draw_init ()</i>
 
     Init all devices list
 
     nulls the display
 
 
-__void all_devices_draw (devices_list_t* devices_list, int curr_device_in_list, unsigned char* parlcd_mem_base)__
+<i>void all_devices_draw (devices_list_t* devices_list, int curr_device_in_list, unsigned char* parlcd_mem_base)</i>
 
     Draw devices list on display
 
@@ -350,7 +350,7 @@ __void all_devices_draw (devices_list_t* devices_list, int curr_device_in_list, 
     @param knob_change | change of knob of currently selected device
 
 
-__void read_knobs (uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2, uint8_t* b3, unsigned char* knobs_mem_base)__
+<i>void read_knobs (uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2, uint8_t* b3, unsigned char* knobs_mem_base)</i>
 
     Reads knobs to provided variables
 
@@ -369,7 +369,7 @@ __void read_knobs (uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* 
     @param knobs_mem_base | memory base for knobs and buttons
 
 
-__void *par_lcder (void* args)__
+<i>void *par_lcder (void* args)</i>
 
     Handles display and hardware inputs
 

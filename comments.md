@@ -1,5 +1,7 @@
 # homematoousCLionProjectsapo_lau #
+
 ### pixel.c ###
+
 **pixel_t pixel(const uint16_t color)**
 
     constructs pixel from uint16_t color
@@ -10,7 +12,9 @@
 
 
 ### mzapo_parlcd.c ###
+
 ### socket_rocket.c ###
+
 **void _int_tbetb(int x, char* buffer, int offset)**
 
     Puts int into the buffer (converts it to Big-Endian)
@@ -220,6 +224,7 @@
 
 
 ### devices_list.c ###
+
 **void dl_init(devices_list_t* devices_list)**
 
     init device list in provided pointer to devices_list_t
@@ -266,6 +271,7 @@
 
 
 ### console_info.c ###
+
 **void *console_info(void* args)**
 
     Runs in separate thread, show updates about current application state
@@ -274,6 +280,7 @@
 
 
 ### display.c ###
+
 **void put_char_there(char c, int row, int column, uint16_t color, uint16_t background)**
 
     Puts char on specific place on display
@@ -370,5 +377,8 @@
 
 
 ### font_rom8x16.c ###
+
 ### mzapo_phys.c ###
+
 ### app.c ###
+

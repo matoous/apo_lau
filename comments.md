@@ -382,3 +382,37 @@
 
 ### app.c ###
 
+<i>void _start_threads (passer_t* passer)</i>
+
+    starts all threads
+
+    @param passer
+
+
+<i>void _stop_threads ()</i>
+
+    stops all threads
+
+
+<i>int _load_lau (const char* file_name, lau_t* lu)</i>
+
+    loads configuration of light admin unit
+
+    @param file_name | configuration file name
+
+    @param lu | light admin unit
+
+    @return 1 on error 0 on success
+
+
+<i>int main (int argc, char *argv[])</i>
+
+    main thread, runs everything, needs 1 argument: configuration file as specified in manual
+
+    @param argc
+
+    @param argv
+
+    @return
+
+

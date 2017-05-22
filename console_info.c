@@ -31,7 +31,7 @@ void *console_info(void* args){
     pthread_mutex_t* devices_mutex = arguments.devices_mutex;
     pthread_mutex_t* local_lau_mutex = arguments.local_lau_mutex;
 
-    while(*run){
+    do{
         pthread_mutex_lock(local_lau_mutex);
         printf("\nUnit name: %s\n", lu->name);
         printf("Ceiling color: %hu %hu %hu\n",
@@ -53,8 +53,7 @@ void *console_info(void* args){
         }
         printf("\n");
         pthread_mutex_unlock(devices_mutex);
-        sleep(5);
-    }
+    } while(*run && !sleep(5));
 
     // End
     printf("Ending console info display...\n");

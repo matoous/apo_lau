@@ -261,7 +261,7 @@ void *sr_updater(void* args){
 
     // send update every one second
     printf("Broadcasting status.\n");
-    while(*run){
+    do {
         pthread_mutex_lock(local_lau_mutex);
         _color_tbetb(lu->ceiling_color, buffer, 12);
         _color_tbetb(lu->walls_color, buffer, 16);
@@ -270,8 +270,8 @@ void *sr_updater(void* args){
         n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&broadcast, len);
         if(n < 0)
             printf("Error sending update.\n");
-        sleep(1);
-    }
+        
+    } while(*run && !sleep(1));
 
     free(buffer);
     printf("Ending update sender...\n");

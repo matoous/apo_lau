@@ -435,9 +435,9 @@ void send_modify(
 
     unsigned int len = sizeof(out_addr);
 
-    _uint32_t_tbetb(htonl(ALC_CONTROL_NUM), buffer, 0);
-    _uint32_t_tbetb(htonl(ALC_PROTOCOL_VER), buffer, 4);
-    _uint32_t_tbetb(htonl(ALC_MESSAGE_MODIFY), buffer, 8);
+    _uint32_t_tbetb(ALC_CONTROL_NUM, buffer, 0);
+    _uint32_t_tbetb(ALC_PROTOCOL_VER, buffer, 4);
+    _uint32_t_tbetb(ALC_MESSAGE_MODIFY, buffer, 8);
 
     _int16_t_tbetb(cr, buffer, 12);
     _int16_t_tbetb(cg, buffer, 14);
@@ -478,9 +478,9 @@ void send_set(
 
     unsigned int len = sizeof(out_addr);
 
-    _uint32_t_tbetb(htonl(ALC_CONTROL_NUM), buffer, 0);
-    _uint32_t_tbetb(htonl(ALC_PROTOCOL_VER), buffer, 4);
-    _uint32_t_tbetb(htonl(ALC_MESSAGE_SET), buffer, 8);
+    _uint32_t_tbetb(ALC_CONTROL_NUM, buffer, 0);
+    _uint32_t_tbetb(ALC_PROTOCOL_VER, buffer, 4);
+    _uint32_t_tbetb(ALC_MESSAGE_SET, buffer, 8);
 
     _int16_t_tbetb(cr, buffer, 12);
     _int16_t_tbetb(cg, buffer, 14);

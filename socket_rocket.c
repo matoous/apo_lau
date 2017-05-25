@@ -379,7 +379,6 @@ void *sr_init(void* args) {
                     }
                     // if not updated the device, add a new one
                     if(!added){
-                        sockaddr_in new_in = cli_addr;
                         lau_t curr_lu;
                         pixel_t ceiling_color = _bt_color(buf, 12);
                         pixel_t walls_color = _bt_color(buf, 16);
@@ -390,7 +389,7 @@ void *sr_init(void* args) {
                         curr_lu.icon = (uint16_t*)malloc(256*sizeof(uint16_t));
                         _bt_name(buf, 20, curr_lu.name);
                         _bt_icon(buf, 36, curr_lu.icon);
-                        dl_push_back(devices_list, new_in, curr_lu);
+                        dl_push_back(devices_list, cli_addr, curr_lu);
                     }
                     pthread_mutex_unlock(devices_mutex);
                 }
@@ -435,9 +434,9 @@ void send_modify(
 
     unsigned int len = sizeof(out_addr);
 
-    _uint32_t_tbetb(ALC_CONTROL_NUM, buffer, 0);
-    _uint32_t_tbetb(ALC_PROTOCOL_VER, buffer, 4);
-    _uint32_t_tbetb(ALC_MESSAGE_MODIFY, buffer, 8);
+    _uint32_t_tbetb(htonl(ALC_CONTROL_NUM), buffer, 0);
+    _uint32_t_tbetb(htonl(ALC_PROTOCOL_VER), buffer, 4);
+    _uint32_t_tbetb(htonl(ALC_MESSAGE_MODIFY), buffer, 8);
 
     _int16_t_tbetb(cr, buffer, 12);
     _int16_t_tbetb(cg, buffer, 14);
@@ -447,7 +446,6 @@ void send_modify(
     _int16_t_tbetb(wg, buffer, 20);
     _int16_t_tbetb(wb, buffer, 22);
 
-    printf("INFO sending modify.\n");
     n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
         fprintf(stderr, "ERROR sending modify.\n");

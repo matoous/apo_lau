@@ -228,12 +228,12 @@ void all_devices_draw(devices_list_t* devices_list, int curr_device_in_list, uns
  */
 void read_knobs(uint8_t* k1, uint8_t* k2, uint8_t* k3, uint8_t* b1, uint8_t* b2, uint8_t* b3, unsigned char* knobs_mem_base){
     uint32_t rgb_knobs_value = *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_KNOBS_8BIT_o);
-    *k1 = rgb_knobs_value & 0xFF;
-    *k2 = (rgb_knobs_value >> 8) & 0xFF;
-    *k3 = (rgb_knobs_value >> 16) & 0xFF;
-    *b1 = (rgb_knobs_value >> 24) & 1;
-    *b2 = (rgb_knobs_value >> 25) & 1;
-    *b3 = (rgb_knobs_value >> 26) & 1;
+    *k1 = (uint8_t)(rgb_knobs_value & 0xFF);
+    *k2 = (uint8_t)((rgb_knobs_value >> 8) & 0xFF);
+    *k3 = (uint8_t)((rgb_knobs_value >> 16) & 0xFF);
+    *b1 = (uint8_t)((rgb_knobs_value >> 24) & 1);
+    *b2 = (uint8_t)((rgb_knobs_value >> 25) & 1);
+    *b3 = (uint8_t)((rgb_knobs_value >> 26) & 1);
     /* Store the read value to the register controlling individual LEDs */
     *(volatile uint32_t*)(knobs_mem_base + SPILED_REG_LED_LINE_o) = rgb_knobs_value;
 }
@@ -394,22 +394,25 @@ void *par_lcder(void* args){
                     // changes on local device
                     switch (selected_row){
                         case 0:
-                            lu->ceiling_color.r = ((int)lu->ceiling_color.r + change < 0) ? 0 : ((int)lu->ceiling_color.r + change > 255) ? 255 : lu->ceiling_color.r + change;
+                            lu->ceiling_color.r = (uint8_t)(((int)lu->ceiling_color.r + change < 0) ? 0 : ((int)lu->ceiling_color.r + change > 255) ? 255 : lu->ceiling_color.r + change);
                             break;
                         case 1:
-                            lu->ceiling_color.g = ((int)lu->ceiling_color.g + change < 0) ? 0 : ((int)lu->ceiling_color.g + change > 255) ? 255 : lu->ceiling_color.g + change;
+                            lu->ceiling_color.g = (uint8_t)(((int)lu->ceiling_color.g + change < 0) ? 0 : ((int)lu->ceiling_color.g + change > 255) ? 255 : lu->ceiling_color.g + change);
                             break;
                         case 2:
-                            lu->ceiling_color.b = ((int)lu->ceiling_color.b + change < 0) ? 0 : ((int)lu->ceiling_color.b + change > 255) ? 255 : lu->ceiling_color.b + change;
+                            lu->ceiling_color.b = (uint8_t)(((int)lu->ceiling_color.b + change < 0) ? 0 : ((int)lu->ceiling_color.b + change > 255) ? 255 : lu->ceiling_color.b + change);
                             break;
                         case 3:
-                            lu->walls_color.r = ((int)lu->walls_color.r + change < 0) ? 0 : ((int)lu->walls_color.r + change > 255) ? 255 : lu->walls_color.r + change;
+                            lu->walls_color.r = (uint8_t)(((int)lu->walls_color.r + change < 0) ? 0 : ((int)lu->walls_color.r + change > 255) ? 255 : lu->walls_color.r + change);
                             break;
                         case 4:
-                            lu->walls_color.g = ((int)lu->walls_color.g + change < 0) ? 0 : ((int)lu->walls_color.g + change > 255) ? 255 : lu->walls_color.g + change;
+                            lu->walls_color.g = (uint8_t)(((int)lu->walls_color.g + change < 0) ? 0 : ((int)lu->walls_color.g + change > 255) ? 255 : lu->walls_color.g + change);
                             break;
                         case 5:
-                            lu->walls_color.b = ((int)lu->walls_color.b + change < 0) ? 0 : ((int)lu->walls_color.b + change > 255) ? 255 : lu->walls_color.b + change;
+                            lu->walls_color.b = (uint8_t)(((int)lu->walls_color.b + change < 0) ? 0 : ((int)lu->walls_color.b + change > 255) ? 255 : lu->walls_color.b + change);
+                            break;
+                        default:
+                            sprintf(stderr, "ERROR something bad happened.\n");
                             break;
                     }
                 }

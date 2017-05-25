@@ -11,9 +11,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <netinet/in.h>
-#include <unistd.h>
 #include <time.h>
 #include <pthread.h>
 #include "devices_list.h"
@@ -236,7 +234,7 @@ void *sr_updater(void* args){
     pthread_mutex_t* local_lau_mutex = arguments.local_lau_mutex;
     int* sockfd = arguments.sockfd;
 
-    int n;
+    ssize_t n;
     sockaddr_in broadcast;
 
     // buffer
@@ -427,7 +425,7 @@ void send_modify(
         int16_t cr, int16_t cg, int16_t cb,
         int16_t wr, int16_t wg, int16_t wb
 ) {
-    int n;
+    ssize_t n;
 
     // buffer
     char* buffer = (char*)calloc(1024,1);

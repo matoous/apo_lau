@@ -48,10 +48,10 @@ RM = /opt/clion-2016.3.5/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/matoous/CLionProjects/apo_lau
+CMAKE_SOURCE_DIR = /home/matoous/Documents/apo_lau
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/matoous/CLionProjects/apo_lau/cmake-build-debug
+CMAKE_BINARY_DIR = /home/matoous/Documents/apo_lau/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles /home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,260 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named APO_LAU
+# Target rules for targets named apo_lau
 
 # Build rule for target.
-APO_LAU: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 APO_LAU
-.PHONY : APO_LAU
+apo_lau: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 apo_lau
+.PHONY : apo_lau
 
 # fast build rule for target.
-APO_LAU/fast:
-	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/build
-.PHONY : APO_LAU/fast
+apo_lau/fast:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/build
+.PHONY : apo_lau/fast
+
+app.o: app.c.o
+
+.PHONY : app.o
+
+# target to build an object file
+app.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/app.c.o
+.PHONY : app.c.o
+
+app.i: app.c.i
+
+.PHONY : app.i
+
+# target to preprocess a source file
+app.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/app.c.i
+.PHONY : app.c.i
+
+app.s: app.c.s
+
+.PHONY : app.s
+
+# target to generate assembly for a file
+app.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/app.c.s
+.PHONY : app.c.s
+
+console_info.o: console_info.c.o
+
+.PHONY : console_info.o
+
+# target to build an object file
+console_info.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/console_info.c.o
+.PHONY : console_info.c.o
+
+console_info.i: console_info.c.i
+
+.PHONY : console_info.i
+
+# target to preprocess a source file
+console_info.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/console_info.c.i
+.PHONY : console_info.c.i
+
+console_info.s: console_info.c.s
+
+.PHONY : console_info.s
+
+# target to generate assembly for a file
+console_info.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/console_info.c.s
+.PHONY : console_info.c.s
+
+devices_list.o: devices_list.c.o
+
+.PHONY : devices_list.o
+
+# target to build an object file
+devices_list.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/devices_list.c.o
+.PHONY : devices_list.c.o
+
+devices_list.i: devices_list.c.i
+
+.PHONY : devices_list.i
+
+# target to preprocess a source file
+devices_list.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/devices_list.c.i
+.PHONY : devices_list.c.i
+
+devices_list.s: devices_list.c.s
+
+.PHONY : devices_list.s
+
+# target to generate assembly for a file
+devices_list.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/devices_list.c.s
+.PHONY : devices_list.c.s
+
+display.o: display.c.o
+
+.PHONY : display.o
+
+# target to build an object file
+display.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/display.c.o
+.PHONY : display.c.o
+
+display.i: display.c.i
+
+.PHONY : display.i
+
+# target to preprocess a source file
+display.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/display.c.i
+.PHONY : display.c.i
+
+display.s: display.c.s
+
+.PHONY : display.s
+
+# target to generate assembly for a file
+display.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/display.c.s
+.PHONY : display.c.s
+
+font_rom8x16.o: font_rom8x16.c.o
+
+.PHONY : font_rom8x16.o
+
+# target to build an object file
+font_rom8x16.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/font_rom8x16.c.o
+.PHONY : font_rom8x16.c.o
+
+font_rom8x16.i: font_rom8x16.c.i
+
+.PHONY : font_rom8x16.i
+
+# target to preprocess a source file
+font_rom8x16.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/font_rom8x16.c.i
+.PHONY : font_rom8x16.c.i
+
+font_rom8x16.s: font_rom8x16.c.s
+
+.PHONY : font_rom8x16.s
+
+# target to generate assembly for a file
+font_rom8x16.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/font_rom8x16.c.s
+.PHONY : font_rom8x16.c.s
+
+mzapo_parlcd.o: mzapo_parlcd.c.o
+
+.PHONY : mzapo_parlcd.o
+
+# target to build an object file
+mzapo_parlcd.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/mzapo_parlcd.c.o
+.PHONY : mzapo_parlcd.c.o
+
+mzapo_parlcd.i: mzapo_parlcd.c.i
+
+.PHONY : mzapo_parlcd.i
+
+# target to preprocess a source file
+mzapo_parlcd.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/mzapo_parlcd.c.i
+.PHONY : mzapo_parlcd.c.i
+
+mzapo_parlcd.s: mzapo_parlcd.c.s
+
+.PHONY : mzapo_parlcd.s
+
+# target to generate assembly for a file
+mzapo_parlcd.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/mzapo_parlcd.c.s
+.PHONY : mzapo_parlcd.c.s
+
+mzapo_phys.o: mzapo_phys.c.o
+
+.PHONY : mzapo_phys.o
+
+# target to build an object file
+mzapo_phys.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/mzapo_phys.c.o
+.PHONY : mzapo_phys.c.o
+
+mzapo_phys.i: mzapo_phys.c.i
+
+.PHONY : mzapo_phys.i
+
+# target to preprocess a source file
+mzapo_phys.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/mzapo_phys.c.i
+.PHONY : mzapo_phys.c.i
+
+mzapo_phys.s: mzapo_phys.c.s
+
+.PHONY : mzapo_phys.s
+
+# target to generate assembly for a file
+mzapo_phys.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/mzapo_phys.c.s
+.PHONY : mzapo_phys.c.s
+
+pixel.o: pixel.c.o
+
+.PHONY : pixel.o
+
+# target to build an object file
+pixel.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/pixel.c.o
+.PHONY : pixel.c.o
+
+pixel.i: pixel.c.i
+
+.PHONY : pixel.i
+
+# target to preprocess a source file
+pixel.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/pixel.c.i
+.PHONY : pixel.c.i
+
+pixel.s: pixel.c.s
+
+.PHONY : pixel.s
+
+# target to generate assembly for a file
+pixel.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/pixel.c.s
+.PHONY : pixel.c.s
+
+socket_rocket.o: socket_rocket.c.o
+
+.PHONY : socket_rocket.o
+
+# target to build an object file
+socket_rocket.c.o:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/socket_rocket.c.o
+.PHONY : socket_rocket.c.o
+
+socket_rocket.i: socket_rocket.c.i
+
+.PHONY : socket_rocket.i
+
+# target to preprocess a source file
+socket_rocket.c.i:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/socket_rocket.c.i
+.PHONY : socket_rocket.c.i
+
+socket_rocket.s: socket_rocket.c.s
+
+.PHONY : socket_rocket.s
+
+# target to generate assembly for a file
+socket_rocket.c.s:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/socket_rocket.c.s
+.PHONY : socket_rocket.c.s
 
 # Help Target
 help:
@@ -131,7 +374,34 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... APO_LAU"
+	@echo "... apo_lau"
+	@echo "... app.o"
+	@echo "... app.i"
+	@echo "... app.s"
+	@echo "... console_info.o"
+	@echo "... console_info.i"
+	@echo "... console_info.s"
+	@echo "... devices_list.o"
+	@echo "... devices_list.i"
+	@echo "... devices_list.s"
+	@echo "... display.o"
+	@echo "... display.i"
+	@echo "... display.s"
+	@echo "... font_rom8x16.o"
+	@echo "... font_rom8x16.i"
+	@echo "... font_rom8x16.s"
+	@echo "... mzapo_parlcd.o"
+	@echo "... mzapo_parlcd.i"
+	@echo "... mzapo_parlcd.s"
+	@echo "... mzapo_phys.o"
+	@echo "... mzapo_phys.i"
+	@echo "... mzapo_phys.s"
+	@echo "... pixel.o"
+	@echo "... pixel.i"
+	@echo "... pixel.s"
+	@echo "... socket_rocket.o"
+	@echo "... socket_rocket.i"
+	@echo "... socket_rocket.s"
 .PHONY : help
 
 

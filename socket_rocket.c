@@ -27,10 +27,10 @@
  */
 void _int_tbetb(int x, char* buffer, int offset){
     x = htonl(x);
-    *(buffer + offset) = (x >> 24) & 0xFF;
-    *(buffer + offset+1) = (x >> 16) & 0xFF;
-    *(buffer + offset+2) = (x >> 8) & 0xFF;
-    *(buffer + offset+3) = x & 0xFF;
+    *(buffer + offset) = (char)((x >> 24) & 0xFF);
+    *(buffer + offset+1) = (char)((x >> 16) & 0xFF);
+    *(buffer + offset+2) = (char)((x >> 8) & 0xFF);
+    *(buffer + offset+3) = (char)(x & 0xFF);
 }
 
 /***
@@ -41,10 +41,10 @@ void _int_tbetb(int x, char* buffer, int offset){
  */
 void _uint32_t_tbetb(uint32_t x, char* buffer, int offset){
     x = htonl(x);
-    *(buffer + offset) = (x >> 24) & 0xFF;
-    *(buffer + offset+1) = (x >> 16) & 0xFF;
-    *(buffer + offset+2) = (x >> 8) & 0xFF;
-    *(buffer + offset+3) = x & 0xFF;
+    *(buffer + offset) = (char)((x >> 24) & 0xFF);
+    *(buffer + offset+1) = (char)((x >> 16) & 0xFF);
+    *(buffer + offset+2) = (char)((x >> 8) & 0xFF);
+    *(buffer + offset+3) = (char)(x & 0xFF);
 }
 
 /***
@@ -55,8 +55,8 @@ void _uint32_t_tbetb(uint32_t x, char* buffer, int offset){
  */
 void _int16_t_tbetb(int16_t x, char* buffer, int offset){
     x = htons(x);
-    *(buffer + offset) = (x >> 8) & 0xFF;
-    *(buffer + offset+1) = x & 0xFF;
+    *(buffer + offset) = (char)((x >> 8) & 0xFF);
+    *(buffer + offset+1) = (char)(x & 0xFF);
 }
 
 /***
@@ -102,8 +102,8 @@ void _icon_tbetb(const uint16_t icon[], char* buffer, int offset){
     uint16_t curr_value;
     for(int i = 0; i < 256; i++){
         curr_value = htons(icon[i]);
-        buffer[offset + i*2 + 1] = (curr_value)&0xFF;
-        buffer[offset + i*2] = (curr_value >> 8)&0xFF;
+        buffer[offset + i*2 + 1] = (char)((curr_value)&0xFF);
+        buffer[offset + i*2] = (char)((curr_value >> 8)&0xFF);
     }
 }
 
@@ -114,7 +114,7 @@ void _icon_tbetb(const uint16_t icon[], char* buffer, int offset){
  * @return uint32_t
  */
 uint32_t _bt_uint32_t(char* buf, int offset){
-    return ntohl((uint32_t)ntohl((buf[offset] << 24) | (buf[offset+1] << 16) | (buf[offset+2] << 8) | buf[offset+3]));
+    return ntohl(ntohl((uint32_t)(buf[offset] << 24) | (buf[offset+1] << 16) | (buf[offset+2] << 8) | buf[offset+3]));
 }
 
 /***
@@ -125,9 +125,9 @@ uint32_t _bt_uint32_t(char* buf, int offset){
  */
 pixel_t _bt_color(char* buf, int offset){
     pixel_t c;
-    c.r = buf[offset+1];
-    c.g = buf[offset+2];
-    c.b = buf[offset+3];
+    c.r = (uint8_t)buf[offset+1];
+    c.g = (uint8_t)buf[offset+2];
+    c.b = (uint8_t)buf[offset+3];
     return c;
 }
 
@@ -214,12 +214,12 @@ void _sr_modify_lau(lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex){
  */
 void _sr_set_lau(lau_t* lu, char* buf, pthread_mutex_t* local_lau_mutex){
     pthread_mutex_lock(local_lau_mutex);
-    lu->ceiling_color.r = _bt_uint16_t(buf, 12);
-    lu->ceiling_color.g = _bt_uint16_t(buf, 14);
-    lu->ceiling_color.b = _bt_uint16_t(buf, 16);
-    lu->walls_color.r = _bt_uint16_t(buf, 18);
-    lu->walls_color.g = _bt_uint16_t(buf, 20);
-    lu->walls_color.b = _bt_uint16_t(buf, 22);
+    lu->ceiling_color.r = (uint8_t)_bt_uint16_t(buf, 12);
+    lu->ceiling_color.g = (uint8_t)_bt_uint16_t(buf, 14);
+    lu->ceiling_color.b = (uint8_t)_bt_uint16_t(buf, 16);
+    lu->walls_color.r = (uint8_t)_bt_uint16_t(buf, 18);
+    lu->walls_color.g = (uint8_t)_bt_uint16_t(buf, 20);
+    lu->walls_color.b = (uint8_t)_bt_uint16_t(buf, 22);
     pthread_mutex_unlock(local_lau_mutex);
 }
 
@@ -447,6 +447,7 @@ void send_modify(
     _int16_t_tbetb(wg, buffer, 20);
     _int16_t_tbetb(wb, buffer, 22);
 
+    printf("INFO sending modify.\n");
     n = sendto(*sockfd, buffer, 1024, 0,(const struct sockaddr *)&out_addr, len);
     if(n < 0)
         fprintf(stderr, "ERROR sending modify.\n");

@@ -54,45 +54,45 @@ RM = /opt/clion-2016.3.5/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/matoous/CLionProjects/apo_lau
+CMAKE_SOURCE_DIR = /home/matoous/Documents/apo_lau
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/matoous/CLionProjects/apo_lau/cmake-build-debug
+CMAKE_BINARY_DIR = /home/matoous/Documents/apo_lau/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/APO_LAU.dir
+# Target rules for target CMakeFiles/apo_lau.dir
 
 # All Build rule for target.
-CMakeFiles/APO_LAU.dir/all:
-	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/depend
-	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles --progress-num= "Built target APO_LAU"
-.PHONY : CMakeFiles/APO_LAU.dir/all
+CMakeFiles/apo_lau.dir/all:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/depend
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target apo_lau"
+.PHONY : CMakeFiles/apo_lau.dir/all
 
 # Include target in all.
-all: CMakeFiles/APO_LAU.dir/all
+all: CMakeFiles/apo_lau.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/APO_LAU.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/APO_LAU.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/CLionProjects/apo_lau/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/APO_LAU.dir/rule
+CMakeFiles/apo_lau.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles 10
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/apo_lau.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/apo_lau.dir/rule
 
 # Convenience name for target.
-APO_LAU: CMakeFiles/APO_LAU.dir/rule
+apo_lau: CMakeFiles/apo_lau.dir/rule
 
-.PHONY : APO_LAU
-
-# clean rule for target.
-CMakeFiles/APO_LAU.dir/clean:
-	$(MAKE) -f CMakeFiles/APO_LAU.dir/build.make CMakeFiles/APO_LAU.dir/clean
-.PHONY : CMakeFiles/APO_LAU.dir/clean
+.PHONY : apo_lau
 
 # clean rule for target.
-clean: CMakeFiles/APO_LAU.dir/clean
+CMakeFiles/apo_lau.dir/clean:
+	$(MAKE) -f CMakeFiles/apo_lau.dir/build.make CMakeFiles/apo_lau.dir/clean
+.PHONY : CMakeFiles/apo_lau.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/apo_lau.dir/clean
 
 .PHONY : clean
 

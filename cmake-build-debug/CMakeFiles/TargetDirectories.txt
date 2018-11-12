@@ -1,3 +1,0 @@
-/home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/matoous/Documents/apo_lau/cmake-build-debug/CMakeFiles/apo_lau.dir
